@@ -49,7 +49,7 @@ def create_customer():
                                      create_customer_form.gender.data, create_customer_form.membership.data,
                                      create_customer_form.remarks.data, create_customer_form.email.data,
                                      create_customer_form.date_joined.data, create_customer_form.address.data)
-##        customers_dict[customer.get_customer_id()] = customer
+        customers_dict[customer.get_customer_id()] = customer
         customers_dict[customer.get_user_id()] = customer
         db['Customers'] = customers_dict
 
