@@ -186,5 +186,6 @@ def delete_customer(id):
     return redirect(url_for('retrieve_customers'))
 
 if __name__ == '__main__':
+    app.debug = True
     app.run()
 
