@@ -3,10 +3,12 @@
 class PaymentInfo: 
     transaction_count = 0
 
-    def __init__(self, address_line_1, address_line_2, state, country, postal_code, remember, expiry_date_year, cvv, credit_card_number, credit_card_holder, expiry_date_month): 
+    def __init__(self, address_line_1, address_line_2, country, postal_code, remember, expiry_date_year, cvv, credit_card_number, credit_card_holder, expiry_date_month): 
+        PaymentInfo.transaction_count += 1
+        self.__user_id = None # set to the user id who made the transaction
+        self.__id = PaymentInfo.transaction_count
         self.__address_line_1 = address_line_1
         self.__address_line_2 = address_line_2
-        self.__state = state
         self.__postal_code = postal_code
         self.__country = country 
         self.__cvv = cvv
@@ -15,16 +17,18 @@ class PaymentInfo:
         self.__credit_card_holder = credit_card_holder
         self.__credit_card_number = credit_card_number
         self.__remember = remember
-        PaymentInfo.transaction_count += 1
+
+    def get_id(self):
+        return self.__id
+    
+    def get_user_id(self):
+        return self.__user_id
 
     def get_address_line_1(self):
         return self.__address_line_1
     
     def get_address_line_2(self):
         return self.__address_line_2
-    
-    def get_state(self):
-        return self.__state
     
     def get_postal_code(self):
         return self.__postal_code
@@ -58,9 +62,6 @@ class PaymentInfo:
     
     def set_address_line_2(self, address_line_2):
         self.__address_line_2 = address_line_2
-    
-    def set_state(self, state):
-        self.__state = state
     
     def set_postal_code(self, postal_code):
         self.__postal_code = postal_code

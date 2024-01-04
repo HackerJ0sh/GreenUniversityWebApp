@@ -3,7 +3,47 @@
 {% block title %}Payment{% endblock %}
 
 {% block content %}
+{% from "includes/formHelper.html" import render_field %}
 
+
+<h1 class="display-4">Payment</h1>
+
+<form action="" method="POST">
+    <div class="mb-3">
+        {{ render_field(form.card_holder_name, class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ render_field(form.credit_card_number, class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ render_field(form.cvv, class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ render_field(form.expiry_date_month, class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ render_field(form.expiry_date_year, class="form-select") }}
+    </div>
+    <div class="mb-3">
+        {{ render_field(form.country, class="form-select") }}
+    </div>
+    <div class="mb-3">
+        {{ render_field(form.postal_code, class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ render_field(form.address_line_1, class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ render_field(form.address_line_2, class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ render_field(form.donation, class="form-control") }}
+    </div>
+    <div class="mb-3 form-check">
+        {{ render_field(form.remember, class="form-check-input") }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
 
 {% endblock %}
