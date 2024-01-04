@@ -4,7 +4,7 @@ import shelve
 from dataClasses.Payment import PaymentInfo
 
 app = Flask(__name__)
-
+app.config['SECRET_KEY'] = 'secret_key'
 
 @app.route('/')
 def home():
@@ -46,12 +46,12 @@ def payment():
 
         flash('Payment Successful', 'info')
         return redirect(url_for('payment_successful'))
-    return redirect(url_for('payment'))
+    return render_template('paymentForm.html', form=create_payment_form)
 
 # @app.route('/payment/<int:id>/successful')
 @app.route('/payment/successful')
 def payment_successful():
-
+    return '<h1>Payment Successful</h1>'
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
