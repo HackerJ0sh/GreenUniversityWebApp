@@ -37,9 +37,11 @@ def payment():
 
         # add code: add all the payment_info objects to the user class attribute called transaction=[], this allows the users to see all their transactions
 
-        payment_dict[payment_info.get_id()] = payment_info
-        db['Payments'] = payment_dict
-
+        # saves the payment details if remember is true
+        if create_payment_form.remember.data:
+            payment_dict[payment_info.get_id()] = payment_info
+            db['Payments'] = payment_dict
+        
         db.close()
 
         # add email code verification / 2FA / use email api 
@@ -51,7 +53,7 @@ def payment():
 # @app.route('/payment/<int:id>/successful')
 @app.route('/payment/successful')
 def payment_successful():
-    return '<h1>Payment Successful</h1>'
+    return render_template('paymentSuccess.html')
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
