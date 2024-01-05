@@ -11,9 +11,10 @@
 </head>
 <body>
     {% block navbar %}
+       {% include 'customerIncludes/_globalNavbar.html' %}
     {% endblock %}
 
-    <div class="container-fluid">
+    <div class="container-fluid" style="padding: 0px;">
         {% block content %}
         {% endblock %}
     </div>
