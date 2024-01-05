@@ -62,8 +62,7 @@ def payment_update():
     if request.method == "POST" and update_payment_form.validate():
         pass
     else: 
-        return render_template('paymentUpdate')
-
+        return render_template('paymentUpdate', form=update_payment_form)
 
 
 if __name__ == "__main__":
