@@ -1,5 +1,5 @@
 from flask import * 
-from PaymentForm import CreatePaymentForm
+from PaymentForm import CreatePaymentForm, UpdatePaymentForm
 import shelve
 from dataClasses.Payment import PaymentInfo
 
@@ -54,6 +54,17 @@ def payment():
 @app.route('/payment/successful')
 def payment_successful():
     return render_template('paymentSuccess.html')
+
+
+@app.route('/payment/update')
+def payment_update():
+    update_payment_form = UpdatePaymentForm(request.form)
+    if request.method == "POST" and update_payment_form.validate():
+        pass
+    else: 
+        return render_template('paymentUpdate')
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

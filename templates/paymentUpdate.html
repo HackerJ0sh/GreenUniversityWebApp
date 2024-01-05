@@ -1,16 +1,13 @@
-{% extends 'base.html' %}
-
-{% block title %}Payment{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
 {% from "includes/_formHelper.html" import render_field %}
 
-
-<h1 class="display-4">Create Payment Info</h1>
+<h1 class="display-4">Update / Delete Payment Info</h1>
 
 <form action="" method="POST">
     <div class="mb-3">
-        {{ render_field(form.card_holder_name, class="form-control") }}
+        {{ render_field(form.card_holder_name(placeholder), class="form-control") }}
     </div>
     <div class="mb-3">
         {{ render_field(form.credit_card_number, class="form-control") }}
@@ -42,7 +39,8 @@
     <div class="mb-3 form-check">
         {{ render_field(form.remember, class="form-check-input") }}
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-warning">Update</button>
+    <a class="btn btn-danger" role="button" href="">Delete</a>
 </form>
 
 {% endblock %}
