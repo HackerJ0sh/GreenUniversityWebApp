@@ -84,7 +84,7 @@ def payment_update():
         return redirect(url_for('home'))
     else: 
         # TODO: find the payment information associated with the user | add code
-        return render_template('paymentUpdate', form=update_payment_form)
+        return render_template('paymentUpdate.html', form=update_payment_form)
 
 
 @app.route('/payment/delete')
@@ -107,7 +107,7 @@ def payment_delete():
     return redirect(url_for('view_payment'))
     
 
-@app.route('payment/view')
+@app.route('/payment/view')
 def view_payment():
     payment_dict = {}
     db = shelve.open('payment.db', 'r')
