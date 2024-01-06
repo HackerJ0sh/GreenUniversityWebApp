@@ -66,9 +66,6 @@ class PaymentInfo:
     def set_postal_code(self, postal_code):
         self.__postal_code = postal_code
     
-    def set_country(self, state):
-        self.__state = state
-    
     def set_country(self, country):
         self.__country = country
     

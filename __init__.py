@@ -44,7 +44,7 @@ def payment():
         
         db.close()
 
-        # add email code verification / 2FA / use email api 
+        # TODO: add email code verification / 2FA / use email api 
 
         flash('Payment Successful', 'info')
         return redirect(url_for('payment_successful'))
@@ -56,13 +56,67 @@ def payment_successful():
     return render_template('paymentSuccess.html')
 
 
-@app.route('/payment/update')
+@app.route('/payment/update', methods=["POST", "GET"])
 def payment_update():
     update_payment_form = UpdatePaymentForm(request.form)
     if request.method == "POST" and update_payment_form.validate():
-        pass
+        payment_dict ={}
+        db = shelve.open('payment.db', 'w')
+        payment_dict = db['Payments']
+
+        # TODO: get id from user payment info object
+        payment_info = payment_dict[1]
+
+        payment_info.set_address_line_1(update_payment_form.address_line_1.data)
+        payment_info.set_address_line_2(update_payment_form.address_line_2.data)
+        payment_info.set_postal_code(update_payment_form.postal_code.data)
+        payment_info.set_country(update_payment_form.country.data)
+        payment_info.set_cvv(update_payment_form.cvv.data)
+        payment_info.set_expiry_date_year(update_payment_form.expiry_date_year.data)
+        payment_info.set_expiry_date_month(update_payment_form.expiry_date_month.data)
+        payment_info.set_credit_card_holder(update_payment_form.card_holder_name.data)
+        payment_info.set_credit_card_number(update_payment_form.credit_card_number.data)
+
+        db["Payments"] = payment_dict
+        db.close()
+
+        flash('Successfully Updated Payment Information')
+        return redirect(url_for('home'))
     else: 
+        # TODO: find the payment information associated with the user | add code
         return render_template('paymentUpdate', form=update_payment_form)
+
+
+@app.route('/payment/delete')
+def payment_delete():
+    # retrieve the payment_info object from user class and delete it.
+    payment_dict = {}
+    try:
+        db = shelve.open('payment.db')
+    except IOError:
+        flash('Please create your payment information first')
+        return redirect(url_for('home'))
+    
+    payment_dict = db['Payments']
+    payment_dict.pop(1)
+
+    db['Payments'] = payment_dict
+    db.close()
+
+    flash('Successfully deleted payment information')
+    return redirect(url_for('view_payment'))
+    
+
+@app.route('payment/view')
+def view_payment():
+    payment_dict = {}
+    db = shelve.open('payment.db', 'r')
+    payment_dict = db['Payments']
+
+    db.close()
+    payment_info = payment_dict[1]
+
+    return render_template('paymentView.html', payment_info=payment_info)
 
 
 if __name__ == "__main__":
