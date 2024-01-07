@@ -1,0 +1,5 @@
+Customers == Inventory
+
+Users == Orders
+
+make these changes accordingly
