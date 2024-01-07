@@ -1,5 +1,5 @@
 .height-100 {
-    height: 100vh
+    height: 100vh;
 }
 
 .card {
@@ -10,17 +10,17 @@
     z-index: 1;
     display: flex;
     justify-content: center;
-    align-items: center
+    align-items: center;
 }
 
 .card h6 {
-    color: red;
-    font-size: 20px
+    color: #8fd14f;
+    font-size: 20px;
 }
 
 .inputs input {
     width: 40px;
-    height: 40px
+    height: 40px;
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -28,7 +28,7 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    margin: 0
+    margin: 0;
 }
 
 .card-2 {
@@ -39,26 +39,26 @@ input[type=number]::-webkit-outer-spin-button {
     bottom: -50px;
     left: 20px;
     position: absolute;
-    border-radius: 5px
+    border-radius: 5px;
 }
 
 .card-2 .content {
-    margin-top: 50px
+    margin-top: 50px;
 }
 
 .card-2 .content a {
-    color: red
+    color: #8fd14f;
 }
 
 .form-control:focus {
     box-shadow: none;
-    border: 2px solid red
+    border: 2px solid #8fd14f;
 }
 
 .validate {
     border-radius: 20px;
     height: 40px;
-    background-color: red;
-    border: 1px solid red;
+    background-color: #8fd14f;
+    border: 1px solid #8fd14f;
     width: 140px
 }
