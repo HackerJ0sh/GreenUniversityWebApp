@@ -8,6 +8,30 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    register_user_form = CreateUserForm(request.form)
+    if request.method == 'POST' and register_user_form.validate():
+        users_dict = {}
+        db = shelve.open('user.db', 'c')
+
+        try:
+            users_dict = db['Users']
+        except:
+            print("Error in retrieving Users from user.db.")
+
+        user = Account_Class.User(register_user_form.name.data, register_user_form.username.data,
+                                  register_user_form.password.data, register_user_form.email.data,
+                                  register_user_form.gender.data, register_user_form.security_question.data,
+                                  register_user_form.security_answer.data)
+        users_dict[user.get_user_id()] = user
+        db['Users'] = users_dict
+
+        db.close()
+
+        return redirect(url_for('retrieve_users'))
+    return render_template('signup.html', form=register_user_form)
+
 @app.route('/contactUs')
 def contact_us():
     return render_template('contactUs.html')

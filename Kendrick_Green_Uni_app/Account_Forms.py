@@ -1,10 +1,15 @@
-from wtforms import Form, StringField, RadioField, SelectField, validators
+from wtforms import Form, StringField, RadioField, SelectField, validators, PasswordField, BooleanField
 from wtforms.fields import EmailField
+
 
 class CreateUserForm(Form):
     name = StringField('Name', [validators.Length(min=1, max=150), validators.DataRequired()])
     username = StringField('Username', [validators.Length(min=1, max=150), validators.DataRequired()])
-    password = StringField('Password', [validators.Length(min=1, max=150), validators.DataRequired()])
+    password = PasswordField('New Password', [
+        validators.DataRequired(),
+        validators.EqualTo('confirm', message='Passwords must match')
+    ])
+    confirm = PasswordField('Repeat Password')
     email = EmailField('Email', [validators.Email(), validators.DataRequired()])
     gender = SelectField('Gender', [validators.DataRequired()], choices=[('', 'Select'), ('F', 'Female'), ('M', 'Male')], default='')
     security_question = StringField('Security Question', [validators.Length(min=1, max=150), validators.DataRequired()])
