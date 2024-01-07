@@ -1,4 +1,4 @@
-from shop import db
+from shop import db,app
 
 
 class User(db.Model):
@@ -14,4 +14,5 @@ class User(db.Model):
     
 
 
+with app.app_context():
     db.create_all()
