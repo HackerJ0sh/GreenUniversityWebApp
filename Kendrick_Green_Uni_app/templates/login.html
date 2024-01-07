@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Library Loan System - Create User{% endblock %}
+{% block title %}Library Loan System - Login{% endblock %}
 
 {% block content %}
 {% from "includes/_formHelper.html" import render_field %}
@@ -13,7 +13,7 @@
   <div class="form-group">
     {{ render_field(form.password, class="form-control") }}
   </div>
-  <input type="submit" value="Log In" class="btn btn-primary"/>
+  <input type="submit" value="Login" class="btn btn-primary"/>
 </form>
 {% endblock %}
 

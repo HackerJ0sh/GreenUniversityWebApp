@@ -16,3 +16,7 @@ class CreateUserForm(Form):
     security_answer = StringField('Security Answer', [validators.Length(min=1, max=150), validators.DataRequired()])
     account_status = RadioField('Account Status', choices=[('L', 'Locked'), ('U', 'Unlocked')], default='U')
     account_type = RadioField('Account Type', choices=[('C', 'Customer'), ('S', 'Staff')], default='C')
+
+class LoginForm(Form):
+    username = StringField('Username', [validators.Length(min=1, max=150), validators.DataRequired()])
+    password = PasswordField('Password', [validators.DataRequired()])

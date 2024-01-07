@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for
-from Account_Forms import CreateUserForm
+from flask import Flask, render_template, request, redirect, url_for, flash
+from Account_Forms import CreateUserForm,LoginForm
 import shelve, Account_Class
 
 app = Flask(__name__)
@@ -30,7 +30,30 @@ def register():
         db.close()
 
         return redirect(url_for('retrieve_users'))
-    return render_template('signup.html', form=register_user_form)
+    return render_template('signup.html', form=register_user_form, title="registration page")
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    login_user_form = LoginForm(request.form)
+    if request.method == 'POST' and login_user_form.validate():
+        users_dict = {}
+        db = shelve.open('user.db', 'r')
+        users_dict = db['Users']
+        db.close()
+
+        for key in users_dict:
+            if login_user_form.username.data == users_dict[key].set_username:
+                password = users_dict[key].set_password
+                if login_user_form.password.data == password:
+                    return redirect(url_for('home'))
+                else:
+                    print("Wrong")
+
+            else:
+                print("Wrong")
+
+
+    return render_template('login.html', form=login_user_form, title = "Login Page")
 
 @app.route('/contactUs')
 def contact_us():
