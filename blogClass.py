@@ -36,7 +36,7 @@ class Blog:
     def get_blog_id(self):
         return self.__blog_id
 
-    def get_image_(self, image):
+    def get_image(self):
         return self.__image
 
     def get_account(self):

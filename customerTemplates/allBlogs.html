@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Green University - View Blogs{% endblock %}
+{% block content %}
+<h1 class="display-4">View Blogs</h1>
+<div>
+    {% if count == 0 %}
+    <p>There are no blogs.</p>
+    {% elif count == 1 %}
+    <p>There is 1 blog.</p>
+    {% else %}
+    <p>There are {{ count }} blogs.</p>
+    {% endif %}
+</div>
+
+<div>
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Blog ID</th>
+            <th>Account</th>
+            <th>Category</th>
+            <th>Subject</th>
+            <th>Image</th>
+            <th>Content</th>
+            <th>Upvotes</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+     <tbody>
+        {% for blog in blogs_list %}
+            <tr>
+                <td>{{ blog.get_blog_id() }}</td>
+                <td>{{ blog.get_account() }}</td>
+                {% if blog.get_category() == "REC" %}
+                <td>Recycling</td>
+                {% elif blog.get_category() == "SSB" %}
+                <td>Sustainability</td>
+                {% elif blog.get_category() == "BIZ" %}
+                <td>Business</td>
+                {% elif blog.get_category() == "H20" %}
+                <td>Water</td>
+                {% elif blog.get_category() == "CUL" %}
+                <td>Cultural</td>
+                {% endif %}
+                <td>{{ blog.get_post_name() }}</td>
+                <td>{{ blog.get_image() }}</td>
+                <td>{{ blog.get_post_content() }}</td>
+                <td>{{ blog.get_upvote_count() }}</td>
+                <td><a href="#" class="btn btn-warning">Update</a></td>
+                <td>
+                    <form action="" method="POST">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+     </tbody>
+     </table>
+</div>
+{% endblock %}

@@ -14,7 +14,7 @@ def homepage():
 
 
 @app.route('/createBlog', methods=['GET', 'POST'])
-def create_user():
+def create_blog():
     create_blog_form = CreateBlogForm(request.form)
     if request.method == 'POST' and create_blog_form.validate():
 
@@ -39,6 +39,21 @@ def create_user():
 
         return redirect(url_for('homepage'))
     return render_template('createBlog.html', form=create_blog_form)
+
+
+@app.route('/allBlogs')
+def retrieve_blogs():
+    blogs_dict = {}
+    db = shelve.open('blogs.db', 'r')
+    blogs_dict = db['Blogs']
+    db.close()
+
+    blogs_list = []
+    for key in blogs_dict:
+        blog = blogs_dict.get(key)
+        blogs_list.append(blog)
+
+    return render_template('allBlogs.html', count=len(blogs_list), blogs_list=blogs_list)
 
 
 if __name__ == '__main__':
