@@ -5,7 +5,7 @@ from wtforms import RadioField, EmailField, StringField, SelectField, TextAreaFi
 class CreatePaymentForm(Form):
     full_name = StringField('Full Name', [validators.length(min=1, max=150), validators.DataRequired()])
     phone_number = IntegerField('Phone Number', [validators.length(min=1, max=150), validators.DataRequired()])
-    phone_number = EmailField('Email', [validators.DataRequired()])
+    email = EmailField('Email', [validators.DataRequired()])
     card_holder_name = StringField('Card Holder Name', [validators.length(min=1, max=150), validators.DataRequired()])
     credit_card_number = StringField('Credit Card Number', [validators.length(max=16), validators.DataRequired()])
     cvv = StringField('CVV', [validators.length(max=3), validators.DataRequired()])
@@ -22,7 +22,7 @@ class CreatePaymentForm(Form):
 class UpdatePaymentForm(Form):
     full_name = StringField('Full Name', [validators.length(min=1, max=150), validators.Optional()])
     phone_number = IntegerField('Phone Number', [validators.length(min=1, max=150), validators.Optional()])
-    phone_number = EmailField('Email', [validators.Optional()])
+    email = EmailField('Email', [validators.Optional()])
     card_holder_name = StringField('Card Holder Name', [validators.length(min=1, max=150), validators.Optional()])
     credit_card_number = StringField('Credit Card Number', [validators.length(max=16), validators.Optional()])
     cvv = StringField('CVV', [validators.length(max=3), validators.Optional()])
