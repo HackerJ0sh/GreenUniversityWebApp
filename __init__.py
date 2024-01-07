@@ -1,5 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
-from BlogForm import CreateBlogForm
+from blogForm import CreateBlogForm
+import shelve
+import blogClass
+
+
 
 app = Flask(__name__, template_folder='customerTemplates')
 
@@ -13,13 +17,30 @@ def homepage():
 def create_user():
     create_blog_form = CreateBlogForm(request.form)
     if request.method == 'POST' and create_blog_form.validate():
-        return redirect(url_for('home'))
+
+        blogs_dict = {}
+        db = shelve.open('blogs.db', 'c')
+        try:
+            blogs_dict = db['Blogs']
+        except:
+            print("Error in retrieving Blog from blogs.db.")
+
+        blog = blogClass.Blog(account=None, blog_subject=create_blog_form.post_name.data,
+            image=create_blog_form.image.data, blog_content=create_blog_form.post_content.data,
+            category=create_blog_form.category.data, upvote_count=0)
+        blogs_dict[blog.get_blog_id()] = blog
+        db['Blogs'] = blogs_dict
+
+        # Test codes
+        blogs_dict = db['Blogs']
+        blog = blogs_dict[blog.get_blog_id()]
+        print(blog.get_blog_id(), "was stored in blogs.db successfully")
+        db.close()
+
+        return redirect(url_for('homepage'))
     return render_template('createBlog.html', form=create_blog_form)
 
 
 if __name__ == '__main__':
     app.run()
-
-
-
 
