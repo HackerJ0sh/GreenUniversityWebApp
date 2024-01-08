@@ -108,7 +108,7 @@ def payment_otp():
 
         return render_template('paymentOTP.html', form=create_paymentOTP_form, email=email_receiver)
     else:
-        form_OTP = str(create_paymentOTP_form.OTP_code_1.data + create_paymentOTP_form.OTP_code_2.data + create_paymentOTP_form.OTP_code_3.data + create_paymentOTP_form.OTP_code_4.data + create_paymentOTP_form.OTP_code_5.data + create_paymentOTP_form.OTP_code_6.data)
+        form_OTP = int(str(create_paymentOTP_form.OTP_code_1.data) + str(create_paymentOTP_form.OTP_code_2.data) + str(create_paymentOTP_form.OTP_code_3.data) + str(create_paymentOTP_form.OTP_code_4.data) + str(create_paymentOTP_form.OTP_code_5.data) + str(create_paymentOTP_form.OTP_code_6.data))
         OTP = session['OTP']
         if form_OTP == OTP:
             flash('Payment Successful')
