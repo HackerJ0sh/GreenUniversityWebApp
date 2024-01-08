@@ -1,6 +1,6 @@
 from flask import * 
 from PaymentForm import CreatePaymentForm, UpdatePaymentForm
-from PaymentOtpForm import CreatePaymentOtpForm
+from PaymentOtpForm import CreatePaymentOtpForm, SendEmail, GenerateOTP
 import shelve
 from dataClasses.Payment import PaymentInfo
 
@@ -100,8 +100,15 @@ def payment_update():
 def payment_otp():
     create_paymentOTP_form = CreatePaymentOtpForm(request.form)
     # sending of OTP to email
+    email_receiver = session['email']
+
+    OTP = GenerateOTP()
+    SendEmail(otp=OTP, receiver=email_receiver)
+
     if request.method == "POST":
-        pass
+        form_OTP = str(create_paymentOTP_form.OTP_code_1.data, create_paymentOTP_form.OTP_code_2.data, create_paymentOTP_form.OTP_code_3.data, create_paymentOTP_form.OTP_code_4.data, create_paymentOTP_form.OTP_code_5.data, create_paymentOTP_form.OTP_code_6.data)
+        if form_OTP == OTP:
+            return url_for('home')
     else:
         return render_template('paymentOTP.html', form=create_paymentOTP_form)
 
