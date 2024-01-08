@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from Account_Forms import CreateUserForm,LoginForm, UpdateUserForm
+from Account_Forms import CreateUserForm,LoginForm, UpdateUserForm, ResetUserForm
 import shelve, Account_Class
 
 app = Flask(__name__)
@@ -170,8 +170,47 @@ def delete_user(id):
 
     return redirect(url_for('retrieve_users'))
 
-# @app.route('/reset', methods=['POST'])
-# def login()
+@app.route('/reset', methods=['GET', 'POST'])
+def reset():
+    reset_user_form = ResetUserForm(request.form)
+    if request.method == 'POST' and reset_user_form.validate():
+        users_dict = {}
+        db = shelve.open('user.db', 'r')
+        users_dict = db['Users']
+        db.close()
+
+        for key in users_dict:
+            if reset_user_form.username.data == users_dict[key].get_username():
+                email = users_dict[key].get_email()
+                if reset_user_form.email.data == email:
+                    return redirect(url_for('security', id=users_dict[key].get_user_id()))
+                else:
+                    print("Wrong")
+
+            else:
+                print("Wrong")
+
+
+    return render_template('reset.html', form=reset_user_form, title = "Reset Page")
+
+@app.route('/security/<int:id>', methods=['GET', 'POST'])
+def security(id):
+    security_user_form = ResetUserForm(request.form)
+    if request.method == 'POST' and security_user_form.validate():
+        users_dict = {}
+        db = shelve.open('user.db', 'r')
+        users_dict = db['Users']
+        db.close()
+
+        question = users_dict[id].get_security_question()
+        if security_user_form.security_answer == users_dict[id].get_security_answer():
+            return redirect(url_for('changepassword', id=id))
+
+        else:
+            print("Wrong")
+
+
+    return render_template('security.html', form=security_user_form, title = "Security Page")
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

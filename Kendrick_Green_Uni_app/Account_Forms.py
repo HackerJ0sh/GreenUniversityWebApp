@@ -30,3 +30,14 @@ class CreateUserForm(Form):
 class LoginForm(Form):
     username = StringField('Username', [validators.Length(min=1, max=150), validators.DataRequired()])
     password = PasswordField('Password', [validators.DataRequired()])
+
+class ResetUserForm(Form):
+    username = StringField('Username', [validators.Length(min=1, max=150), validators.DataRequired()])
+    email = EmailField('Email', [validators.Email(), validators.DataRequired()])
+    security_question = StringField('Security Question', [validators.Length(min=1, max=150), validators.DataRequired()])
+    security_answer = StringField('Security Answer', [validators.Length(min=1, max=150), validators.DataRequired()])
+    password = PasswordField('New Password', [
+        validators.DataRequired(),
+        validators.EqualTo('confirm', message='Passwords must match')
+    ])
+    confirm = PasswordField('Repeat Password')
