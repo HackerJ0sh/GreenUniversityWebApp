@@ -10,6 +10,7 @@
   <div class="form-group">
     {{ render_field(form.security_answer, class="form-control") }}
   </div>
+  {% include "flash.html" %}
   <input type="submit" value="Submit" class="btn btn-primary"/>
 </form>
 {% endblock %}

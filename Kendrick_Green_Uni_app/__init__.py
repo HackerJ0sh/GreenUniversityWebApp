@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from Account_Forms import CreateUserForm,LoginForm, UpdateUserForm, ResetUserForm, SecurityForm, ChangePasswordForm
 import shelve, Account_Class
 
+
 app = Flask(__name__)
+app.secret_key = "Kendrick"
 
 @app.route('/')
 def home():
@@ -58,7 +60,7 @@ def login():
         db = shelve.open('user.db', 'r')
         users_dict = db['Users']
         db.close()
-
+        error_login = 0
         for key in users_dict:
             if login_user_form.username.data == users_dict[key].get_username():
                 password = users_dict[key].get_password()
@@ -68,10 +70,12 @@ def login():
                     else:
                         return redirect(url_for('cust_homepage', id=users_dict[key].get_user_id()))
                 else:
-                    print("Wrong")
+                    error_login = error_login + 1
 
             else:
-                print("Wrong")
+                error_login = error_login + 1
+        if error_login > 0:
+            flash("Wrong Username or Password")
 
 
     return render_template('login.html', form=login_user_form, title = "Login Page")
@@ -173,12 +177,12 @@ def delete_user(id):
 @app.route("/reset", methods=['GET', 'POST'])
 def reset():
     reset_user_form = ResetUserForm(request.form)
+    error_reset = 0
     if request.method == 'POST' and reset_user_form.validate():
         users_dict = {}
         db = shelve.open('user.db', 'r')
         users_dict = db['Users']
         db.close()
-
         for key in users_dict:
             if reset_user_form.username.data == users_dict[key].get_username():
                 email = users_dict[key].get_email()
@@ -186,10 +190,13 @@ def reset():
                     return redirect(url_for('security', id=users_dict[key].get_user_id()))
 
                 else:
-                    print("Wrong")
+                    error_reset = error_reset + 1
 
             else:
-                print("Wrong")
+                error_reset = error_reset + 1
+    if error_reset > 0:
+        flash("Invalid Username and Email")
+
 
 
     return render_template('reset.html', form=reset_user_form, title = "Reset Page")
@@ -200,6 +207,7 @@ def security(id):
     db = shelve.open('user.db', 'r')
     users_dict = db['Users']
     db.close()
+    error_security = 0
     question = users_dict[id].get_security_question()
     security_user_form = SecurityForm(request.form)
     if request.method == 'POST' and security_user_form.validate():
@@ -209,11 +217,12 @@ def security(id):
         db.close()
 
         if security_user_form.security_answer.data == users_dict[id].get_security_answer():
-            print("Correct")
             return redirect(url_for('changepassword', id=users_dict[id].get_user_id()))
 
         else:
-            print("Wrong this")
+            error_security = error_security + 1
+    if error_security > 0:
+        flash("Wrong Answer")
 
 
     return render_template('security.html',question = question, id = id, form=security_user_form, title = "Security Page")
