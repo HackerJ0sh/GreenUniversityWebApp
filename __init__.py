@@ -115,6 +115,7 @@ def payment_otp():
             del session['OTP']
             return redirect(url_for('payment_successful'))
         else:
+            flash('The OTP you entered does not match')
             return redirect(url_for('payment_otp'))
 
 
