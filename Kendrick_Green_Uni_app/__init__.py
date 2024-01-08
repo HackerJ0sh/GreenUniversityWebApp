@@ -62,7 +62,6 @@ def login():
         for key in users_dict:
             if login_user_form.username.data == users_dict[key].get_username():
                 password = users_dict[key].get_password()
-                print(password)
                 if login_user_form.password.data == password:
                     if users_dict[key].get_account_type() == "S":
                         return redirect(url_for('staff_homepage', id=users_dict[key].get_user_id()))
@@ -171,10 +170,6 @@ def delete_user(id):
 
     return redirect(url_for('retrieve_users'))
 
-# @app.route('/login', methods=['POST'])
-# def login()
-#test
-
 # @app.route('/reset', methods=['POST'])
 # def login()
 
@@ -221,7 +216,7 @@ def settings(id):
         db['Users'] = users_dict
         db.close()
 
-        return redirect(url_for('retrieve_users'))
+        return redirect(url_for('cust_homepage'))
     else:
         users_dict = {}
         db = shelve.open('user.db', 'r')
