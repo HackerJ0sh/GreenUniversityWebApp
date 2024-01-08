@@ -7,18 +7,18 @@
 
 <link rel="stylesheet" href="../static/style/paymentOTP.css">
 
-<form class="container height-100 d-flex justify-content-center align-items-center">
+<form class="container height-100 d-flex justify-content-center align-items-center" method="post">
     <div class="position-relative">
         <div class="card p-2 text-center">
             <h6>Please enter the one time password <br> to verify your account</h6>
             <div> <span>A code has been sent to</span> <small>Place email here</small> </div>
             <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
-                {{ render_field(form.OTP_code_1, class="m-2 text-center form-control rounded", type="text", id="first", maxlength="1") }}
-                {{ render_field(form.OTP_code_2, class="m-2 text-center form-control rounded", type="text", id="second", maxlength="1") }}
-                {{ render_field(form.OTP_code_3, class="m-2 text-center form-control rounded", type="text", id="third", maxlength="1") }}
-                {{ render_field(form.OTP_code_4, class="m-2 text-center form-control rounded", type="text", id="fourth", maxlength="1") }}
-                {{ render_field(form.OTP_code_5, class="m-2 text-center form-control rounded", type="text", id="fifth", maxlength="1") }}
-                {{ render_field(form.OTP_code_6, class="m-2 text-center form-control rounded", type="text", id="sixth", maxlength="1") }}
+                {{ render_field(form.OTP_code_1, class="m-2 text-center form-control rounded") }}
+                {{ render_field(form.OTP_code_2, class="m-2 text-center form-control rounded") }}
+                {{ render_field(form.OTP_code_3, class="m-2 text-center form-control rounded") }}
+                {{ render_field(form.OTP_code_4, class="m-2 text-center form-control rounded") }}
+                {{ render_field(form.OTP_code_5, class="m-2 text-center form-control rounded") }}
+                {{ render_field(form.OTP_code_6, class="m-2 text-center form-control rounded") }}
             </div>
             <div class="mt-4"> <button class="btn btn-danger px-4 validate">Validate</button> </div>
         </div>
