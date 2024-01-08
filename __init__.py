@@ -1,5 +1,6 @@
 from flask import * 
 from PaymentForm import CreatePaymentForm, UpdatePaymentForm
+from PaymentOtpForm import CreatePaymentOtpForm
 import shelve
 from dataClasses.Payment import PaymentInfo
 
@@ -22,7 +23,12 @@ def payment():
         except: 
             print('Error in opening the file')
 
+        session['email'] = create_payment_form.email.data
+
         payment_info = PaymentInfo(
+            full_name=create_payment_form.full_name.data,
+            phone_number=create_payment_form.phone_number.data,
+            email=create_payment_form.email.data,
             address_line_1=create_payment_form.address_line_1.data,
             address_line_2=create_payment_form.address_line_2.data,
             country=create_payment_form.country.data,
@@ -46,8 +52,7 @@ def payment():
 
         # TODO: add email code verification / 2FA / use email api 
 
-        flash('Payment Successful', 'info')
-        return redirect(url_for('payment_successful'))
+        return redirect(url_for('payment_otp'))
     return render_template('paymentForm.html', form=create_payment_form)
 
 # @app.route('/payment/<int:id>/successful')
@@ -67,6 +72,9 @@ def payment_update():
         # TODO: get id from user payment info object
         payment_info = payment_dict[1]
 
+        payment_info.set_full_name(update_payment_form.full_name)
+        payment_info.set_phone_number(update_payment_form.phone_number)
+        payment_info.set_email(update_payment_form.email)
         payment_info.set_address_line_1(update_payment_form.address_line_1.data)
         payment_info.set_address_line_2(update_payment_form.address_line_2.data)
         payment_info.set_postal_code(update_payment_form.postal_code.data)
@@ -85,6 +93,16 @@ def payment_update():
     else: 
         # TODO: find the payment information associated with the user | add code
         return render_template('paymentUpdate.html', form=update_payment_form)
+
+
+@app.route('/payment/OTP', methods=["POST", "GET"])
+def payment_otp():
+    create_paymentOTP_form = CreatePaymentOtpForm(request.form)
+    if request.method == "POST":
+        # TODO: OTP API here
+        pass
+    else:
+        return render_template('paymentOTP.html', form=create_paymentOTP_form)
 
 
 @app.route('/payment/delete')
