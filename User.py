@@ -12,11 +12,12 @@ class User:
         self.__membership = membership
         self.__remarks = remarks
         self.__quantity = quantity
+        
 
     # accessor methods
     def get_user_id(self):
         return self.__user_id
-
+    
     def get_first_name(self):
         return self.__first_name
 

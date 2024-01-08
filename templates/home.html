@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 {% block title %}Library Loan System - Home{% endblock %}
+<link rel="stylesheet" href="/style.css">
 
 {% block content %}
 <h1 class="display-4">Products</h1>
+<hr>
 <div class="small-container">
-    <h2>Shirts</h2>
+    <h2>Clothing</h2>
+    <hr>
     {% for user in users_list %}
     <div class="row">
         <div class="col-4">
+            
             <h4>{{user.get_first_name()}}</h4>
             <br>
             <p>{{user.get_last_name()}}</p>
