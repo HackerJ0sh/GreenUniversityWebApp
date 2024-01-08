@@ -8,7 +8,7 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
-@app.route("/home/<int:id>/", methods=['GET', 'POST'])
+@app.route("/cust_home/<int:id>/", methods=['GET', 'POST'])
 def cust_homepage(id):
     users_dict = {}
     db = shelve.open('user.db', 'r')
@@ -16,6 +16,15 @@ def cust_homepage(id):
     db.close()
     name = users_dict[id].get_name()
     return render_template("customer_homepage.html", name=name, id = id)
+
+@app.route("/staff_home/<int:id>/", methods=['GET', 'POST'])
+def staff_homepage(id):
+    users_dict = {}
+    db = shelve.open('user.db', 'r')
+    users_dict = db['Users']
+    db.close()
+    name = users_dict[id].get_name()
+    return render_template("staff_homepage.html", name=name, id = id)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -55,7 +64,10 @@ def login():
                 password = users_dict[key].get_password()
                 print(password)
                 if login_user_form.password.data == password:
-                    return redirect(url_for('cust_homepage', id=users_dict[key].get_user_id()))
+                    if users_dict[key].get_account_type() == "S":
+                        return redirect(url_for('staff_homepage', id=users_dict[key].get_user_id()))
+                    else:
+                        return redirect(url_for('cust_homepage', id=users_dict[key].get_user_id()))
                 else:
                     print("Wrong")
 
