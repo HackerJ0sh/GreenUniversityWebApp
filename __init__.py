@@ -109,7 +109,7 @@ def payment_otp():
         form_OTP = str(create_paymentOTP_form.OTP_code_1.data + create_paymentOTP_form.OTP_code_2.data + create_paymentOTP_form.OTP_code_3.data + create_paymentOTP_form.OTP_code_4.data + create_paymentOTP_form.OTP_code_5.data + create_paymentOTP_form.OTP_code_6.data)
         if form_OTP == OTP:
             flash('Payment Successful')
-            return redirect(url_for('home'))
+            return redirect(url_for('payment_successful'))
         else:
             return redirect(url_for('payment_otp'))
     else:
