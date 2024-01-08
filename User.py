@@ -3,7 +3,7 @@ class User:
     count_id = 0
 
     # initializer method
-    def __init__(self, first_name, last_name, gender, membership, remarks):
+    def __init__(self, first_name, last_name, gender, membership, remarks, quantity):
         User.count_id += 1
         self.__user_id = User.count_id
         self.__first_name = first_name
@@ -11,6 +11,7 @@ class User:
         self.__gender = gender
         self.__membership = membership
         self.__remarks = remarks
+        self.__quantity = quantity
 
     # accessor methods
     def get_user_id(self):
@@ -30,6 +31,9 @@ class User:
 
     def get_remarks(self):
         return self.__remarks
+    
+    def get_quantity(self):
+        return self.__quantity
 
     # mutator methods
     def set_user_id(self, user_id):
@@ -49,3 +53,6 @@ class User:
 
     def set_remarks(self, remarks):
         self.__remarks = remarks
+
+    def set_quantity(self, quantity):
+        self.__quantity = quantity

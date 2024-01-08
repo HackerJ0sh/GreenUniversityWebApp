@@ -2,7 +2,7 @@
 {% block title %}Library Loan System - Retrieve Users{% endblock %}
 
 {% block content %}
-<h1 class="display-4">Retrieve Users</h1>
+<h1 class="display-4">Product inventory</h1>
 <div>
   {% if count == 0 %}
   <p>There are no users.</p>
@@ -22,7 +22,7 @@
         <th>Category</th>
         <th>Size</th>
         <th>Remarks</th>
-        <th></th>
+        <th>Quantity</th>
         <th></th>
       </tr>
     </thead>
@@ -41,6 +41,7 @@
         <td>Large</td>
         {% endif %}
         <td>{{ user.get_remarks() }}</td>
+        <td>{{ user.get_quantity() }}</td>
         <td><a href="/updateUser/{{user.get_user_id()}}" class="btn btn-warning">Update</a></td>
         <td>
           <form action="{{url_for('delete_user', id=user.get_user_id())}}" method="POST">

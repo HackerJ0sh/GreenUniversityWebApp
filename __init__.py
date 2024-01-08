@@ -24,7 +24,7 @@ def create_user():
         except:
             print("Error in retrieving Users from user.db.")
 
-        user = User.User(create_user_form.first_name.data, create_user_form.last_name.data, create_user_form.gender.data, create_user_form.membership.data, create_user_form.remarks.data)
+        user = User.User(create_user_form.first_name.data, create_user_form.last_name.data, create_user_form.gender.data, create_user_form.membership.data, create_user_form.remarks.data, create_user_form.quantity.data)
         users_dict[user.get_user_id()] = user
         db['Users'] = users_dict
 
@@ -100,6 +100,7 @@ def update_user(id):
         user.set_gender(update_user_form.gender.data)
         user.set_membership(update_user_form.membership.data)
         user.set_remarks(update_user_form.remarks.data)
+        user.set_quantity(update_user_form.quantity.data)
 
         db['Users'] = users_dict
         db.close()
@@ -117,6 +118,7 @@ def update_user(id):
         update_user_form.gender.data = user.get_gender()
         update_user_form.membership.data = user.get_membership()
         update_user_form.remarks.data = user.get_remarks()
+        update_user_form.quantity.data = user.get_quantity()
 
         return render_template('updateUser.html', form=update_user_form)
 
@@ -187,4 +189,6 @@ def delete_customer(id):
 
 if __name__ == '__main__':
     app.run()
+
+
 
