@@ -108,9 +108,12 @@ def payment_otp():
     if request.method == "POST":
         form_OTP = str(create_paymentOTP_form.OTP_code_1.data, create_paymentOTP_form.OTP_code_2.data, create_paymentOTP_form.OTP_code_3.data, create_paymentOTP_form.OTP_code_4.data, create_paymentOTP_form.OTP_code_5.data, create_paymentOTP_form.OTP_code_6.data)
         if form_OTP == OTP:
-            return url_for('home')
+            flash('Payment Successful')
+            return redirect(url_for('home'))
+        else:
+            return redirect(url_for('payment_otp'))
     else:
-        return render_template('paymentOTP.html', form=create_paymentOTP_form)
+        return render_template('paymentOTP.html', form=create_paymentOTP_form, email=email_receiver)
 
 
 @app.route('/payment/delete')
