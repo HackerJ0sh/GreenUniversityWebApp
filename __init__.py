@@ -99,21 +99,20 @@ def payment_update():
 @app.route('/payment/OTP', methods=["POST", "GET"])
 def payment_otp():
     create_paymentOTP_form = CreatePaymentOtpForm(request.form)
-    # sending of OTP to email
     email_receiver = session['email']
 
-    OTP = GenerateOTP()
-    SendEmail(otp=OTP, receiver=email_receiver)
+    if request.method == "GET":
+        OTP = GenerateOTP()
+        SendEmail(otp=OTP, receiver=email_receiver)       
 
-    if request.method == "POST":
+        return render_template('paymentOTP.html', form=create_paymentOTP_form, email=email_receiver)
+    else:
         form_OTP = str(create_paymentOTP_form.OTP_code_1.data + create_paymentOTP_form.OTP_code_2.data + create_paymentOTP_form.OTP_code_3.data + create_paymentOTP_form.OTP_code_4.data + create_paymentOTP_form.OTP_code_5.data + create_paymentOTP_form.OTP_code_6.data)
         if form_OTP == OTP:
             flash('Payment Successful')
             return redirect(url_for('payment_successful'))
         else:
             return redirect(url_for('payment_otp'))
-    else:
-        return render_template('paymentOTP.html', form=create_paymentOTP_form, email=email_receiver)
 
 
 @app.route('/payment/delete')
