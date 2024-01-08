@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from Account_Forms import CreateUserForm,LoginForm
+from Account_Forms import CreateUserForm,LoginForm, UpdateUserForm
 import shelve, Account_Class
 
 app = Flask(__name__)
@@ -117,7 +117,7 @@ def retrieve_users():
 
 @app.route('/updateUser/<int:id>/', methods=['GET', 'POST'])
 def update_user(id):
-    update_user_form = CreateUserForm(request.form)
+    update_user_form = UpdateUserForm(request.form)
     if request.method == 'POST' and update_user_form.validate():
         users_dict = {}
         db = shelve.open('user.db', 'w')
@@ -196,7 +196,7 @@ def signup():
 
 @app.route('/settings/<int:id>/', methods=['GET', 'POST'])
 def settings(id):
-    settings_form = CreateUserForm(request.form)
+    settings_form = UpdateUserForm(request.form)
     if request.method == 'POST' and settings_form.validate():
         users_dict = {}
         db = shelve.open('user.db', 'w')
@@ -216,7 +216,7 @@ def settings(id):
         db['Users'] = users_dict
         db.close()
 
-        return redirect(url_for('cust_homepage'))
+        return redirect(url_for('cust_homepage', id=users_dict[id].get_user_id()))
     else:
         users_dict = {}
         db = shelve.open('user.db', 'r')
