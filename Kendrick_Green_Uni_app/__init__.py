@@ -209,10 +209,11 @@ def security(id):
         db.close()
 
         if security_user_form.security_answer.data == users_dict[id].get_security_answer():
-            return redirect(url_for('changepassword', id=id, question = question))
+            print("Correct")
+            return redirect(url_for('changepassword', id=users_dict[id].get_user_id()))
 
         else:
-            print("Wrong")
+            print("Wrong this")
 
 
     return render_template('security.html',question = question, id = id, form=security_user_form, title = "Security Page")
@@ -220,7 +221,29 @@ def security(id):
 @app.route("/changepassword/<int:id>", methods=["GET","POST"])
 def changepassword(id):
     change_password_form = ChangePasswordForm(request.form)
-    return render_template('changepassword.html', id=id, form=change_password_form, title="Change Password Page")
+    if request.method == 'POST' and change_password_form.validate():
+        users_dict = {}
+        db = shelve.open('user.db', 'w')
+        users_dict = db['Users']
+
+        user = users_dict.get(id)
+        user.set_password(change_password_form.password.data)
+
+        db['Users'] = users_dict
+        db.close()
+
+        return redirect(url_for('login'))
+    else:
+        users_dict = {}
+        db = shelve.open('user.db', 'r')
+        users_dict = db['Users']
+        db.close()
+
+        user = users_dict.get(id)
+        change_password_form.password.data = user.get_password()
+
+
+    return render_template('change_password.html', id=id, form = change_password_form, title="Change Password Page")
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

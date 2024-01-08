@@ -36,8 +36,7 @@ class ResetUserForm(Form):
     email = EmailField('Email', [validators.Email(), validators.DataRequired()])
 
 class SecurityForm(Form):
-    security_question = StringField('Security Question', [validators.Length(min=1, max=150), validators.DataRequired()])
-    security_answer = StringField('Security Answer', [validators.Length(min=1, max=150), validators.DataRequired()])
+    security_answer = StringField('Security Answer')
 
 class ChangePasswordForm(Form):
     password = PasswordField('New Password', [
