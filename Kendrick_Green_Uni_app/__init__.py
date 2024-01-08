@@ -42,8 +42,10 @@ def login():
         db.close()
 
         for key in users_dict:
+            print(users_dict[key].get_username)
             if login_user_form.username.data == users_dict[key].set_username:
                 password = users_dict[key].set_password
+                print(password)
                 if login_user_form.password.data == password:
                     return redirect(url_for('home'))
                 else:
