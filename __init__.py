@@ -4,7 +4,6 @@ import shelve
 import blogClass
 
 
-
 app = Flask(__name__, template_folder='customerTemplates')
 
 
@@ -54,6 +53,36 @@ def retrieve_blogs():
         blogs_list.append(blog)
 
     return render_template('allBlogs.html', count=len(blogs_list), blogs_list=blogs_list)
+
+@app.route('/updateUser/<int:id>/', methods=['GET', 'POST'])
+def update_blog(id):
+    update_blog_form = CreateBlogForm(request.form)
+    if request.method == 'POST' and update_blog_form.validate():
+        blogs_dict = {}
+        db = shelve.open('blogs.db', 'r')
+        blogs_dict = db['Blogs']
+
+        blog = blogs_dict.get(id)
+        update_blog_form.post_name.data = blog.get_first_name()
+        update_blog_form.image.data = blog.get_last_name()
+        update_blog_form.post_content.data = blog.get_gender()
+        update_blog_form.category.data = blog.get_membership()
+
+        blogs_dict = db['Blogs']
+        db.close()
+
+        return redirect(url_for('retrieve_users'))
+    else:
+        blogs_dict = {}
+        db = shelve.open('blogs.db', 'r')
+        blogs_dict = db['Blogs']
+        db.close()
+
+        blog = blogs_dict.get(id)
+        update_blog_form.post_name.data = blog.get_first_name()
+        update_blog_form.image.data = blog.get_last_name()
+        update_blog_form.post_content.data = blog.get_gender()
+        update_blog_form.category.data = blog.get_membership()
 
 
 if __name__ == '__main__':

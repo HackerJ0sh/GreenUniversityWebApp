@@ -32,22 +32,31 @@
             <tr>
                 <td>{{ blog.get_blog_id() }}</td>
                 <td>{{ blog.get_account() }}</td>
-                {% if blog.get_category() == "REC" %}
-                <td>Recycling</td>
-                {% elif blog.get_category() == "SSB" %}
-                <td>Sustainability</td>
-                {% elif blog.get_category() == "BIZ" %}
-                <td>Business</td>
-                {% elif blog.get_category() == "H20" %}
-                <td>Water</td>
-                {% elif blog.get_category() == "CUL" %}
-                <td>Cultural</td>
+                <td>
+                {% if 'REC' in blog.get_category() %}
+                    Recycling
                 {% endif %}
+                {% if 'SSB' in blog.get_category() %}
+                    Sustainability
+                {% endif %}
+                {% if 'BIZ' in blog.get_category() %}
+                    Business
+                {% endif %}
+                {% if 'H20' in blog.get_category() %}
+                    Water
+                {% endif %}
+                {% if 'CUL' in blog.get_category() %}
+                    Cultural
+                {% endif %}
+                {% if blog.get_category() == [] %}
+                    No Category
+                {% endif %}
+                </td>
                 <td>{{ blog.get_post_name() }}</td>
                 <td>{{ blog.get_image() }}</td>
                 <td>{{ blog.get_post_content() }}</td>
                 <td>{{ blog.get_upvote_count() }}</td>
-                <td><a href="#" class="btn btn-warning">Update</a></td>
+                <td><a href="/updateBlog/{{blog.get_blog_id()}}" class="btn btn-warning">Update</a></td>
                 <td>
                     <form action="" method="POST">
                         <input type="submit" value="Delete" class="btn btn-danger">
