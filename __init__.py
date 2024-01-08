@@ -51,9 +51,13 @@ def payment():
         
         db.close()
 
-        # TODO: add email code verification / 2FA / use email api 
+        email_receiver = session['email']
 
-        return redirect(url_for('payment_otp'))
+        OTP = GenerateOTP()
+        SendEmail(otp=OTP, receiver=email_receiver) 
+        flash('Please Verify Your Email To Proceed')
+
+        return redirect(url_for('payment_otp', OTP=OTP))
     return render_template('paymentForm.html', form=create_payment_form)
 
 # @app.route('/payment/<int:id>/successful')
@@ -97,14 +101,11 @@ def payment_update():
 
 
 @app.route('/payment/OTP', methods=["POST", "GET"])
-def payment_otp():
+def payment_otp(OTP):
     create_paymentOTP_form = CreatePaymentOtpForm(request.form)
     email_receiver = session['email']
 
-    if request.method == "GET":
-        OTP = GenerateOTP()
-        SendEmail(otp=OTP, receiver=email_receiver)       
-
+    if request.method == "GET":      
         return render_template('paymentOTP.html', form=create_paymentOTP_form, email=email_receiver)
     else:
         form_OTP = str(create_paymentOTP_form.OTP_code_1.data + create_paymentOTP_form.OTP_code_2.data + create_paymentOTP_form.OTP_code_3.data + create_paymentOTP_form.OTP_code_4.data + create_paymentOTP_form.OTP_code_5.data + create_paymentOTP_form.OTP_code_6.data)
