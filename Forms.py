@@ -6,6 +6,7 @@ class CreateUserForm(Form):
     last_name = StringField('Product Price', [validators.Length(min=1, max=150), validators.DataRequired()])
     gender = SelectField('Category', [validators.DataRequired()], choices=[('', 'Select'), ('Shirt', 'Shirt'), ('Pants', 'Pants')], default='')
     membership = RadioField('Size', choices=[('S', 'Small'), ('M', 'Medium'), ('L', 'Large')], default='S')
+    img_url = StringField("img_url", [validators.DataRequired()])
     remarks = TextAreaField('Remarks',[validators.Optional()],)
     quantity = IntegerField('Quantity', [validators.NumberRange(min=1, max=500)])
 

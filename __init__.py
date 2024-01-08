@@ -4,9 +4,20 @@ import shelve, User, Customer
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def home():
-    return render_template('home.html')
+    users_dict = {}
+    db = shelve.open('user.db', 'r')
+    users_dict = db['Users']
+    db.close()
+
+    users_list = []
+    for key in users_dict:
+        user = users_dict.get(key)
+        users_list.append(user)
+
+    return render_template('home.html', count=len(users_list), users_list=users_list)
 
 @app.route('/contactUs')
 def contact_us():
@@ -186,6 +197,8 @@ def delete_customer(id):
     db.close()
 
     return redirect(url_for('retrieve_customers'))
+
+
 
 if __name__ == '__main__':
     app.run()

@@ -2,7 +2,18 @@
 {% block title %}Library Loan System - Home{% endblock %}
 
 {% block content %}
-<h1 class="display-4">Home</h1>
-<p>Hello world!</p>
+<h1 class="display-4">Products</h1>
+<div class="small-container">
+    <h2>Shirts</h2>
+    {% for user in users_list %}
+    <div class="row">
+        <div class="col-4">
+            <h4>{{user.get_first_name()}}</h4>
+            <br>
+            <p>{{user.get_last_name()}}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}
 
