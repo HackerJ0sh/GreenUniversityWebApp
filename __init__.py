@@ -59,7 +59,7 @@ def payment():
 # @app.route('/payment/<int:id>/successful')
 @app.route('/payment/successful')
 def payment_successful():
-    return render_template('paymentSuccess.html')
+    return render_template('paymentSuccessful.html')
 
 
 @app.route('/payment/update', methods=["POST", "GET"])
