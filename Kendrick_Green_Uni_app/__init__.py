@@ -195,7 +195,7 @@ def reset():
             else:
                 error_reset = error_reset + 1
     if error_reset > 0:
-        flash("Invalid Username and Email")
+        flash("Invalid Username or Email")
 
 
 
