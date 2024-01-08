@@ -4,6 +4,7 @@ from PaymentOtpForm import CreatePaymentOtpForm
 import shelve
 from dataClasses.Payment import PaymentInfo
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret_key'
 
@@ -98,8 +99,8 @@ def payment_update():
 @app.route('/payment/OTP', methods=["POST", "GET"])
 def payment_otp():
     create_paymentOTP_form = CreatePaymentOtpForm(request.form)
+    # sending of OTP to email
     if request.method == "POST":
-        # TODO: OTP API here
         pass
     else:
         return render_template('paymentOTP.html', form=create_paymentOTP_form)
