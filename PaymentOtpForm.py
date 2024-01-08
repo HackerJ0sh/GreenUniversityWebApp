@@ -11,13 +11,13 @@ class CreatePaymentOtpForm(Form):
 
 def GenerateOTP():
     import random
-    
+
     OTP = ''
     for i in range(6):
         OTP += str(random.randint(0,9))
     return OTP
 
-def SendEmail(message, receiver):
+def SendEmail(otp, receiver):
     from email.message import EmailMessage
     import ssl
     import smtplib
@@ -27,7 +27,7 @@ def SendEmail(message, receiver):
     email_receiver = receiver
 
     subject = 'Email Verification'
-    body = message
+    body = 'The code is ' + otp
 
     msg = EmailMessage()
     msg['From'] = email_sender
