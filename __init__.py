@@ -53,7 +53,7 @@ def payment():
 
         flash('Please Verify Your Email To Proceed')
 
-        return redirect(url_for('payment_otp'))
+        return redirect(url_for('payment_successful'))
     return render_template('paymentForm.html', form=create_payment_form)
 
 # @app.route('/payment/<int:id>/successful')
@@ -90,7 +90,7 @@ def payment_update():
         db.close()
 
         flash('Successfully Updated Payment Information')
-        return redirect(url_for('home'))
+        return redirect(url_for('view_payment'))
     else: 
         # TODO: find the payment information associated with the user | add code
         return render_template('paymentUpdate.html', form=update_payment_form)
