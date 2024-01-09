@@ -1,9 +1,8 @@
 from wtforms import RadioField, EmailField, StringField, SelectField, TextAreaField, Form, BooleanField, validators, IntegerField, DecimalField, SubmitField
-from flask_wtf import FlaskForm
 
 # add phone number, email, full name fields
 
-class CreatePaymentForm(FlaskForm):
+class CreatePaymentForm(Form):
     full_name = StringField('Full Name', [validators.length(min=1, max=150), validators.DataRequired()])
     phone_number = StringField('Phone Number', [validators.length(min=1, max=150), validators.DataRequired()])
     email = EmailField('Email', [validators.DataRequired()])
@@ -18,10 +17,9 @@ class CreatePaymentForm(FlaskForm):
     address_line_1 = StringField('Address Line 1', [validators.length(min=1, max=1000), validators.DataRequired()])
     address_line_2 = StringField('Address Line 1', [validators.length(min=1, max=1000), validators.DataRequired()])
     donation = DecimalField('Donate to important environmental campaigns (optional)', [validators.Optional()])
-    submit = SubmitField('Submit')
 
 
-class UpdatePaymentForm(FlaskForm):
+class UpdatePaymentForm(Form):
     full_name = StringField('Full Name', [validators.length(min=1, max=150), validators.Optional()])
     phone_number = StringField('Phone Number', [validators.length(min=1, max=150), validators.Optional()])
     email = EmailField('Email', [validators.Optional()])
@@ -36,5 +34,4 @@ class UpdatePaymentForm(FlaskForm):
     address_line_1 = StringField('Address Line 1', [validators.length(min=1, max=1000), validators.Optional()])
     address_line_2 = StringField('Address Line 1', [validators.length(min=1, max=1000), validators.Optional()])
     donation = DecimalField('Donate to important environmental campaigns (optional)', [validators.Optional()])
-    update = SubmitField('Update')
 
