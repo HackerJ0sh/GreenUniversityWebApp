@@ -87,7 +87,22 @@ def contact_us():
 @app.route('/createUser', methods=['GET', 'POST'])
 def create_user():
     create_user_form = CreateUserForm(request.form)
-    if request.method == 'POST' and create_user_form.validate():
+    users_dict = {}
+    db = shelve.open('user.db', 'r')
+    users_dict = db['Users']
+    db.close()
+    repeat = 0
+    for key in users_dict:
+        if create_user_form.username.data == users_dict[key].get_username():
+            repeat = 1
+            flash("Username is taken", "username")
+            break
+    for key in users_dict:
+        if create_user_form.email.data == users_dict[key].get_email():
+            repeat = 1
+            flash("Email is taken", "email")
+            break
+    if request.method == 'POST' and create_user_form.validate() and repeat == 0:
         users_dict = {}
         db = shelve.open('user.db', 'c')
 
@@ -257,7 +272,22 @@ def changepassword(id):
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     signup_form = CreateUserForm(request.form)
-    if request.method == 'POST' and signup_form.validate():
+    users_dict = {}
+    db = shelve.open('user.db', 'r')
+    users_dict = db['Users']
+    db.close()
+    repeat = 0
+    for key in users_dict:
+        if signup_form.username.data == users_dict[key].get_username():
+            repeat = 1
+            flash("Username is taken", "username")
+            break
+    for key in users_dict:
+        if signup_form.email.data == users_dict[key].get_email():
+            repeat = 1
+            flash("Email is taken", "email")
+            break
+    if request.method == 'POST' and signup_form.validate() and repeat == 0:
         users_dict = {}
         db = shelve.open('user.db', 'c')
 
