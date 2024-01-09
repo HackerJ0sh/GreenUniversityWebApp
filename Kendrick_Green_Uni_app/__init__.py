@@ -137,7 +137,30 @@ def retrieve_users():
 @app.route('/updateUser/<int:id>/', methods=['GET', 'POST'])
 def update_user(id):
     update_user_form = UpdateUserForm(request.form)
-    if request.method == 'POST' and update_user_form.validate():
+    users_dict = {}
+    db = shelve.open('user.db', 'r')
+    users_dict = db['Users']
+    db.close()
+    repeat = 0
+    username = users_dict[id].get_username()
+    email = users_dict[id].get_email()
+    for key in users_dict:
+        if update_user_form.username.data == users_dict[key].get_username():
+            if update_user_form.username.data == username:
+                repeat = repeat + 0
+            else:
+                repeat = repeat + 1
+                flash("Username is taken (Revert back to original)", "username")
+            break
+    for key in users_dict:
+        if update_user_form.email.data == users_dict[key].get_email():
+            if update_user_form.email.data == email:
+                repeat =  repeat + 0
+            else:
+                repeat =  repeat + 1
+                flash("Email is taken (Revert back to original)", "email")
+                break
+    if request.method == 'POST' and update_user_form.validate() and repeat < 1:
         users_dict = {}
         db = shelve.open('user.db', 'w')
         users_dict = db['Users']
