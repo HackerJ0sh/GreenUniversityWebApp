@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Green University - Report Submitted{% endblock %}
 
-</body>
-</html>
+{% block content %}
+{% from "customerIncludes/_customerFormHelper.html" import render_field %}
+<div style="display: flex; justify-content: center; align-items: center; height: 75vh; flex-direction: column;">
+    <h1 style="text-align: center; width: 70%;">Report successfully submitted, thank you for making Green University
+        a better place for everyone!</h1>
+    <div style="display: flex; flex-direction: row;">
+        <div class="card" style="height: auto; width: 18rem; margin: 20px;">
+          <img class="card-img-top" src="..." alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Create Blog</h5>
+            <p class="card-text">Inspire others to make a change for a greener world, blog now.</p>
+            <a href="/createBlog" class="btn btn-primary">Blog</a>
+          </div>
+        </div>
+        <div class="card" style="height: auto; width: 18rem; margin: 20px;">
+          <img class="card-img-top" src="..." alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Shop Green</h5>
+            <p class="card-text">Explore our eco-friendly Green University merchandise; your pledge to go green will save
+            the planet.</p>
+            <a href="/nigga" class="btn btn-primary">Shop</a>
+          </div>
+        </div>
+        <div class="card" style="height: auto; width: 18rem; margin: 20px;">
+          <img class="card-img-top" src="..." alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Be Involved</h5>
+            <p class="card-text">Any feedback regarding our website, don't be afraid to tell us so we can better our site
+            for everyone.</p>
+            <a href="/nigga" class="btn btn-primary">Feedback</a>
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

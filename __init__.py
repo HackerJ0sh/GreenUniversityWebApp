@@ -103,6 +103,12 @@ def delete_blog(id):
 
     return redirect(url_for('retrieve_blogs'))
 
+
+@app.route('/reportedSubmitted', methods=['GET'])
+def report_confirmed():
+    return render_template('reportSubmitted.html')
+
+
 @app.route('/reportCustomer', methods=['GET', 'POST'])
 def submit_report():
     create_report_form = CreateReportForm(request.form)
@@ -133,7 +139,7 @@ def submit_report():
         print(report.get_report_id(), "was stored in report_and_blog.db successfully")
         db.close()
 
-        return redirect(url_for('retrieve_reports'))
+        return redirect(url_for('report_confirmed'))
     return render_template('reportCustomer.html', form=create_report_form)
 
 @app.route('/unresolvedReports')
