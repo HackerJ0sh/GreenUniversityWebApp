@@ -39,7 +39,8 @@ def payment():
             cvv=create_payment_form.cvv.data,
             credit_card_holder=create_payment_form.card_holder_name.data,
             credit_card_number=create_payment_form.credit_card_number.data,
-            remember=create_payment_form.remember.data
+            remember=create_payment_form.remember.data, 
+            donation=create_payment_form.donation.data
         )
 
         # add code: add all the payment_info objects to the user class attribute called transaction=[], this allows the users to see all their transactions
@@ -49,11 +50,11 @@ def payment():
             payment_dict[payment_info.get_id()] = payment_info
             db['Payments'] = payment_dict
         
-        db.close()
+            db.close()
 
         flash('Please Verify Your Email To Proceed')
 
-        return redirect(url_for('payment_successful'))
+        return redirect(url_for('payment_otp'))
     return render_template('paymentForm.html', form=create_payment_form)
 
 # @app.route('/payment/<int:id>/successful')
@@ -73,9 +74,9 @@ def payment_update():
         # TODO: get id from user payment info object
         payment_info = payment_dict[1]
 
-        payment_info.set_full_name(update_payment_form.full_name)
-        payment_info.set_phone_number(update_payment_form.phone_number)
-        payment_info.set_email(update_payment_form.email)
+        payment_info.set_full_name(update_payment_form.full_name.data)
+        payment_info.set_phone_number(update_payment_form.phone_number.data)
+        payment_info.set_email(update_payment_form.email.data)
         payment_info.set_address_line_1(update_payment_form.address_line_1.data)
         payment_info.set_address_line_2(update_payment_form.address_line_2.data)
         payment_info.set_postal_code(update_payment_form.postal_code.data)
@@ -85,6 +86,7 @@ def payment_update():
         payment_info.set_expiry_date_month(update_payment_form.expiry_date_month.data)
         payment_info.set_credit_card_holder(update_payment_form.card_holder_name.data)
         payment_info.set_credit_card_number(update_payment_form.credit_card_number.data)
+        payment_info.set_donation(update_payment_form.donation.data)
 
         db['Payments'] = payment_dict
         db.close()
@@ -147,7 +149,10 @@ def view_payment():
     payment_dict = db['Payments']
 
     db.close()
-    payment_info = payment_dict[1]
+    try:
+        payment_info = payment_dict[1]
+    except:
+        payment_info = None
 
     return render_template('paymentView.html', payment_info=payment_info)
 

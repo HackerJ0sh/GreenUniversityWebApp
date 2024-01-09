@@ -3,7 +3,7 @@
 class PaymentInfo: 
     transaction_count = 0
 
-    def __init__(self, full_name, phone_number, email, address_line_1, address_line_2, country, postal_code, remember, expiry_date_year, cvv, credit_card_number, credit_card_holder, expiry_date_month): 
+    def __init__(self, full_name, phone_number, email, address_line_1, address_line_2, country, postal_code, remember, expiry_date_year, cvv, credit_card_number, credit_card_holder, expiry_date_month, donation): 
         PaymentInfo.transaction_count += 1
         self.__user_id = None # set to the user id who made the transaction
         self.__id = PaymentInfo.transaction_count
@@ -20,6 +20,7 @@ class PaymentInfo:
         self.__credit_card_holder = credit_card_holder
         self.__credit_card_number = credit_card_number
         self.__remember = remember
+        self.__donation = donation
 
     def get_id(self):
         return self.__id
@@ -83,6 +84,12 @@ class PaymentInfo:
     
     def set_address_line_2(self, address_line_2):
         self.__address_line_2 = address_line_2
+
+    def get_donation(self):
+        return self.__donation
+    
+    def set_donation(self, donation):
+        self.__donation = donation
     
     def set_postal_code(self, postal_code):
         self.__postal_code = postal_code

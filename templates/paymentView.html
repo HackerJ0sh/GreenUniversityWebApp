@@ -3,26 +3,39 @@
 {% block content %}
 
 <table class="table">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Credit Card Holder Name</th>
-        <th scope="col">Credit Card Number</th>
-        <th scope="col">Expiry Date Month</th>
-        <th scope="col">Expiry Date Year</th>
-        <th scope="col">Country</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">{{ payment_info.get_id() }}</th>
-        <td>{{ payment_info.get_credit_card_holder() }}</td>
-        <td>{{ payment_info.get_credit_card_number() }}</td>
-        <td>{{ payment_info.get_expiry_date_month() }}</td>
-        <td>{{ payment_info.get_expiry_date_year() }}</td>
-        <td>{{ payment_info.get_country() }}</td>
-      </tr>
-    </tbody>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Credit Card Holder Name</th>
+      <th scope="col">Credit Card Number</th>
+      <th scope="col">Expiry Date Month</th>
+      <th scope="col">Expiry Date Year</th>
+      <th scope="col">Country</th>
+    </tr>
+  </thead>
+  {% if payment_info == None %}
+  <tbody>
+    <tr>
+      <th></th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+  {% else %}
+  <tbody>
+    <tr>
+      <th scope="row">{{ payment_info.get_id() }}</th>
+      <td>{{ payment_info.get_credit_card_holder() }}</td>
+      <td>{{ payment_info.get_credit_card_number() }}</td>
+      <td>{{ payment_info.get_expiry_date_month() }}</td>
+      <td>{{ payment_info.get_expiry_date_year() }}</td>
+      <td>{{ payment_info.get_country() }}</td>
+    </tr>
+  </tbody>
+  {% endif %}
 </table>
 
 {% endblock %}
