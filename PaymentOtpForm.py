@@ -1,7 +1,8 @@
 from wtforms import Form, validators, IntegerField, SubmitField
+from flask_wtf import FlaskForm
 
 
-class CreatePaymentOtpForm(Form):
+class CreatePaymentOtpForm(FlaskForm):
     OTP_code_1 = IntegerField('',[validators.length(max=1), validators.DataRequired()])
     OTP_code_2 = IntegerField('',[validators.length(max=1), validators.DataRequired()])
     OTP_code_3 = IntegerField('',[validators.length(max=1), validators.DataRequired()])

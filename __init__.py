@@ -16,7 +16,7 @@ def home():
 @app.route('/payment', methods=["POST", "GET"])
 def payment():
     create_payment_form = CreatePaymentForm()
-    if request.method == "POST" and create_payment_form.validate():
+    if request.method == "POST" and create_payment_form.validate_on_submit():
         payment_dict = {}
         db = shelve.open('payment.db', 'c')
         try:
@@ -65,7 +65,7 @@ def payment_successful():
 @app.route('/payment/update', methods=["POST", "GET"])
 def payment_update():
     update_payment_form = UpdatePaymentForm()
-    if request.method == "POST" and update_payment_form.validate():
+    if request.method == "POST" and update_payment_form.validate_on_submit():
         payment_dict ={}
         db = shelve.open('payment.db', 'w')
         payment_dict = db['Payments']
@@ -107,7 +107,7 @@ def payment_otp():
         session['OTP'] = OTP
 
         return render_template('paymentOTP.html', form=create_paymentOTP_form, email=email_receiver)
-    else:
+    elif request.method == "POST" and create_paymentOTP_form.validate_on_submit():
         form_OTP = str(create_paymentOTP_form.OTP_code_1.data) + str(create_paymentOTP_form.OTP_code_2.data) + str(create_paymentOTP_form.OTP_code_3.data) + str(create_paymentOTP_form.OTP_code_4.data) + str(create_paymentOTP_form.OTP_code_5.data) + str(create_paymentOTP_form.OTP_code_6.data)
         print(form_OTP)
         OTP = session['OTP']
