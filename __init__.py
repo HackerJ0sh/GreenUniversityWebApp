@@ -18,11 +18,11 @@ def create_blog():
     if request.method == 'POST' and create_blog_form.validate():
 
         blogs_dict = {}
-        db = shelve.open('blogs.db', 'c')
+        db = shelve.open('report_and_blog.db', 'c')
         try:
             blogs_dict = db['Blogs']
         except:
-            print("Error in retrieving Blog from blogs.db.")
+            print("Error in retrieving Blog from report_and_blog.db.")
 
         # create test account & generate random id with randint
         random_id = str(randint(1, 1000000))
@@ -38,7 +38,7 @@ def create_blog():
         # Test codes
         blogs_dict = db['Blogs']
         blog = blogs_dict[blog.get_blog_id()]
-        print(blog.get_blog_id(), "was stored in blogs.db successfully")
+        print(blog.get_blog_id(), "was stored in report_and_blog.db successfully")
         db.close()
 
         return redirect(url_for('retrieve_blogs'))
@@ -48,7 +48,7 @@ def create_blog():
 @app.route('/allBlogs')
 def retrieve_blogs():
     blogs_dict = {}
-    db = shelve.open('blogs.db', 'r')
+    db = shelve.open('report_and_blog.db', 'r')
     blogs_dict = db['Blogs']
     db.close()
 
@@ -64,7 +64,7 @@ def update_blog(id):
     update_blog_form = CreateBlogForm(request.form)
     if request.method == 'POST' and update_blog_form.validate():
         blogs_dict = {}
-        db = shelve.open('blogs.db', 'w')
+        db = shelve.open('report_and_blog.db', 'w')
         blogs_dict = db['Blogs']
 
         blog = blogs_dict.get(id)
@@ -79,7 +79,7 @@ def update_blog(id):
         return redirect(url_for('retrieve_blogs'))
     else:
         blogs_dict = {}
-        db = shelve.open('blogs.db', 'r')
+        db = shelve.open('report_and_blog.db', 'r')
         blogs_dict = db['Blogs']
         db.close()
 
@@ -95,7 +95,7 @@ def update_blog(id):
 @app.route('/deleteBlog/<int:id>', methods=['POST'])
 def delete_blog(id):
     blogs_dict = {}
-    db = shelve.open('blogs.db', 'w')
+    db = shelve.open('report_and_blog.db', 'w')
     blogs_dict = db['Blogs']
     blogs_dict.pop(id)
     db['Blogs'] = blogs_dict
@@ -119,7 +119,7 @@ def submit_report():
         try:
             reports_dict = db['Reports']
         except:
-            print("Error in retrieving Blog from blogs.db.")
+            print("Error in retrieving Blog from report_and_blog.db.")
 
         # create test account & generate random id with randint
         random_id = str(randint(1, 1000000))
