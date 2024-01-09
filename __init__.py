@@ -15,7 +15,7 @@ def home():
 # @app.route('/payment/<int:id>', methods=["POST", "GET"])
 @app.route('/payment', methods=["POST", "GET"])
 def payment():
-    create_payment_form = CreatePaymentForm(request.form)
+    create_payment_form = CreatePaymentForm()
     if request.method == "POST" and create_payment_form.validate():
         payment_dict = {}
         db = shelve.open('payment.db', 'c')
@@ -64,7 +64,7 @@ def payment_successful():
 
 @app.route('/payment/update', methods=["POST", "GET"])
 def payment_update():
-    update_payment_form = UpdatePaymentForm(request.form)
+    update_payment_form = UpdatePaymentForm()
     if request.method == "POST" and update_payment_form.validate():
         payment_dict ={}
         db = shelve.open('payment.db', 'w')
@@ -98,7 +98,7 @@ def payment_update():
 
 @app.route('/payment/OTP', methods=["POST", "GET"])
 def payment_otp():
-    create_paymentOTP_form = CreatePaymentOtpForm(request.form)
+    create_paymentOTP_form = CreatePaymentOtpForm()
     email_receiver = session['email']
 
     if request.method == "GET":  
