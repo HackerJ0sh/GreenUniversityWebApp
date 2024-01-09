@@ -13,12 +13,19 @@
             <h6>Please enter the one time password <br> to verify your account</h6>
             <div> <span>A 6-digit code has been sent to</span> <small>{{ email }}</small> </div>
             <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
-                {{ render_field(form.OTP_code_1, class="m-2 text-center form-control rounded") }}
-                {{ render_field(form.OTP_code_2, class="m-2 text-center form-control rounded") }}
-                {{ render_field(form.OTP_code_3, class="m-2 text-center form-control rounded") }}
-                {{ render_field(form.OTP_code_4, class="m-2 text-center form-control rounded") }}
-                {{ render_field(form.OTP_code_5, class="m-2 text-center form-control rounded") }}
-                {{ render_field(form.OTP_code_6, class="m-2 text-center form-control rounded") }}
+                {{ form.hidden_tag() }}
+                {{ form.OTP_code_1.label }}
+                {{ form.full_name(class="m-2 text-center form-control rounded", type="text", id="first", maxlength="1") }}
+                {{ form.OTP_code_2.label }}
+                {{ form.full_name(class="m-2 text-center form-control rounded", type="text", id="first", maxlength="1") }}
+                {{ form.OTP_code_3.label }}
+                {{ form.full_name(class="m-2 text-center form-control rounded", type="text", id="first", maxlength="1") }}
+                {{ form.OTP_code_4.label }}
+                {{ form.full_name(class="m-2 text-center form-control rounded", type="text", id="first", maxlength="1") }}
+                {{ form.OTP_code_5.label }}
+                {{ form.full_name(class="m-2 text-center form-control rounded", type="text", id="first", maxlength="1") }}
+                {{ form.OTP_code_6.label }}
+                {{ form.full_name(class="m-2 text-center form-control rounded", type="text", id="first", maxlength="1") }}
             </div>
             <div class="mt-4 flex"> <button class="btn btn-danger px-4 validate" type="submit">Validate</button> </div>
         </div>
