@@ -86,7 +86,7 @@ def payment_update():
         payment_info.set_credit_card_holder(update_payment_form.card_holder_name.data)
         payment_info.set_credit_card_number(update_payment_form.credit_card_number.data)
 
-        db["Payments"] = payment_dict
+        db['Payments'] = payment_dict
         db.close()
 
         flash('Successfully Updated Payment Information')
