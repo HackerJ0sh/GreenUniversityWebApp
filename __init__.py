@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
 from blogForm import CreateBlogForm
 import shelve
-import blogClass
-
+from formClasses import *
+from reportForm import CreateReportForm
+from random import randint
 
 app = Flask(__name__, template_folder='customerTemplates')
-
 
 @app.route('/')
 def homepage():
@@ -24,7 +24,12 @@ def create_blog():
         except:
             print("Error in retrieving Blog from blogs.db.")
 
-        blog = blogClass.Blog(account=None, blog_subject=create_blog_form.post_name.data,
+        # create test account & generate random id with randint
+        random_id = str(randint(1, 1000000))
+        test_account = User()
+        test_account.set_user_id(random_id)
+
+        blog = Blog(account=test_account.get_user_id(), blog_subject=create_blog_form.post_name.data,
             image=create_blog_form.image.data, blog_content=create_blog_form.post_content.data,
             category=create_blog_form.category.data, upvote_count=0)
         blogs_dict[blog.get_blog_id()] = blog
@@ -36,7 +41,7 @@ def create_blog():
         print(blog.get_blog_id(), "was stored in blogs.db successfully")
         db.close()
 
-        return redirect(url_for('homepage'))
+        return redirect(url_for('retrieve_blogs'))
     return render_template('createBlog.html', form=create_blog_form)
 
 
@@ -98,10 +103,56 @@ def delete_blog(id):
 
     return redirect(url_for('retrieve_blogs'))
 
+@app.route('/reportCustomer', methods=['GET', 'POST'])
+def submit_report():
+    create_report_form = CreateReportForm(request.form)
+    if request.method == 'POST' and create_report_form.validate():
 
+        reports_dict = {}
+        db = shelve.open('report_and_blog.db', 'c')
+        try:
+            reports_dict = db['Reports']
+        except:
+            print("Error in retrieving Blog from blogs.db.")
+
+        # create test account & generate random id with randint
+        random_id = str(randint(1, 1000000))
+        test_account = User()
+        test_account.set_user_id(random_id)
+
+        report = Report(account=None, reported_account_id=create_report_form.reported_account.data,
+                    reported_subjects=create_report_form.report_subjects.data,
+                    report_reason=create_report_form.report_reason.data)
+
+        reports_dict[report.get_report_id()] = report
+        db['Reports'] = reports_dict
+
+        # Test codes
+        reports_dict = db['Reports']
+        report = reports_dict[report.get_report_id()]
+        print(report.get_report_id(), "was stored in report_and_blog.db successfully")
+        db.close()
+
+        return redirect(url_for('retrieve_reports'))
+    return render_template('reportCustomer.html', form=create_report_form)
+
+@app.route('/unresolvedReports')
+def retrieve_reports():
+    reports_dict = {}
+    db = shelve.open('report_and_blog.db', 'r')
+    reports_dict = db['Reports']
+    db.close()
+
+    reports_list = []
+    for key in reports_dict:
+        report = reports_dict.get(key)
+        reports_list.append(report)
+
+    return render_template('unresolvedReports.html', count=len(reports_list), reports_list=reports_list)
 
 
 if __name__ == '__main__':
     app.run()
+
 
 
