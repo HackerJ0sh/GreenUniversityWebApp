@@ -15,45 +15,46 @@ def home():
 # @app.route('/payment/<int:id>', methods=["POST", "GET"])
 @app.route('/payment', methods=["POST", "GET"])
 def payment():
-    create_payment_form = CreatePaymentForm()
-    if request.method == "POST" and create_payment_form.validate_on_submit():
-        payment_dict = {}
-        db = shelve.open('payment.db', 'c')
-        try:
-            payment_dict = db['Payments']
-        except: 
-            print('Error in opening the file')
+    create_payment_form = CreatePaymentForm(request.form)
+    if request.method == "POST" and create_payment_form.validate():
+        if create_payment_form.validate_on_submit():
+            payment_dict = {}
+            db = shelve.open('payment.db', 'c')
+            try:
+                payment_dict = db['Payments']
+            except: 
+                print('Error in opening the file')
 
-        session['email'] = create_payment_form.email.data
+            session['email'] = create_payment_form.email.data
 
-        payment_info = PaymentInfo(
-            full_name=create_payment_form.full_name.data,
-            phone_number=create_payment_form.phone_number.data,
-            email=create_payment_form.email.data,
-            address_line_1=create_payment_form.address_line_1.data,
-            address_line_2=create_payment_form.address_line_2.data,
-            country=create_payment_form.country.data,
-            postal_code=create_payment_form.postal_code.data,
-            expiry_date_month=create_payment_form.expiry_date_month.data,
-            expiry_date_year=create_payment_form.expiry_date_year.data,
-            cvv=create_payment_form.cvv.data,
-            credit_card_holder=create_payment_form.card_holder_name.data,
-            credit_card_number=create_payment_form.credit_card_number.data,
-            remember=create_payment_form.remember.data
-        )
+            payment_info = PaymentInfo(
+                full_name=create_payment_form.full_name.data,
+                phone_number=create_payment_form.phone_number.data,
+                email=create_payment_form.email.data,
+                address_line_1=create_payment_form.address_line_1.data,
+                address_line_2=create_payment_form.address_line_2.data,
+                country=create_payment_form.country.data,
+                postal_code=create_payment_form.postal_code.data,
+                expiry_date_month=create_payment_form.expiry_date_month.data,
+                expiry_date_year=create_payment_form.expiry_date_year.data,
+                cvv=create_payment_form.cvv.data,
+                credit_card_holder=create_payment_form.card_holder_name.data,
+                credit_card_number=create_payment_form.credit_card_number.data,
+                remember=create_payment_form.remember.data
+            )
 
-        # add code: add all the payment_info objects to the user class attribute called transaction=[], this allows the users to see all their transactions
+            # add code: add all the payment_info objects to the user class attribute called transaction=[], this allows the users to see all their transactions
 
-        # saves the payment details if remember is true
-        if create_payment_form.remember.data:
-            payment_dict[payment_info.get_id()] = payment_info
-            db['Payments'] = payment_dict
-        
-        db.close()
+            # saves the payment details if remember is true
+            if create_payment_form.remember.data:
+                payment_dict[payment_info.get_id()] = payment_info
+                db['Payments'] = payment_dict
+            
+            db.close()
 
-        flash('Please Verify Your Email To Proceed')
+            flash('Please Verify Your Email To Proceed')
 
-        return redirect(url_for('payment_otp'))
+            return redirect(url_for('payment_otp'))
     return render_template('paymentForm.html', form=create_payment_form)
 
 # @app.route('/payment/<int:id>/successful')
@@ -64,33 +65,34 @@ def payment_successful():
 
 @app.route('/payment/update', methods=["POST", "GET"])
 def payment_update():
-    update_payment_form = UpdatePaymentForm()
-    if request.method == "POST" and update_payment_form.validate_on_submit():
-        payment_dict ={}
-        db = shelve.open('payment.db', 'w')
-        payment_dict = db['Payments']
+    update_payment_form = UpdatePaymentForm(request.form)
+    if request.method == "POST" and update_payment_form.validate():
+        if update_payment_form.validate_on_submit():
+            payment_dict ={}
+            db = shelve.open('payment.db', 'w')
+            payment_dict = db['Payments']
 
-        # TODO: get id from user payment info object
-        payment_info = payment_dict[1]
+            # TODO: get id from user payment info object
+            payment_info = payment_dict[1]
 
-        payment_info.set_full_name(update_payment_form.full_name)
-        payment_info.set_phone_number(update_payment_form.phone_number)
-        payment_info.set_email(update_payment_form.email)
-        payment_info.set_address_line_1(update_payment_form.address_line_1.data)
-        payment_info.set_address_line_2(update_payment_form.address_line_2.data)
-        payment_info.set_postal_code(update_payment_form.postal_code.data)
-        payment_info.set_country(update_payment_form.country.data)
-        payment_info.set_cvv(update_payment_form.cvv.data)
-        payment_info.set_expiry_date_year(update_payment_form.expiry_date_year.data)
-        payment_info.set_expiry_date_month(update_payment_form.expiry_date_month.data)
-        payment_info.set_credit_card_holder(update_payment_form.card_holder_name.data)
-        payment_info.set_credit_card_number(update_payment_form.credit_card_number.data)
+            payment_info.set_full_name(update_payment_form.full_name)
+            payment_info.set_phone_number(update_payment_form.phone_number)
+            payment_info.set_email(update_payment_form.email)
+            payment_info.set_address_line_1(update_payment_form.address_line_1.data)
+            payment_info.set_address_line_2(update_payment_form.address_line_2.data)
+            payment_info.set_postal_code(update_payment_form.postal_code.data)
+            payment_info.set_country(update_payment_form.country.data)
+            payment_info.set_cvv(update_payment_form.cvv.data)
+            payment_info.set_expiry_date_year(update_payment_form.expiry_date_year.data)
+            payment_info.set_expiry_date_month(update_payment_form.expiry_date_month.data)
+            payment_info.set_credit_card_holder(update_payment_form.card_holder_name.data)
+            payment_info.set_credit_card_number(update_payment_form.credit_card_number.data)
 
-        db["Payments"] = payment_dict
-        db.close()
+            db["Payments"] = payment_dict
+            db.close()
 
-        flash('Successfully Updated Payment Information')
-        return redirect(url_for('home'))
+            flash('Successfully Updated Payment Information')
+            return redirect(url_for('home'))
     else: 
         # TODO: find the payment information associated with the user | add code
         return render_template('paymentUpdate.html', form=update_payment_form)
@@ -98,7 +100,7 @@ def payment_update():
 
 @app.route('/payment/OTP', methods=["POST", "GET"])
 def payment_otp():
-    create_paymentOTP_form = CreatePaymentOtpForm()
+    create_paymentOTP_form = CreatePaymentOtpForm(request.form)
     email_receiver = session['email']
 
     if request.method == "GET":  
@@ -107,17 +109,18 @@ def payment_otp():
         session['OTP'] = OTP
 
         return render_template('paymentOTP.html', form=create_paymentOTP_form, email=email_receiver)
-    elif request.method == "POST" and create_paymentOTP_form.validate_on_submit():
-        form_OTP = str(create_paymentOTP_form.OTP_code_1.data) + str(create_paymentOTP_form.OTP_code_2.data) + str(create_paymentOTP_form.OTP_code_3.data) + str(create_paymentOTP_form.OTP_code_4.data) + str(create_paymentOTP_form.OTP_code_5.data) + str(create_paymentOTP_form.OTP_code_6.data)
-        print(form_OTP)
-        OTP = session['OTP']
-        if form_OTP == OTP:
-            flash('Payment Successful')
-            del session['OTP']
-            return redirect(url_for('payment_successful'))
-        else:
-            flash('The OTP you entered does not match')
-            return redirect(url_for('payment_otp'))
+    elif request.method == "POST" and create_paymentOTP_form.validate():
+        if create_paymentOTP_form.validate_on_submit():
+            form_OTP = str(create_paymentOTP_form.OTP_code_1.data) + str(create_paymentOTP_form.OTP_code_2.data) + str(create_paymentOTP_form.OTP_code_3.data) + str(create_paymentOTP_form.OTP_code_4.data) + str(create_paymentOTP_form.OTP_code_5.data) + str(create_paymentOTP_form.OTP_code_6.data)
+            print(form_OTP)
+            OTP = session['OTP']
+            if form_OTP == OTP:
+                flash('Payment Successful')
+                del session['OTP']
+                return redirect(url_for('payment_successful'))
+            else:
+                flash('The OTP you entered does not match')
+                return redirect(url_for('payment_otp'))
 
 
 @app.route('/payment/delete')

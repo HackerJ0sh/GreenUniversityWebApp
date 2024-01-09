@@ -109,10 +109,12 @@
                     {{ form.remember(class="form-check-input") }}
                 </div>
                 <hr class="my-4">
-                {{ form.submit(class="w-100 btn btn-primary btn-lg") }}
+                <button class="w-100 btn btn-primary btn-l" type="submit">Submit</button>
             </form>
         </div>
     </div>
 </div>
 
 {% endblock %}
+
+{{ form.submit(class="w-100 btn btn-primary btn-lg") }}
