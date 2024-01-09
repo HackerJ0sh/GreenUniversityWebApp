@@ -1,4 +1,4 @@
-from wtforms import Form, validators, IntegerField
+from wtforms import Form, validators, IntegerField, SubmitField
 
 
 class CreatePaymentOtpForm(Form):
@@ -8,6 +8,7 @@ class CreatePaymentOtpForm(Form):
     OTP_code_4 = IntegerField('',[validators.length(max=1), validators.DataRequired()])
     OTP_code_5 = IntegerField('',[validators.length(max=1), validators.DataRequired()])
     OTP_code_6 = IntegerField('',[validators.length(max=1), validators.DataRequired()])
+    submit = SubmitField('Validate')
 
 def GenerateOTP():
     import random
