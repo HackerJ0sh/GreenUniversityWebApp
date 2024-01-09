@@ -325,13 +325,36 @@ def signup():
 
         db.close()
 
-        return redirect(url_for('retrieve_users'))
+        return redirect(url_for('login'))
     return render_template('signup.html', form=signup_form)
 
 @app.route('/settings/<int:id>/', methods=['GET', 'POST'])
 def settings(id):
     settings_form = UpdateUserForm(request.form)
-    if request.method == 'POST' and settings_form.validate():
+    users_dict = {}
+    db = shelve.open('user.db', 'r')
+    users_dict = db['Users']
+    db.close()
+    repeat = 0
+    username = users_dict[id].get_username()
+    email = users_dict[id].get_email()
+    for key in users_dict:
+        if settings_form.username.data == users_dict[key].get_username():
+            if settings_form.username.data == username:
+                repeat = repeat + 0
+            else:
+                repeat = repeat + 1
+                flash("Username is taken (Revert back to original)", "username")
+            break
+    for key in users_dict:
+        if settings_form.email.data == users_dict[key].get_email():
+            if settings_form.email.data == email:
+                repeat = repeat + 0
+            else:
+                repeat = repeat + 1
+                flash("Email is taken (Revert back to original)", "email")
+                break
+    if request.method == 'POST' and settings_form.validate() and repeat < 1:
         users_dict = {}
         db = shelve.open('user.db', 'w')
         users_dict = db['Users']

@@ -13,12 +13,14 @@
   <div class="form-group">
     {{ render_field(form.username, class="form-control") }}
   </div>
+  {% include "flash2.html" %}
   <div class="form-group">
     {{ render_field(form.password, class="form-control") }}
   </div>
   <div class="form-group">
     {{ render_field(form.email, class="form-control") }}
   </div>
+  {% include "flash1.html" %}
   <div class="form-group">
     {{ render_field(form.gender, class="form-check", style="list-style-type:none") }}
   </div>
