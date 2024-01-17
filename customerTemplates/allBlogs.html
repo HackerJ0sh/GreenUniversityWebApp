@@ -53,7 +53,7 @@
                 {% endif %}
                 </td>
                 <td>{{ blog.get_post_name() }}</td>
-                <td>{{ blog.get_image() }}</td>
+                <td><a href="#">{{ blog.get_image() }}</a></td>
                 <td>{{ blog.get_post_content() }}</td>
                 <td>{{ blog.get_upvote_count() }}</td>
                 <td><a href="/updateBlog/{{blog.get_blog_id()}}" class="btn btn-warning">Update</a></td>

@@ -1,11 +1,22 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
+from werkzeug.utils import secure_filename
+
 from blogForm import CreateBlogForm
 import shelve
 from formClasses import *
 from reportForm import CreateReportForm
 from random import randint
+import os
 
 app = Flask(__name__, template_folder='customerTemplates')
+app.config['UPLOAD_FOLDER'] = 'static/files'
+app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'png'}
+app.secret_key = 'fuck this shitty project'
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
 
 @app.route('/')
 def homepage():
@@ -32,13 +43,24 @@ def create_blog():
         blog = Blog(account=test_account.get_user_id(), blog_subject=create_blog_form.post_name.data,
             image=create_blog_form.image.data, blog_content=create_blog_form.post_content.data,
             category=create_blog_form.category.data, upvote_count=0)
+
+        file = request.files['image']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+            print(f'Image successfully uploaded and saved; file path: {filepath}')
+
+        else:
+            print('Allowed image types are - png and jpg')
+
         blogs_dict[blog.get_blog_id()] = blog
         db['Blogs'] = blogs_dict
 
         # Test codes
         blogs_dict = db['Blogs']
         blog = blogs_dict[blog.get_blog_id()]
-        print(blog.get_blog_id(), "was stored in report_and_blog.db successfully")
+        print("Blog with ID", blog.get_blog_id(), "was stored in report_and_blog.db successfully")
         db.close()
 
         return redirect(url_for('retrieve_blogs'))
