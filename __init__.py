@@ -38,21 +38,31 @@ def add_to_cart(id):
     users_dict = {}
     db = shelve.open('user.db', 'r')
     users_dict = db['Users']
+    user = users_dict.get(id)
     db.close()
 
     cart_dict = {}
-    db2 = shelve.open('cart.db', 'c')
+    db2 = shelve.open('cart.db','w')
     cart_dict = db2['Users']
-    user = users_dict.get(id)
-    item = cart_dict.get(id)
-    item.set_first_name(user.get_first_name())
-    item.set_last_name(user.get_last_name())
-    item.set_quantity(user.get_quantity())  
-
+    cart_dict[id] = user
     db2['Users'] = cart_dict
-    db.close
+    db.close()
+    
     return redirect(url_for('cart'))
 
+        
+@app.route('/<int:id>/remove_from_cart', methods=['POST'])
+def remove_from_cart(id):
+    users_dict = {}
+    db = shelve.open('cart.db', 'w')
+    users_dict = db['Users']
+
+    users_dict.pop(id)
+
+    db['Users'] = users_dict
+    db.close()
+
+    return redirect(url_for('retrieve_users'))
         
 
          
