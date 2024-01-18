@@ -31,7 +31,7 @@
      <tr>
         <td>{{ user.get_user_id() }}</td>
         <td>{{ user.get_first_name() }}</td>
-        <td>{{ user.get_last_name() }}</td>
+        <td>${{ user.get_last_name() }}</td>
         <td>{{ user.get_gender() }}</td>
         {% if user.get_membership() == "S" %}
         <td>Small</td>

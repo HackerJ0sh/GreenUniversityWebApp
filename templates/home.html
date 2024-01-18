@@ -13,10 +13,9 @@
         <div class="col-4">
             <h4>{{user.get_first_name()}}</h4>
             <br>
-            <p>{{user.get_last_name()}}</p>
+            <p>${{user.get_last_name()}}</p>
             <br>
-            <input type="number" name="quantity" class="product-quantity">
-            <input type="submit" value="Add to Cart" class="default-btn">
+            <td><a href="/{{user.get_user_id()}}/add_to_cart" class="btn btn-warning">Add to Cart</a></td>
         </div>
     </div>
     {% endfor %}

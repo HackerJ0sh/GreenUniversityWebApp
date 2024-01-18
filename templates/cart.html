@@ -19,28 +19,16 @@
         <th>Product ID</th>
         <th>Product Name</th>
         <th>Product Price</th>
-        <th>Category</th>
-        <th>Size</th>
-        <th>Remarks</th>
         <th>Quantity</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
-    {% for user in users_list %}
+    {% for user in cart_list %}
      <tr>
         <td>{{ user.get_user_id() }}</td>
         <td>{{ user.get_first_name() }}</td>
         <td>{{ user.get_last_name() }}</td>
-        <td>{{ user.get_gender() }}</td>
-        {% if user.get_membership() == "S" %}
-        <td>Small</td>
-        {% elif user.get_membership() == "M" %}
-        <td>Medium</td>
-        {% elif user.get_membership() == "L" %}
-        <td>Large</td>
-        {% endif %}
-        <td>{{ user.get_remarks() }}</td>
         <td>{{ user.get_quantity() }}</td>
         <td><a href="/updateUser/{{user.get_user_id()}}" class="btn btn-warning">Update</a></td>
         <td>

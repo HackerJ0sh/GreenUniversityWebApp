@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from Forms import CreateUserForm
-import shelve, User
+import shelve, User , Cart
 
 app = Flask(__name__)
 
@@ -21,9 +21,42 @@ def home():
 
 @app.route('/cart')
 def cart():
-    return render_template('cart.html')
+    cart_dict = {}
+    db = shelve.open('cart.db','r')
+    cart_dict = db['Users']
+    db.close()
 
+    cart_list = []
+    for key in cart_dict:
+        user = cart_dict.get(key)
+        cart_list.append(user)
 
+    return render_template('cart.html', count=len(cart_list), cart_list=cart_list)
+
+@app.route('/<int:id>/add_to_cart', methods=["POST", "GET"])
+def add_to_cart(id):
+    users_dict = {}
+    db = shelve.open('user.db', 'r')
+    users_dict = db['Users']
+    db.close()
+
+    cart_dict = {}
+    db2 = shelve.open('cart.db', 'c')
+    cart_dict = db2['Users']
+    user = users_dict.get(id)
+    item = cart_dict.get(id)
+    item.set_first_name(user.get_first_name())
+    item.set_last_name(user.get_last_name())
+    item.set_quantity(user.get_quantity())  
+
+    db2['Users'] = cart_dict
+    db.close
+    return redirect(url_for('cart'))
+
+        
+
+         
+    
 
 
 
@@ -42,6 +75,7 @@ def create_user():
             users_dict = db['Users']
         except:
             print("Error in retrieving Users from user.db.")
+            
 
         user = User.User(create_user_form.first_name.data, 
                          create_user_form.last_name.data, 
