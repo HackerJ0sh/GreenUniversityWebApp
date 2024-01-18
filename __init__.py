@@ -62,7 +62,7 @@ def remove_from_cart(id):
     db['Users'] = users_dict
     db.close()
 
-    return redirect(url_for('retrieve_users'))
+    return redirect(url_for('cart'))
         
 
          
