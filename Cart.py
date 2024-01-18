@@ -3,11 +3,12 @@ class Cart:
     count_id = 0
 
     # initializer method
-    def __init__(self, first_name, last_name, quantity):
+    def __init__(self, first_name, last_name, gender, quantity):
         Cart.count_id += 1
         self.__user_id = Cart.count_id
         self.__first_name = first_name
         self.__last_name = last_name
+        self.__gender = gender
         self.__quantity = quantity
         
 
@@ -21,7 +22,8 @@ class Cart:
     def get_last_name(self):
         return self.__last_name
 
-   
+    def get_gender(self):
+        return self.__gender
     
     def get_quantity(self):
         return self.__quantity
@@ -36,7 +38,8 @@ class Cart:
     def set_last_name(self, last_name):
         self.__last_name = last_name
 
-   
+    def set_gender(self, gender):
+        self.__gender = gender
 
     def set_quantity(self, quantity):
         self.__quantity = quantity

@@ -17,7 +17,7 @@ def home():
         user = users_dict.get(key)
         users_list.append(user)
 
-    return render_template('home.html', count=len(users_list), users_list=users_list)
+    return render_template('home.html', count=len(users_list), users_list=users_list,)
 
 @app.route('/cart')
 def cart():
@@ -31,7 +31,7 @@ def cart():
         user = cart_dict.get(key)
         cart_list.append(user)
 
-    return render_template('cart.html', count=len(cart_list), cart_list=cart_list)
+    return render_template('cart.html', cartcount=len(cart_list), cart_list=cart_list)
 
 @app.route('/<int:id>/add_to_cart', methods=["POST", "GET"])
 def add_to_cart(id):
