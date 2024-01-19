@@ -1,13 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Library Loan System - Home{% endblock %}
+{% block title %}Green University - Customer Product Page{% endblock %}
 <link rel="stylesheet" href="/style.css">
 
 {% block content %}
 <h1 class="display-4">Products</h1>
 <hr>
 <div class="small-container">
-    <h2>Clothing</h2>
-    <hr>
     {% for user in users_list %}
     <div class="row">
         <div class="col-4">
@@ -15,7 +13,7 @@
             <br>
             <p>${{user.get_last_name()}}</p>
             <br>
-            <td><a href="/{{user.get_user_id()}}/add_to_cart" class="btn btn-warning">Add to Cart</a></td>
+            <td><a href="/{{user.get_user_id()}}/add_to_cart" class="btn btn-dark">Add to Cart</a></td>
         </div>
     </div>
     {% endfor %}
