@@ -1,10 +1,7 @@
 # base class code
 class Blog:
-    blog_id = 0
-
-    def __init__(self, account, blog_subject, image, blog_content, category, upvote_count):
-        Blog.blog_id += 1
-        self.__blog_id = Blog.blog_id
+    def __init__(self, blog_id, account, blog_subject, image, blog_content, category, upvote_count):
+        self.__blog_id = blog_id
         self.__account = account
         self.__category = category
         self.__post_name = blog_subject

@@ -53,7 +53,14 @@
                 {% endif %}
                 </td>
                 <td>{{ blog.get_post_name() }}</td>
-                <td><a href="#">{{ blog.get_image() }}</a></td>
+                <td>
+                    {% if blog.get_image() == None %}
+                        No image
+                    {% else %}
+                    <a href="{{ blog.get_image() }}">
+                    Image link</a>
+                    {% endif %}
+                </td>
                 <td>{{ blog.get_post_content() }}</td>
                 <td>{{ blog.get_upvote_count() }}</td>
                 <td><a href="/updateBlog/{{blog.get_blog_id()}}" class="btn btn-warning">Update</a></td>

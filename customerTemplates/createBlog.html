@@ -9,7 +9,8 @@
 {{ render_field(form.post_name, class="form-control") }}
 </div>
 <div class="form-group">
-{{ render_field(form.image, class="form-control") }}
+{{ render_field(form.image, class="form-control", id="imageInput") }}
+    <img id="imageDisplay" width="30%" height="30%">
 </div>
 <div class="form-group">
 {{ render_field(form.post_content, class="form-control") }}
@@ -19,4 +20,25 @@
 </div>
 <input type="submit" value="Post" class="btn btn-primary"/>
 </form>
+
+    <script>
+        const imageInput = document.getElementById('imageInput')
+        // file goes in through here
+
+        const imageDisplay = document.getElementById('imageDisplay')
+        // file is rendered here
+
+        const clear = document.getElementById('clear')
+        // "clear" button
+
+        imageInput.onchange = () => { // when user selects a local file, run this code
+            const reader = new FileReader()
+            if (imageInput.files[0]) { // if there's a file present in the input
+                reader.onload = event => {
+                    imageDisplay.src = event.target?.result // give the file to imageDisplay to display it
+                }
+                reader.readAsDataURL(imageInput.files[0])
+            }
+        }
+    </script>
 {% endblock %}

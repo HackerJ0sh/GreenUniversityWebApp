@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from werkzeug.utils import secure_filename
-
+from functions import *
 from blogForm import CreateBlogForm
 import shelve
 from formClasses import *
@@ -10,12 +9,8 @@ import os
 
 app = Flask(__name__, template_folder='customerTemplates')
 app.config['UPLOAD_FOLDER'] = 'static/files'
-app.config['ALLOWED_EXTENSIONS'] = {'jpg', 'png'}
-app.secret_key = 'fuck this shitty project'
-
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+allowed_extensions_list = ['jpg', 'png', 'jpeg', '']
+app.secret_key = 'hwrhwey project'
 
 
 @app.route('/')
@@ -40,19 +35,22 @@ def create_blog():
         test_account = User()
         test_account.set_user_id(random_id)
 
-        blog = Blog(account=test_account.get_user_id(), blog_subject=create_blog_form.post_name.data,
-            image=create_blog_form.image.data, blog_content=create_blog_form.post_content.data,
-            category=create_blog_form.category.data, upvote_count=0)
-
-        file = request.files['image']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(filepath)
-            print(f'Image successfully uploaded and saved; file path: {filepath}')
-
+        img = request.files.getlist('image')[0]
+        filepath = generate_image_id(img)
+        print(filepath)
+        if filepath:
+            img.save(filepath)
         else:
-            print('Allowed image types are - png and jpg')
+            print('else')
+            if filepath is None:
+                pass
+            else:
+                return redirect(url_for('create_blog'))
+
+        blog_id = str(generate_blog_id())
+        blog = Blog(blog_id=blog_id, account=test_account.get_user_id(), blog_subject=create_blog_form.post_name.data,
+                    image=filepath, blog_content=create_blog_form.post_content.data,
+                    category=create_blog_form.category.data, upvote_count=0)
 
         blogs_dict[blog.get_blog_id()] = blog
         db['Blogs'] = blogs_dict
@@ -81,6 +79,7 @@ def retrieve_blogs():
 
     return render_template('allBlogs.html', count=len(blogs_list), blogs_list=blogs_list)
 
+
 @app.route('/updateBlog/<int:id>/', methods=['GET', 'POST'])
 def update_blog(id):
     update_blog_form = CreateBlogForm(request.form)
@@ -89,9 +88,20 @@ def update_blog(id):
         db = shelve.open('report_and_blog.db', 'w')
         blogs_dict = db['Blogs']
 
-        blog = blogs_dict.get(id)
+        blog = blogs_dict.get(str(id))
         blog.set_post_name(update_blog_form.post_name.data)
-        blog.set_image(update_blog_form.image.data)
+
+        # remove old image from static/files and change to new picture
+
+        img = request.files.getlist('image')[0]
+        new_filepath = f'./static/files/{randint(1, 10 ** 15)}.{img.filename.split(".")[-1]}'
+        old_filepath = blog.get_image()
+
+        img.save(new_filepath)  # save new filepath from static/files
+        if old_filepath is not None:
+            os.remove(old_filepath)  # remove old filepath from static/files
+
+        blog.set_image(new_filepath)
         blog.set_post_content(update_blog_form.post_content.data)
         blog.set_category(update_blog_form.category.data)
 
@@ -105,7 +115,7 @@ def update_blog(id):
         blogs_dict = db['Blogs']
         db.close()
 
-        blog = blogs_dict.get(id)
+        blog = blogs_dict.get(str(id))
         update_blog_form.post_name.data = blog.get_post_name()
         update_blog_form.image.data = blog.get_image()
         update_blog_form.post_content.data = blog.get_post_content()
@@ -119,7 +129,14 @@ def delete_blog(id):
     blogs_dict = {}
     db = shelve.open('report_and_blog.db', 'w')
     blogs_dict = db['Blogs']
-    blogs_dict.pop(id)
+
+    blog_to_be_deleted = blogs_dict[str(id)]
+    image_path = blog_to_be_deleted.get_image()
+    if image_path is not None:
+        os.remove(image_path)
+
+    blogs_dict.pop(str(id))
+
     db['Blogs'] = blogs_dict
     db.close()
 
@@ -149,8 +166,8 @@ def submit_report():
         test_account.set_user_id(random_id)
 
         report = Report(account=None, reported_account_id=create_report_form.reported_account.data,
-                    reported_subjects=create_report_form.report_subjects.data,
-                    report_reason=create_report_form.report_reason.data)
+                        reported_subjects=create_report_form.report_subjects.data,
+                        report_reason=create_report_form.report_reason.data)
 
         reports_dict[report.get_report_id()] = report
         db['Reports'] = reports_dict
@@ -163,6 +180,7 @@ def submit_report():
 
         return redirect(url_for('report_confirmed'))
     return render_template('reportCustomer.html', form=create_report_form)
+
 
 @app.route('/unresolvedReports')
 def retrieve_reports():
@@ -181,6 +199,3 @@ def retrieve_reports():
 
 if __name__ == '__main__':
     app.run()
-
-
-
