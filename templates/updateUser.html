@@ -27,44 +27,6 @@
   <div class="form-group">
     {{ render_field(form.quantity, class="form-control") }}
   </div>
-  <div class="form-group">
-    {{ render_field(form.image, id='imageInput') }}
-    <br>
-    <img id="imageDisplay">
-  </div>
   <input type="submit" value="Submit" class="btn btn-primary"/>
 </form>
-
-<style>
-  img#imageDisplay {
-      max-width: 10%;
-      max-height: 10%;
-  }
-</style>
-
-<script>
-  const imageInput = document.getElementById('imageInput')
-  // file goes in through here
-
-  const imageDisplay = document.getElementById('imageDisplay')
-  // file is rendered here
-
-  const clear = document.getElementById('clear')
-  // "clear" button
-
-  imageInput.onchange = () => { // when user selects a local file, run this code
-      const reader = new FileReader()
-      if (imageInput.files[0]) { // if there's a file present in the input
-          reader.onload = event => {
-              imageDisplay.src = event.target?.result // give the file to imageDisplay to display it
-          }
-          reader.readAsDataURL(imageInput.files[0])
-      }
-  }
-  clear.onclick = e => { // when clear button is clicked, run this code
-      e.preventDefault()
-      imageDisplay.src = '' // clear the image from imageDisplay
-  }
-</script>
-
 {% endblock %}
