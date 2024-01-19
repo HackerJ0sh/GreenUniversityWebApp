@@ -30,16 +30,15 @@
   <div class="form-group">
     {{ render_field(form.image, id='imageInput') }}
     <br>
-    <button id="clear">Clear</button>
-    {{ render_field(form.submit) }}
+    <img id="imageDisplay">
   </div>
   <input type="submit" value="Submit" class="btn btn-primary"/>
 </form>
 
 <style>
   img#imageDisplay {
-      max-width: 20%;
-      max-height: 20%;
+      max-width: 10%;
+      max-height: 10%;
   }
 </style>
 
