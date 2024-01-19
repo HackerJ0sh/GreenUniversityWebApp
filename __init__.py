@@ -33,7 +33,7 @@ def cart():
 
     
 
-    return render_template('cart.html', cartcount=len(cart_list), cart_list=cart_list)
+    return render_template('cart.html', cartcount=len(cart_list), cart_list=cart_list, total=len(cart_list)*25)
 
 @app.route('/<int:id>/add_to_cart', methods=["POST", "GET"])
 def add_to_cart(id):
@@ -99,6 +99,7 @@ def create_user():
         db['Users'] = users_dict
 
         db.close()
+        
 
         return redirect(url_for('retrieve_users'))
     return render_template('createUser.html', form=create_user_form)
