@@ -31,6 +31,8 @@ def cart():
         user = cart_dict.get(key)
         cart_list.append(user)
 
+    
+
     return render_template('cart.html', cartcount=len(cart_list), cart_list=cart_list)
 
 @app.route('/<int:id>/add_to_cart', methods=["POST", "GET"])
