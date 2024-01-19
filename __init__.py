@@ -105,7 +105,7 @@ def create_user():
         # this string passed into getlist must match
         # the name that was given to FileField in class ImageForm
 
-        img.save(f'./static/images/{random.randint(1, 10**15)}.{img.filename.split(".")[-1]}')
+        img.save(f'./static/images/{user.get_user_id()}.{img.filename.split(".")[-1]}')
         # assign a file name to the saved image
         
 
