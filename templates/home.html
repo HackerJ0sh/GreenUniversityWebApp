@@ -11,7 +11,7 @@
         <div class="col-4">
             <h4>{{user.get_first_name()}}</h4>
             <br>
-            <img src="/static/images/{{user.get_user_id()}}.jpg" alt="" class="img">
+            <img src="/static/images/{{user.get_user_id()}}.jpg" alt="" class="img" >
             <br>
             <p>${{user.get_last_name()}}</p>
             <br>
@@ -23,8 +23,11 @@
 
 <style>
     .img{
-        max-width: 20%;
-        max-height: 20%;
+        max-width: 50%;
+        max-height: 50%;
+    }
+    .small-container{
+        display: flexbox;
     }
 </style>
 {% endblock %}
