@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from Forms import CreateUserForm
-import shelve, User , Cart
+from flask_wtf.file import FileAllowed
+import shelve, User , Cart, random
 
 app = Flask(__name__)
 
@@ -99,6 +100,13 @@ def create_user():
         db['Users'] = users_dict
 
         db.close()
+        img = request.files.getlist('image')[0]
+        # get file from form data
+        # this string passed into getlist must match
+        # the name that was given to FileField in class ImageForm
+
+        img.save(f'./static/images/{random.randint(1, 10**15)}.{img.filename.split(".")[-1]}')
+        # assign a file name to the saved image
         
 
         return redirect(url_for('retrieve_users'))

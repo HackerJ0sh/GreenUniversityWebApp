@@ -10,4 +10,6 @@ class CreateUserForm(Form):
     membership = RadioField('Size', choices=[('S', 'Small'), ('M', 'Medium'), ('L', 'Large')], default='S')   
     remarks = TextAreaField('Remarks',[validators.Optional()],)
     quantity = IntegerField('Quantity', [validators.NumberRange(min=1, max=10000)])
+    image = FileField('Image', validators=[FileAllowed(['jpg','jpeg','png'])])
+    submit = SubmitField('Submit')
 
