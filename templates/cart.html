@@ -39,24 +39,12 @@
                       <h6 class="text-muted">{{user.get_gender()}}</h6>
                       <h6 class="text-black mb-0">{{ user.get_first_name() }}</h6>
                     </div>
-                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                      <button class="btn btn-link px-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                        <i class="fas fa-minus"></i>
-                      </button>
-
-                      <input id="form1" min="0" name="quantity" value="1" type="number"
-                        class="form-control form-control-sm" />
-
-                      <button class="btn btn-link px-2"
-                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                        <i class="fas fa-plus"></i>
-                      </button>
-                    </div>
-                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+              
+                    
+                    <div class="col-md-3 col-lg-3 col-xl-3">
                       <h6 class="mb-0">${{ user.get_last_name() }}</h6>
                     </div>
-                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                    <div class="col-md-3 col-lg-3 col-xl-3">
                       <form action="{{url_for('remove_from_cart', id=user.get_user_id())}}" method="POST">
                         <!--            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{user.get_first_name()}} {{user.get_last_name()}}?');">-->
                         <!-- Button to Open the Modal -->
@@ -109,16 +97,16 @@
                   <hr class="my-4">
 
                   <div class="d-flex justify-content-between mb-4">
-                    <h5 class="text-uppercase">items {{ cartcount }}</h5>
-                    <h5>${{total}}.00</h5>
+                    <h5 class="text-uppercase">{{ cartcount }} items</h5>
+                    
                   </div>
 
-                  <h5 class="text-uppercase mb-3">Shipping</h5>
+                  <h5 class="text-uppercase mb-3">Delivery By</h5>
 
                   <div class="mb-4 pb-2">
                     <select class="select">
-                      <option value="1">Doorstep-Delivery- $0.00</option>
-                      <option value="2">PostOffice-Pickup - $0.00</option>
+                      <option value="1">Doorstep-Delivery</option>
+                      <option value="2">PostOffice-Pickup</option>
                     </select>
                   </div>
 
