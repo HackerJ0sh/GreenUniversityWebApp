@@ -1,34 +1,46 @@
 {% extends "base.html" %}
 {% block title %}Green University - Customer Product Page{% endblock %}
-<link rel="stylesheet" href="/style.css">
 
 {% block content %}
-<h1 class="display-4">Products</h1>
-<hr>
-<div class="small-container">
-    {% for user in users_list %}
-    <div class="row">
-        <div class="col-4">
-            <h4>{{user.get_first_name()}}</h4>
-            <br>
-            <img src="/static/images/{{user.get_user_id()}}.jpg" alt="" class="img" >
-            <br>
-            <p>${{user.get_last_name()}}</p>
-            <br>
-            <td><a href="/{{user.get_user_id()}}/add_to_cart" class="btn btn-dark">Add to Cart</a></td>
-        </div>
-    </div>
-    {% endfor %}
-</div>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'><link rel="stylesheet" href="../static/style/home.css">
 
-<style>
-    .img{
-        max-width: 50%;
-        max-height: 50%;
-    }
-    .small-container{
-        display: flexbox;
-    }
-</style>
+<section class="section-products">
+    <div class="container">
+            <div class="row justify-content-center text-center">
+                    <div class="col-md-8 col-lg-6">
+                            <div class="header">
+                                    <h3>Featured Product</h3>
+                                    <h2>Popular Products</h2>
+                            </div>
+                    </div>
+            </div>
+            <div class="row">
+                {% for user in users_list %}
+                    <!-- Single Product -->
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                            <div id="product-1" class="single-product">
+                                    <div class="part-1">
+                                        <img src="/static/images/{{user.get_user_id()}}.jpg" alt="" class="img" >
+                                            <ul>
+                                                    <li><a href="/{{user.get_user_id()}}/add_to_cart"><i class="fas fa-shopping-cart"></i></a></li>
+                                                    
+                                            </ul>
+                                    </div>
+                                    <div class="part-2">
+                                            <h3 class="product-title">{{user.get_first_name()}}</h3>
+                                            <h4 class="product-old-price">$49.99</h4>
+                                            <h4 class="product-price">${{user.get_last_name()}}</h4>
+                                    </div>
+                            </div>
+                    </div>
+                {% endfor %}    
+            </div>
+    </div>
+</section>
+
+  
 {% endblock %}
+
+
 
