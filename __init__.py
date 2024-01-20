@@ -37,11 +37,9 @@ def create_blog():
 
         img = request.files.getlist('image')[0]
         filepath = generate_image_id(img)
-        print(filepath)
         if filepath:
             img.save(filepath)
         else:
-            print('else')
             if filepath is None:
                 pass
             else:
@@ -63,6 +61,11 @@ def create_blog():
 
         return redirect(url_for('retrieve_blogs'))
     return render_template('createBlog.html', form=create_blog_form)
+
+
+@app.route('/searchBlog')
+def search_blogs():
+    return render_template('searchBlog.html')
 
 
 @app.route('/allBlogs')
@@ -89,18 +92,22 @@ def update_blog(id):
         blogs_dict = db['Blogs']
 
         blog = blogs_dict.get(str(id))
-        blog.set_post_name(update_blog_form.post_name.data)
 
         # remove old image from static/files and change to new picture
 
         img = request.files.getlist('image')[0]
-        new_filepath = f'./static/files/{randint(1, 10 ** 15)}.{img.filename.split(".")[-1]}'
+        new_filepath = generate_image_id(img)
         old_filepath = blog.get_image()
 
-        img.save(new_filepath)  # save new filepath from static/files
+        if new_filepath is not None:
+            if new_filepath:
+                img.save(new_filepath)  # save new filepath from static/files if not None
+            else:
+                return redirect(url_for('update_blog', id=id))
         if old_filepath is not None:
-            os.remove(old_filepath)  # remove old filepath from static/files
+            os.remove(old_filepath)  # remove old filepath from static/files if not None
 
+        blog.set_post_name(update_blog_form.post_name.data)
         blog.set_image(new_filepath)
         blog.set_post_content(update_blog_form.post_content.data)
         blog.set_category(update_blog_form.category.data)
