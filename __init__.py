@@ -82,6 +82,7 @@ def contact_us():
 @app.route('/createUser', methods=['GET', 'POST'])
 def create_user():
     create_user_form = CreateUserForm(request.form)
+    allowed_extensions_list = ['jpg','png','jpeg']
     if request.method == 'POST' and create_user_form.validate():
         users_dict = {}
         db = shelve.open('user.db', 'c')
@@ -102,12 +103,12 @@ def create_user():
         db['Users'] = users_dict
 
         db.close()
+        
         img = request.files.getlist('image')[0]
-        # get file from form data
-        # this string passed into getlist must match
-        # the name that was given to FileField in class ImageForm
-
-        img.save(f'./static/images/{user.get_user_id()}.{img.filename.split(".")[-1]}')
+        if img.filename.split(".")[-1].lower() not in allowed_extensions_list:
+            return redirect(url_for('create_user'))
+        else:
+            img.save(f'./static/images/{user.get_user_id()}.{img.filename.split(".")[-1]}')
         # assign a file name to the saved image
         
 
