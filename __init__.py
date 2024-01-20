@@ -84,7 +84,7 @@ def contact_us():
 @app.route('/createUser', methods=['GET', 'POST'])
 def create_user():
     create_user_form = CreateUserForm(request.form)
-    allowed_extensions_list = ['jpg','png','jpeg']
+    allowed_extensions_list = ['jpg','png','jpeg']  
     if request.method == 'POST' and create_user_form.validate():
         users_dict = {}
         db = shelve.open('user.db', 'c')
@@ -94,7 +94,7 @@ def create_user():
         except:
             print("Error in retrieving Users from user.db.")
 
-  
+    
         user = User.User(create_user_form.first_name.data, 
                          create_user_form.last_name.data, 
                          create_user_form.gender.data, 
@@ -111,6 +111,7 @@ def create_user():
             return redirect(url_for('create_user'))
         else:
             img.save(f'./static/images/{user.get_user_id()}.{img.filename.split(".")[-1]}')
+            
         # assign a file name to the saved image
         
 
