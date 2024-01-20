@@ -20,6 +20,8 @@ def home():
 
     return render_template('home.html', count=len(users_list), users_list=users_list,)
 
+
+
 @app.route('/cart')
 def cart():
     cart_dict = {}
@@ -91,8 +93,8 @@ def create_user():
             users_dict = db['Users']
         except:
             print("Error in retrieving Users from user.db.")
-            
 
+  
         user = User.User(create_user_form.first_name.data, 
                          create_user_form.last_name.data, 
                          create_user_form.gender.data, 
