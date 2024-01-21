@@ -10,7 +10,7 @@ class CreateUserForm(Form):
     last_name = DecimalField('Product Price', [validators.DataRequired()])
     gender = SelectField('Category', [validators.DataRequired()], choices=[('', 'Select'), ('Shirt', 'Shirt'), ('Pants', 'Pants')], default='')
     membership = RadioField('Size', choices=[('S', 'Small'), ('M', 'Medium'), ('L', 'Large')], default='S')   
-    remarks = TextAreaField('Description',[validators.Optional()],)
+    remarks = TextAreaField('Description',[validators.DataRequired()],)
     quantity = IntegerField('Quantity', [validators.NumberRange(min=1, max=10000)])
     image = FileField('Image (only jpg, jpeg, png format is allowed)', validators=[FileAllowed(['jpg','png','jpeg',''])])
     submit = SubmitField('Submit')
