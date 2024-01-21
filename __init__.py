@@ -20,7 +20,19 @@ def home():
 
     return render_template('home.html', count=len(users_list), users_list=users_list,)
 
+@app.route('/<int:id>/info', methods=["POST", "GET"])
+def info(id):
+    users_dict = {}
+    db = shelve.open('user.db', 'r')
+    users_dict = db['Users']
+    db.close()
 
+    users_list = []
+    
+    user = users_dict.get(id)
+    users_list.append(user)
+
+    return render_template('info.html', users_list=users_list,)
 
 @app.route('/cart')
 def cart():
