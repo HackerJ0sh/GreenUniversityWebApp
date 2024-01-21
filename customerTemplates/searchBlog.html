@@ -1,13 +1,24 @@
 {% extends "base.html" %}
 {% block title %}Green University - View Blogs{% endblock %}
+
 {% block content %}
-    <div class="input-group">
-  <div class="form-outline" data-mdb-input-init>
-    <input type="search" id="form1" class="form-control" />
-    <label class="form-label" for="form1">Search</label>
-  </div>
-  <button type="button" class="btn btn-primary" data-mdb-ripple-init>
-    <i class="fas fa-search"></i>
-  </button>
+{% from "customerIncludes/_customerFormHelper.html" import render_field %}
+<div class="container">
+  <form method="POST" action="">
+    <div class="row border border-dark mx-auto" style="padding: 10px;">
+      <div class="form-group col">{{ render_field(form.account_id, class="form-control") }}</div>
+      <div class="form-group col">{{ render_field(form.blog_id, class="form-control") }}</div>
+      <div class="form-group col d-flex align-self-center">
+        {{ render_field(form.blog_category, class="form-check", style="list-style-type:none") }}
+        <input type="submit" value="Search" class="btn btn-primary form-group col h-25 w-25 bg-success" style="margin: auto 15px;"/>
+      </div>
+    </div>
+  </form>
+<h1 class="display-4 text-center">Search Blog</h1>
 </div>
+
 {% endblock %}
+
+<style>
+
+</style>

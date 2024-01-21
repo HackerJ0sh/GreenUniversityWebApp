@@ -12,3 +12,9 @@ class CreateBlogForm(Form):
     validators=[validators.DataRequired()], default='')
 
 
+class SearchBlogForm(Form):
+    account_id = StringField('Created by: ', [validators.Length(min=0, max=150)])
+    blog_id = StringField('Blog ID: ', validators=[validators.Length(min=0, max=15)])
+    blog_category = SelectMultipleField(label='', choices=
+    [('REC', 'Recycling'), ('SSB', 'Sustainability'),
+     ('BIZ', 'Business'), ('H20', 'Water'), ('CUL', 'Cultural')], default='')

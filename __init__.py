@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from functions import *
-from blogForm import CreateBlogForm
+from blogForm import *
 import shelve
 from formClasses import *
 from reportForm import CreateReportForm
@@ -63,9 +63,35 @@ def create_blog():
     return render_template('createBlog.html', form=create_blog_form)
 
 
-@app.route('/searchBlog')
-def search_blogs():
-    return render_template('searchBlog.html')
+@app.route('/searchBlog', methods=['GET', 'POST'])
+def search_blog():
+    search_blog_form = SearchBlogForm(request.form)
+    if request.method == 'POST' and search_blog_form.validate():
+
+        blogs_dict = {}
+        db = shelve.open('report_and_blog.db', 'c')
+        try:
+            blogs_dict = db['Blogs']
+            temp_blogs_dict = db['temp_Blogs']
+        except:
+            print("Error in retrieving Blog from report_and_blog.db.")
+
+        account_id = search_blog_form.account_id.data
+        blog_id = search_blog_form.blog_id.data
+        blog_category = search_blog_form.blog_category.data
+        cleaned_dict_of_blog_parameters = {'account_id': account_id, 'blog_id': blog_id, 'blog_category': blog_category} # blog_category is a list
+
+        for key in blogs_dict:
+            blog = blogs_dict.get(key)
+            blog_created_by = blog.get_account()
+            blog_id = blog.get_blog_id()
+            blog_category = blog.get_category()
+            if blog_created_by == (cleaned_dict_of_blog_parameters['account_id'] is not None):
+                temp_blogs_dict
+
+
+
+    return render_template('searchBlog.html', form=search_blog_form)
 
 
 @app.route('/allBlogs')
