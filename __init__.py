@@ -93,6 +93,12 @@ def remove_from_cart(id):
 def contact_us():
     return render_template('contactUs.html')
 
+@app.route('/invalidfile')
+def invalid_file():
+    return render_template('invalidfile.html')
+
+
+
 @app.route('/createUser', methods=['GET', 'POST'])
 def create_user():
     create_user_form = CreateUserForm(request.form)
@@ -109,7 +115,7 @@ def create_user():
         
         img = request.files.getlist('image')[0]
         if img.filename.split(".")[-1].lower() not in allowed_extensions_list:
-            return redirect(url_for('create_user'))
+            return redirect(url_for('invalid_file'))
         else:
             user = User.User(create_user_form.first_name.data, 
                          create_user_form.last_name.data, 

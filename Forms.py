@@ -7,7 +7,7 @@ from flask_wtf.file import FileAllowed, FileRequired
 
 class CreateUserForm(Form):
     first_name = StringField('Product Name', [validators.Length(min=1, max=150), validators.DataRequired()])
-    last_name = DecimalField('Product Price', [validators.DataRequired()])
+    last_name = DecimalField('Product Price', [validators.DataRequired()], places=2, rounding=None)
     gender = SelectField('Category', [validators.DataRequired()], choices=[('', 'Select'), ('Shirt', 'Shirt'), ('Pants', 'Pants')], default='')
     membership = RadioField('Size', choices=[('S', 'Small'), ('M', 'Medium'), ('L', 'Large')], default='S')   
     remarks = TextAreaField('Description',[validators.DataRequired()],)
