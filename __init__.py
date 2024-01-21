@@ -12,13 +12,16 @@ def home():
     db = shelve.open('user.db', 'r')
     users_dict = db['Users']
     db.close()
-
+    
+    total_price = 0
     users_list = []
     for key in users_dict:
         user = users_dict.get(key)
         users_list.append(user)
+        total_price += float(user.get_last_name())
+        total_price = f"{total_price:.2f}"
 
-    return render_template('home.html', count=len(users_list), users_list=users_list,)
+    return render_template('home.html', count=len(users_list), users_list=users_list,total=total_price)
 
 @app.route('/<int:id>/info', methods=["POST", "GET"])
 def info(id):
@@ -31,8 +34,10 @@ def info(id):
     
     user = users_dict.get(id)
     users_list.append(user)
-
-    return render_template('info.html', users_list=users_list,)
+    total_price = 0
+    total_price += float(user.get_last_name())
+    total_price = f"{total_price:.2f}"
+    return render_template('info.html', users_list=users_list,total=total_price)
 
 @app.route('/cart')
 def cart():
@@ -46,8 +51,8 @@ def cart():
     for key in cart_dict:
         user = cart_dict.get(key)
         cart_list.append(user)
-        total_price += int(user.get_last_name())
-
+        total_price += float(user.get_last_name())
+        total_price = f"{total_price:.2f}"
     
 
     return render_template('cart.html', cartcount=len(cart_list), cart_list=cart_list, total=total_price)
@@ -102,7 +107,7 @@ def invalid_file():
 @app.route('/createUser', methods=['GET', 'POST'])
 def create_user():
     create_user_form = CreateUserForm(request.form)
-    allowed_extensions_list = ['jpg','png','jpeg']  
+    allowed_extensions_list = ['jpg','png']  
     if request.method == 'POST' and create_user_form.validate():
         users_dict = {}
         db = shelve.open('user.db', 'c')
@@ -142,12 +147,14 @@ def retrieve_users():
     users_dict = db['Users']
     db.close()
 
+    total_price = 0
     users_list = []
     for key in users_dict:
         user = users_dict.get(key)
         users_list.append(user)
-
-    return render_template('retrieveUsers.html', count=len(users_list), users_list=users_list)
+        total_price += float(user.get_last_name())
+        total_price = f"{total_price:.2f}"
+    return render_template('retrieveUsers.html', count=len(users_list), users_list=users_list,total=total_price)
 
 
 @app.route('/updateUser/<int:id>/', methods=['GET', 'POST'])
