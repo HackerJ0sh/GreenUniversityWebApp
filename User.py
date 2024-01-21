@@ -3,13 +3,13 @@ class User:
     count_id = 0
 
     # initializer method
-    def __init__(self, first_name, last_name, gender, membership, remarks, quantity):
+    def __init__(self, first_name, last_name, gender, remarks, quantity):
         User.count_id += 1
         self.__user_id = User.count_id
         self.__first_name = first_name
         self.__last_name = last_name
         self.__gender = gender
-        self.__membership = membership
+      
         self.__remarks = remarks
         self.__quantity = quantity
         
@@ -27,8 +27,7 @@ class User:
     def get_gender(self):
         return self.__gender
 
-    def get_membership(self):
-        return self.__membership
+    
 
     def get_remarks(self):
         return self.__remarks
@@ -49,8 +48,7 @@ class User:
     def set_gender(self, gender):
         self.__gender = gender
 
-    def set_membership(self, membership):
-        self.__membership = membership
+   
 
     def set_remarks(self, remarks):
         self.__remarks = remarks

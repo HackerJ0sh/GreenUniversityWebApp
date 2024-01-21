@@ -120,7 +120,7 @@ def create_user():
             user = User.User(create_user_form.first_name.data, 
                          create_user_form.last_name.data, 
                          create_user_form.gender.data, 
-                         create_user_form.membership.data, 
+                         
                          create_user_form.remarks.data, 
                          create_user_form.quantity.data)
             users_dict[user.get_user_id()] = user
@@ -162,7 +162,7 @@ def update_user(id):
         user.set_first_name(update_user_form.first_name.data)
         user.set_last_name(update_user_form.last_name.data)
         user.set_gender(update_user_form.gender.data)
-        user.set_membership(update_user_form.membership.data)
+        
         user.set_remarks(update_user_form.remarks.data)
         user.set_quantity(update_user_form.quantity.data)
 
@@ -181,7 +181,7 @@ def update_user(id):
         update_user_form.first_name.data = user.get_first_name()
         update_user_form.last_name.data = user.get_last_name()
         update_user_form.gender.data = user.get_gender()
-        update_user_form.membership.data = user.get_membership()
+        
         update_user_form.remarks.data = user.get_remarks()
         update_user_form.quantity.data = user.get_quantity()
 

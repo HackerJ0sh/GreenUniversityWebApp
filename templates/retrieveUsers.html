@@ -33,13 +33,7 @@
         <td>{{ user.get_first_name() }}</td>
         <td>${{ user.get_last_name() }}</td>
         <td>{{ user.get_gender() }}</td>
-        {% if user.get_membership() == "S" %}
-        <td>Small</td>
-        {% elif user.get_membership() == "M" %}
-        <td>Medium</td>
-        {% elif user.get_membership() == "L" %}
-        <td>Large</td>
-        {% endif %}
+        
         <td>{{ user.get_remarks() }}</td>
         <td>{{ user.get_quantity() }}</td>
         <td><a href="/updateUser/{{user.get_user_id()}}" class="btn btn-warning">Update</a></td>
