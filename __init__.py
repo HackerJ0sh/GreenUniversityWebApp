@@ -127,7 +127,7 @@ def create_user():
             db['Users'] = users_dict
 
             db.close()
-            img.save(f'./static/images/{user.get_user_id()}.{img.filename.split(".")[-1]}')
+            img.save(f'./static/images/{user.get_first_name()}.{img.filename.split(".")[-1]}')
             
         # assign a file name to the saved image
         
