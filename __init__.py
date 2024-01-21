@@ -94,22 +94,21 @@ def create_user():
         except:
             print("Error in retrieving Users from user.db.")
 
-    
-        user = User.User(create_user_form.first_name.data, 
-                         create_user_form.last_name.data, 
-                         create_user_form.gender.data, 
-                         create_user_form.membership.data, 
-                         create_user_form.remarks.data, 
-                         create_user_form.quantity.data)
-        users_dict[user.get_user_id()] = user
-        db['Users'] = users_dict
-
-        db.close()
         
         img = request.files.getlist('image')[0]
         if img.filename.split(".")[-1].lower() not in allowed_extensions_list:
             return redirect(url_for('create_user'))
         else:
+            user = User.User(create_user_form.first_name.data, 
+                         create_user_form.last_name.data, 
+                         create_user_form.gender.data, 
+                         create_user_form.membership.data, 
+                         create_user_form.remarks.data, 
+                         create_user_form.quantity.data)
+            users_dict[user.get_user_id()] = user
+            db['Users'] = users_dict
+
+            db.close()
             img.save(f'./static/images/{user.get_user_id()}.{img.filename.split(".")[-1]}')
             
         # assign a file name to the saved image
