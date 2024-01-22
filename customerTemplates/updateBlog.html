@@ -27,8 +27,12 @@
         const imageDisplay = document.getElementById('imageDisplay')
         // file is rendered here
 
-        const clear = document.getElementById('clear')
-        // "clear" button
+
+        const searchParams = new URLSearchParams(window.location.search);
+        console.log(searchParams.get('alert') == 'true')
+        if (searchParams.get('alert') == 'true') {
+            alert("Image files only! [png, jpg, jpeg]")
+            }
 
         imageInput.onchange = () => { // when user selects a local file, run this code
             const reader = new FileReader()

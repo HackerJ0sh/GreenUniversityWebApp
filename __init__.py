@@ -43,7 +43,8 @@ def create_blog():
             if filepath is None:
                 pass
             else:
-                return redirect(url_for('create_blog'))
+                alert = 'true'
+                return redirect(url_for('create_blog', alert=alert))
 
         blog_id = str(generate_blog_id())
         blog = Blog(blog_id=blog_id, account=test_account.get_user_id(), blog_subject=create_blog_form.post_name.data,
@@ -69,6 +70,7 @@ def search_blog():
     if request.method == 'POST' and search_blog_form.validate():
 
         blogs_dict = {}
+        temp_blogs_dict = {}
         db = shelve.open('report_and_blog.db', 'c')
         try:
             blogs_dict = db['Blogs']
@@ -79,17 +81,20 @@ def search_blog():
         account_id = search_blog_form.account_id.data
         blog_id = search_blog_form.blog_id.data
         blog_category = search_blog_form.blog_category.data
-        cleaned_dict_of_blog_parameters = {'account_id': account_id, 'blog_id': blog_id, 'blog_category': blog_category} # blog_category is a list
 
-        for key in blogs_dict:
-            blog = blogs_dict.get(key)
-            blog_created_by = blog.get_account()
-            blog_id = blog.get_blog_id()
-            blog_category = blog.get_category()
-            if blog_created_by == (cleaned_dict_of_blog_parameters['account_id'] is not None):
-                temp_blogs_dict
+        # store in parameter_list
+        # WIP
+        '''
+        
+        
+        '''
 
 
+
+
+
+
+        db.close()
 
     return render_template('searchBlog.html', form=search_blog_form)
 
@@ -129,7 +134,8 @@ def update_blog(id):
             if new_filepath:
                 img.save(new_filepath)  # save new filepath from static/files if not None
             else:
-                return redirect(url_for('update_blog', id=id))
+                alert = 'true'
+                return redirect(url_for('update_blog', id=id, alert=alert))
         if old_filepath is not None:
             os.remove(old_filepath)  # remove old filepath from static/files if not None
 

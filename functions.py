@@ -28,3 +28,5 @@ def generate_image_id(img):
     else:
         filepath = f'./static/files/{random.randint(1, 10 ** 15)}.{img.filename.split(".")[-1].lower()}'
     return filepath
+
+
