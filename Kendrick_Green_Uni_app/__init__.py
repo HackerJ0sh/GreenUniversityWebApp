@@ -78,7 +78,7 @@ def login():
             flash("Wrong Username or Password")
 
 
-    return render_template('login2.html', form=login_user_form, title = "Login Page")
+    return render_template('login.html', form=login_user_form, title = "Login Page")
 
 @app.route('/contactUs')
 def contact_us():
