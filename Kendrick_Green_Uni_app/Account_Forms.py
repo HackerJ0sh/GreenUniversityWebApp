@@ -4,7 +4,7 @@ from wtforms.fields import EmailField
 class UpdateUserForm(Form):
     name = StringField('Name', [validators.Length(min=1, max=150), validators.DataRequired()])
     username = StringField('Username', [validators.Length(min=1, max=150), validators.DataRequired()])
-    password = StringField('Password', [validators.DataRequired()])
+    password = StringField('Password', [validators.DataRequired(),validators.Length(min=8)])
     email = EmailField('Email', [validators.Email(), validators.DataRequired()])
     gender = SelectField('Gender', [validators.DataRequired()],
                          choices=[('', 'Select'), ('F', 'Female'), ('M', 'Male')], default='')
@@ -17,6 +17,7 @@ class CreateUserForm(Form):
     username = StringField('Username', [validators.Length(min=1, max=150), validators.DataRequired()])
     password = PasswordField('New Password', [
         validators.DataRequired(),
+        validators.Length(min=8),
         validators.EqualTo('confirm', message='Passwords must match')
     ])
     confirm = PasswordField('Repeat Password')
@@ -41,6 +42,7 @@ class SecurityForm(Form):
 class ChangePasswordForm(Form):
     password = PasswordField('New Password', [
         validators.DataRequired(),
+        validators.Length(min=8),
         validators.EqualTo('confirm', message='Passwords must match')
     ])
     confirm = PasswordField('Repeat Password')
