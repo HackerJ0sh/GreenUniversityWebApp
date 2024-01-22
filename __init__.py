@@ -18,6 +18,13 @@ def payment():
     create_payment_form = CreatePaymentForm(request.form)
     if request.method == "POST" and create_payment_form.validate():
 
+        payment_dict = {}
+        db = shelve.open('payment.db', 'c')
+        try:
+            payment_dict = db['Payments']
+        except: 
+            print('Error in opening the file')
+
         session['email'] = create_payment_form.email.data
 
         payment_info = PaymentInfo(
@@ -39,7 +46,12 @@ def payment():
 
         # add code: add all the payment_info objects to the user class attribute called transaction=[], this allows the users to see all their transactions
 
-        session['Remember'] = create_payment_form.remember.data
+        # saves the payment details if remember is true
+        if create_payment_form.remember.data:
+            payment_dict[payment_info.get_id()] = payment_info
+            db['Payments'] = payment_dict
+        
+            db.close()
  
         flash('Please Verify Your Email To Proceed')
 
@@ -91,15 +103,6 @@ def payment_update():
 def payment_otp():
     create_paymentOTP_form = CreatePaymentOtpForm(request.form)
     email_receiver = session['email']
-    payment_info = session['PaymentInfo']
-    remember = session['Remember']
-
-    payment_dict = {}
-    db = shelve.open('payment.db', 'c')
-    try:
-        payment_dict = db['Payments']
-    except: 
-        print('Error in opening the file')
 
     if request.method == "GET":  
         OTP = GenerateOTP()
@@ -113,13 +116,6 @@ def payment_otp():
         OTP = session['OTP']
         if form_OTP == OTP:
             flash('Payment Successful')
-
-            # saves the payment details if remember is true
-            if remember:
-                payment_dict[payment_info.get_id()] = payment_info
-                db['Payments'] = payment_dict
-            
-                db.close()
             
             del session['OTP']
             return redirect(url_for('payment_successful'))
