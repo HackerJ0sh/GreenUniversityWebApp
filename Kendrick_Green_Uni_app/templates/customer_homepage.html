@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% include 'includes/_navbar.html' %}
 {% block title %}Customer Homepage{% endblock %}
 
 {% block content %}
@@ -7,7 +8,6 @@
 <h1>Hello {{name}}</h1>
 <h1>Customer Homepage</h1>
 <h1>Successfully logged in</h1>
-<h1>{{id}}</h1>
-<a href="{{ url_for('settings', id=id) }}" class="btn btn-warning">Update</a>
+<h1>ID: {{id}}</h1>
 
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
+{% include 'includes/_navbar_staff.html' %}
 {% block title %}Accounts Database{% endblock %}
-
 {% block content %}
 <h1 class="display-4">Retrieve Users</h1>
 <div>
@@ -11,6 +11,7 @@
   {% else %}
   <p>There are {{ count }} users.</p>
   {% endif %}
+    <p>ID: {{id}}</p>
 </div>
 <div>
   <table class="table table-striped">
