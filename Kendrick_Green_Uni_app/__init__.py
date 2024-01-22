@@ -118,10 +118,10 @@ def create_user():
         db.close()
 
         return redirect(url_for('retrieve_users'))
-    return render_template('create_account.html', form=create_user_form)
+    return render_template('create_account.html', form=create_user_form, id=id)
 
-@app.route('/retrieveUsers/<int:id>/')
-def retrieve_users(id):
+@app.route('/retrieveUsers')
+def retrieve_users():
     users_dict = {}
     db = shelve.open('user.db', 'r')
     users_dict = db['Users']
@@ -132,7 +132,7 @@ def retrieve_users(id):
         user = users_dict.get(key)
         users_list.append(user)
 
-    return render_template('retrieve_account.html', count=len(users_list), users_list=users_list, id=id)
+    return render_template('retrieve_account.html', count=len(users_list), users_list=users_list)
 
 @app.route('/updateUser/<int:id>/', methods=['GET', 'POST'])
 def update_user(id):
