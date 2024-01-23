@@ -134,16 +134,16 @@ def payment_delete():
     payment_dict = {}
     try:
         db = shelve.open('payment.db')
+
+        payment_dict = db['Payments']
+        payment_dict.pop(1)
+
+        db['Payments'] = payment_dict
+        db.close()
     except:
         flash('Please Create Your Payment Information First')
         return redirect(url_for('payment'))
     
-    payment_dict = db['Payments']
-    payment_dict.pop(1)
-
-    db['Payments'] = payment_dict
-    db.close()
-
     flash('Successfully deleted payment information')
     return redirect(url_for('view_payment'))
     
