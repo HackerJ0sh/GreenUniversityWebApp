@@ -92,9 +92,7 @@ def remove_from_cart(id):
 
 
 
-@app.route('/contactUs')
-def contact_us():
-    return render_template('contactUs.html')
+
 
 @app.route('/invalidfile')
 def invalid_file():
@@ -102,7 +100,7 @@ def invalid_file():
 
 
 
-@app.route('/createUser', methods=['GET', 'POST'])
+@app.route('/createProduct', methods=['GET', 'POST'])
 def create_user():
     create_user_form = CreateUserForm(request.form)
     allowed_extensions_list = ['jpg','png']  
@@ -138,7 +136,7 @@ def create_user():
         return redirect(url_for('retrieve_users'))
     return render_template('createUser.html', form=create_user_form)
 
-@app.route('/retrieveUsers')
+@app.route('/retrieveInventory')
 def retrieve_users():
     users_dict = {}
     db = shelve.open('user.db', 'r')
@@ -154,7 +152,7 @@ def retrieve_users():
     return render_template('retrieveUsers.html', count=len(users_list), users_list=users_list,)
 
 
-@app.route('/updateUser/<int:id>/', methods=['GET', 'POST'])
+@app.route('/updateProduct/<int:id>/', methods=['GET', 'POST'])
 def update_user(id):
     update_user_form = CreateUserForm(request.form)
     if request.method == 'POST' and update_user_form.validate():
@@ -192,7 +190,7 @@ def update_user(id):
         return render_template('updateUser.html', form=update_user_form)
 
 
-@app.route('/deleteUser/<int:id>', methods=['POST'])
+@app.route('/deleteProduct/<int:id>', methods=['POST'])
 def delete_user(id):
     users_dict = {}
     db = shelve.open('user.db', 'w')
