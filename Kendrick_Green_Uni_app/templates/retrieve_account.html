@@ -34,30 +34,30 @@
     <tbody>
     {% for user in users_list %}
      <tr>
-        <td>{{ user.get_user_id() }}</td>
-        <td>{{ user.get_name() }}</td>
-        <td>{{ user.get_username() }}</td>
-        <td>{{ user.get_password() }}</td>
-        <td>{{ user.get_email() }}</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;">{{ user.get_user_id() }}</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;">{{ user.get_name() }}</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;">{{ user.get_username() }}</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;">{{ user.get_password() }}</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;">{{ user.get_email() }}</td>
         {% if user.get_gender() == "F" %}
-        <td>Female</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;">Female</td>
         {% elif user.get_gender() == "M" %}
-        <td>Male</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;">Male</td>
         {% endif %}
-        <td>{{ user.get_security_question() }}</td>
-        <td>{{ user.get_security_answer() }}</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;">{{ user.get_security_question() }}</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;">{{ user.get_security_answer() }}</td>
         {% if user.get_account_status() == "L" %}
-        <td>Locked</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;background-color: indianred">Locked</td>
         {% elif user.get_account_status() == "U" %}
-        <td>Unlocked</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;background-color: lightgreen">Unlocked</td>
         {% endif %}
         {% if user.get_account_type() == "C" %}
-        <td>Customer</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;background-color: greenyellow">Customer</td>
         {% elif user.get_account_type() == "S" %}
-        <td>Staff</td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;background-color: lightblue">Staff</td>
         {% endif %}
-        <td><a href="/updateUser/{{user.get_user_id()}}" class="btn btn-warning">Update</a></td>
-        <td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;"><a href="/updateUser/{{user.get_user_id()}}" class="btn btn-warning">Update</a></td>
+        <td style="border-right: 2px solid black;border-bottom: 2px solid black;">
           <form action="{{url_for('delete_user', id=user.get_user_id())}}" method="POST">
 <!--            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{user.get_name()}}?');">-->
 <!-- Button to Open the Modal -->
@@ -97,4 +97,10 @@
     </tbody>
   </table>
 </div>
+<style>
+        .user-table td {
+              border-right: 100px solid black;
+        border-bottom: 3px solid black;
+            }
+    </style>
 {% endblock %}

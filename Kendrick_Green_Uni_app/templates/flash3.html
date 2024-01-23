@@ -1,6 +1,6 @@
 <!doctype html>
 <title>My Application</title>
-{% with messages = get_flashed_messages(category_filter=["default"]) %}
+{% with messages = get_flashed_messages(category_filter=["locked"]) %}
   {% if messages %}
     <ul class=flashes style="color:red">
     {% for message in messages %}

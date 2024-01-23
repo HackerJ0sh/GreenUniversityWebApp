@@ -61,11 +61,15 @@ def login():
         users_dict = db['Users']
         db.close()
         error_login = 0
+        error_lock = 0
         for key in users_dict:
             if login_user_form.username.data == users_dict[key].get_username():
                 password = users_dict[key].get_password()
                 if login_user_form.password.data == password:
-                    if users_dict[key].get_account_type() == "S":
+                    if users_dict[key].get_account_status() == "L":
+                        error_lock = error_lock + 1
+                        break
+                    elif users_dict[key].get_account_type() == "S":
                         return redirect(url_for('staff_homepage', id=users_dict[key].get_user_id()))
                     else:
                         return redirect(url_for('cust_homepage', id=users_dict[key].get_user_id()))
@@ -75,7 +79,9 @@ def login():
             else:
                 error_login = error_login + 1
         if error_login > 0:
-            flash("Wrong Username or Password")
+            flash("Wrong Username or Password", "default")
+        if error_lock > 0:
+            flash("Your Account is locked. Contact an admin.", "locked")
 
 
     return render_template('login.html', form=login_user_form, title = "Login Page")
@@ -233,7 +239,7 @@ def reset():
             else:
                 error_reset = error_reset + 1
     if error_reset > 0:
-        flash("Invalid Username or Email")
+        flash("Invalid Username or Email","default")
 
 
 
@@ -260,7 +266,7 @@ def security(id):
         else:
             error_security = error_security + 1
     if error_security > 0:
-        flash("Wrong Answer")
+        flash("Wrong Answer","default")
 
 
     return render_template('security.html',question = question, id = id, form=security_user_form, title = "Security Page")
