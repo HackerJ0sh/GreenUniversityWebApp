@@ -5,6 +5,14 @@
 {% from "customerIncludes/_customerFormHelper.html" import render_field %}
 <div class="col-md-7 col-lg-8 container shadow-lg p-3 mb-5 bg-white rounded container-style">
     <h1 class="display-4">Create Blog</h1>
+    <p>Empower your passion for sustainability, whether it's for a school project, eco-friendly business ventures,
+        or simply sharing your thoughts on various topics. With our user-friendly Blog Creation platform, you have the
+        perfect space to spread awareness about sustainability, gather support for your eco-friendly initiatives, and
+        express your ideas to a wider audience. </p>
+    <p>Harness the power of your voice and make a positive impact on the world
+        by creating engaging and informative content. Whether you're a student aiming to inspire change or an entrepreneur
+        promoting green solutions, our platform provides the tools you need to amplify your message and connect with
+        like-minded individuals. Start your journey towards a more sustainable future today!</p>
     <form method="POST" action="" enctype="multipart/form-data">
         <div class="row g-3">
             <div class="form-group col-12 p-2">{{ render_field(form.post_name, class="form-control") }}
