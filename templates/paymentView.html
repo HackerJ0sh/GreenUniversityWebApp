@@ -2,40 +2,146 @@
 
 {% block content %}
 
-<table class="table">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Credit Card Holder Name</th>
-      <th scope="col">Credit Card Number</th>
-      <th scope="col">Expiry Date Month</th>
-      <th scope="col">Expiry Date Year</th>
-      <th scope="col">Country</th>
-    </tr>
-  </thead>
-  {% if payment_info == None %}
-  <tbody>
-    <tr>
-      <th></th>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </tbody>
-  {% else %}
-  <tbody>
-    <tr>
-      <th scope="row">{{ payment_info.get_id() }}</th>
-      <td>{{ payment_info.get_credit_card_holder() }}</td>
-      <td>{{ payment_info.get_credit_card_number() }}</td>
-      <td>{{ payment_info.get_expiry_date_month() }}</td>
-      <td>{{ payment_info.get_expiry_date_year() }}</td>
-      <td>{{ payment_info.get_country() }}</td>
-    </tr>
-  </tbody>
-  {% endif %}
-</table>
+{% if payment_info == None %}
+
+<div class="container">
+  <div class="py-5 text-center">
+      <h2>You Have Not Created Your Payment Info</h2>
+  </div>
+  <div class="col-md-7 col-lg-8 mx-auto">
+      <form action="" method="POST" class="needs-validation">
+          <div class="row g-3">
+              <h4 class="mb-3">Billing Address</h4>
+              <div class="col-12">
+                  <label for="fullName" class="form-label">Full Name</label>
+                  <input type="text" class="form-control" id="fullName disabledInput" disabled>
+              </div>
+              <div class="col-12">
+                  <label for="phoneNumber" class="form-label">Phone Number</label>
+                  <input type="text" class="form-control" id="phoneNumber disabledInput" disabled>
+              </div>
+              <div class="col-12">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="text" class="form-control" id="email disabledInput" disabled>
+              </div>
+              <div class="col-sm-6">
+                  <label for="country" class="form-label">Country</label>
+                  <input type="text" class="form-control" id="country disabledInput" disabled>
+              </div>
+              <div class="col-sm-6">
+                  <label for="postalCode" class="form-label">Postal Code</label>
+                  <input type="text" class="form-control" id="postalCode disabledInput" disabled>
+              </div>
+              <div class="col-12">
+                  <label for="addressLine1" class="form-label">Address Line 1</label>
+                  <input type="text" class="form-control" id="addressLine1 disabledInput" disabled>
+              </div>
+              <div class="col-12">
+                  <label for="addressLine2" class="form-label">Address Line 2</label>
+                  <input type="text" class="form-control" id="addressLine2 disabledInput" disabled>
+              </div>
+          </div>
+          <hr class="my-4">
+          <h4 class="mb-3">Payment</h4>
+          <div class="row gy-3">
+              <div class="col-12">
+                  <label for="cardHolderName" class="form-label">Card Holder Name</label>
+                  <input type="text" class="form-control" id="cardHolderName disabledInput" disabled>
+              </div>
+              <div class="col-md-9">
+                  <label for="creditCardNumber" class="form-label">Credit Card Number</label>
+                  <input type="text" class="form-control" id="creditCardNumber disabledInput" disabled>
+              </div>
+              <div class="col-md-3">
+                  <label for="cvv" class="form-label">CVV</label>
+                  <input type="text" class="form-control" id="cvv disabledInput" disabled>
+              </div>
+              <div class="col-md-6">
+                  <label for="expiryDateMonth" class="form-label">Expiry Date (Month)</label>
+                  <input type="text" class="form-control" id="expiryDateMonth disabledInput" disabled>
+              </div>
+              <div class="col-md-6">
+                  <label for="expiryDateYear" class="form-label">Expiry Date (Year)</label>
+                  <input type="text" class="form-control" id="expiryDateYear disabledInput" disabled>
+              </div>
+          </div>
+          <hr class="my-4">
+          <a class="btn btn-warning mb-5 me-2 btn-lg" role="button" href="/payment/update">Update</a>
+          <a class="btn btn-danger mb-5 btn-lg" role="button" href="/payment/delete">Delete</a>
+      </form>
+  </div>
+</div>
+
+{% else %}
+
+<div class="container">
+  <div class="py-5 text-center">
+      <h2>Your Payment Info</h2>
+  </div>
+  <div class="col-md-7 col-lg-8 mx-auto">
+      <form action="" method="POST" class="needs-validation">
+          <div class="row g-3">
+              <h4 class="mb-3">Billing Address</h4>
+              <div class="col-12">
+                  <label for="fullName" class="form-label">Full Name</label>
+                  <input type="text" class="form-control" id="fullName disabledInput" placeholder="{{ payment_info.get_full_name() }}" disabled>
+              </div>
+              <div class="col-12">
+                  <label for="phoneNumber" class="form-label">Phone Number</label>
+                  <input type="text" class="form-control" id="phoneNumber disabledInput" placeholder="{{ payment_info.get_phone_number() }}" disabled>
+              </div>
+              <div class="col-12">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="text" class="form-control" id="email disabledInput" placeholder="{{ payment_info.get_email() }}" disabled>
+              </div>
+              <div class="col-sm-6">
+                  <label for="country" class="form-label">Country</label>
+                  <input type="text" class="form-control" id="country disabledInput" placeholder="{{ payment_info.get_country() }}" disabled>
+              </div>
+              <div class="col-sm-6">
+                  <label for="postalCode" class="form-label">Postal Code</label>
+                  <input type="text" class="form-control" id="postalCode disabledInput" placeholder="{{ payment_info.get_postal_code() }}" disabled>
+              </div>
+              <div class="col-12">
+                  <label for="addressLine1" class="form-label">Address Line 1</label>
+                  <input type="text" class="form-control" id="addressLine1 disabledInput" placeholder="{{ payment_info.get_address_line_1() }}" disabled>
+              </div>
+              <div class="col-12">
+                  <label for="addressLine2" class="form-label">Address Line 2</label>
+                  <input type="text" class="form-control" id="addressLine2 disabledInput" placeholder="{{ payment_info.get_address_line_2() }}" disabled>
+              </div>
+          </div>
+          <hr class="my-4">
+          <h4 class="mb-3">Payment</h4>
+          <div class="row gy-3">
+              <div class="col-12">
+                  <label for="cardHolderName" class="form-label">Card Holder Name</label>
+                  <input type="text" class="form-control" id="cardHolderName disabledInput" placeholder="{{ payment_info.get_credit_card_holder() }}" disabled>
+              </div>
+              <div class="col-md-9">
+                  <label for="creditCardNumber" class="form-label">Credit Card Number</label>
+                  <input type="text" class="form-control" id="creditCardNumber disabledInput" placeholder="{{ payment_info.get_credit_card_number() }}" disabled>
+              </div>
+              <div class="col-md-3">
+                  <label for="cvv" class="form-label">CVV</label>
+                  <input type="text" class="form-control" id="cvv disabledInput" placeholder="{{ payment_info.get_cvv() }}" disabled>
+              </div>
+              <div class="col-md-6">
+                  <label for="expiryDateMonth" class="form-label">Expiry Date (Month)</label>
+                  <input type="text" class="form-control" id="expiryDateMonth disabledInput" placeholder="{{ payment_info.get_expiry_date_month() }}" disabled>
+              </div>
+              <div class="col-md-6">
+                  <label for="expiryDateYear" class="form-label">Expiry Date (Year)</label>
+                  <input type="text" class="form-control" id="expiryDateYear disabledInput" placeholder="{{ payment_info.get_expiry_date_year() }}" disabled>
+              </div>
+          </div>
+          <hr class="my-4">
+          <a class="btn btn-warning mb-5 me-2 btn-lg" role="button" href="/payment/update">Update</a>
+          <a class="btn btn-danger mb-5 btn-lg" role="button" href="/payment/delete">Delete</a>
+      </form>
+  </div>
+</div>
+
+{% endif %}
 
 {% endblock %}
