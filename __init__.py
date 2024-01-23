@@ -69,8 +69,12 @@ def payment_update():
     update_payment_form = UpdatePaymentForm(request.form)
     if request.method == "POST" and update_payment_form.validate():
         payment_dict ={}
-        db = shelve.open('payment.db', 'w')
-        payment_dict = db['Payments']
+        try:
+            db = shelve.open('payment.db', 'w')
+            payment_dict = db['Payments']
+        except:
+            flash('Please Create Your Payment Information First')
+            return redirect(url_for('payment'))
 
         # TODO: get id from user payment info object
         payment_info = payment_dict[1]
@@ -130,9 +134,9 @@ def payment_delete():
     payment_dict = {}
     try:
         db = shelve.open('payment.db')
-    except IOError:
-        flash('Please create your payment information first')
-        return redirect(url_for('home'))
+    except:
+        flash('Please Create Your Payment Information First')
+        return redirect(url_for('payment'))
     
     payment_dict = db['Payments']
     payment_dict.pop(1)
@@ -152,7 +156,7 @@ def view_payment():
         payment_dict = db['Payments']
         db.close()
     except:
-        flash('Please Create Your Payment Information')
+        flash('Please Create Your Payment Information First')
         return redirect(url_for('payment'))
 
     try:
