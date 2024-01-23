@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, session
 from functions import *
 from blogForm import *
 import shelve
@@ -81,13 +81,16 @@ def search_blog():
         account_id = search_blog_form.account_id.data
         blog_id = search_blog_form.blog_id.data
         blog_category = search_blog_form.blog_category.data
-
+        if blog_category is []:
+            blog_category = None
+        parameter_list = [account_id, blog_id, blog_category]
         # store in parameter_list
         # WIP
         '''
-        
-        
+        for parameter in parameter_list:
+            for id in blogs_dict:
         '''
+
 
 
 
@@ -179,6 +182,8 @@ def delete_blog(id):
     db['Blogs'] = blogs_dict
     db.close()
 
+    session['blog_deleted'] = f'Blog ID: {blog_to_be_deleted.get_blog_id()} deleted.'
+
     return redirect(url_for('retrieve_blogs'))
 
 
@@ -196,6 +201,7 @@ def submit_report():
         db = shelve.open('report_and_blog.db', 'c')
         try:
             reports_dict = db['Reports']
+            blogs_dict = db['Blogs']
         except:
             print("Error in retrieving Blog from report_and_blog.db.")
 
@@ -203,6 +209,12 @@ def submit_report():
         random_id = str(randint(1, 1000000))
         test_account = User()
         test_account.set_user_id(random_id)
+
+        # check if reported id is real; since i'm not handling the accounts and we haven't integrated yet i will
+        # temporarily check reported id to the account ids who created a blog
+        if check_report_id(create_report_form.reported_account.data) is False:
+            alert = 'true'
+            return redirect(url_for('submit_report', alert=alert))
 
         report = Report(account=None, reported_account_id=create_report_form.reported_account.data,
                         reported_subjects=create_report_form.report_subjects.data,

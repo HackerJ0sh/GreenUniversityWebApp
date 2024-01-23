@@ -30,3 +30,18 @@ def generate_image_id(img):
     return filepath
 
 
+def check_report_id(id):
+    reports_dict = {}
+    db = shelve.open('report_and_blog.db', 'c')
+    try:
+        blogs_dict = db['Blogs']
+    except:
+        print("Error in retrieving Blog from report_and_blog.db.")
+
+    id_found = False
+    for key in blogs_dict:
+        blog = blogs_dict.get(key)
+        if id == blog.get_account():
+            id_found = True
+    return id_found
+

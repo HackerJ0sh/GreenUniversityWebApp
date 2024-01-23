@@ -8,7 +8,7 @@ class CreateReportForm(Form):
      ('3', 'Illegal content'), ('4', 'Plagiarism'), ('5', 'Misinformative or disinformative')],
     validators=[validators.DataRequired()], default='')
     report_reason = TextAreaField('Describe in detail the situation'
-    'so that our staff can help you resolve the issue promptly.',
+    ' so that our staff can help you resolve the issue promptly.',
     [validators.Length(min=1, max=2000), validators.DataRequired()])
 
 
