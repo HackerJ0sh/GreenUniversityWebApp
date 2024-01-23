@@ -41,7 +41,7 @@ def check_report_id(id):
     id_found = False
     for key in blogs_dict:
         blog = blogs_dict.get(key)
-        if id == blog.get_account():
+        if id == blog.get_blog_id():
             id_found = True
     return id_found
 

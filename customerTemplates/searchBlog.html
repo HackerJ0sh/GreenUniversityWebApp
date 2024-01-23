@@ -7,15 +7,61 @@
   <h1 class="display-4 text-center">Search Blog</h1>
   <form method="POST" action="">
     <div class="row border border-dark" style="padding: 10px;">
-      <div class="form-group col">{{ render_field(form.account_id, class="form-control") }}</div>
-      <div class="form-group col">{{ render_field(form.blog_id, class="form-control") }}</div>
-      <div class="form-group col d-flex align-self-center">
-        {{ render_field(form.blog_category, class="form-check", style="list-style-type:none") }}
+      <div class="form-group col d-flex p-2">{{ render_field(form.post_name, class="form-control", placeholder="Leave empty to view all blogs") }}</div>
         <input type="submit" value="Search" class="btn btn-primary form-group col h-25 w-25 bg-success" style="margin: auto 15px;"/>
-      </div>
     </div>
   </form>
 </div>
+
+{% for blog in blogs_per_page %}
+    <section class="section works p-2" id="works">
+        <div class="container border border-dark" style="max-width: 1000px; max-height: 1500px;">
+                <div class="col-md-12 col-xs-12">
+                    <div class="row">
+                        <h4 class="p-2">{{ blog.get_post_name() }}</h4>
+                        <div class="d-flex flex-row">
+                            {% if 'REC' in blog.get_category() %}
+                                <button type="button" class="btn btn-outline-success p-2 m-1">Recycling</button>
+                            {% endif %}
+                            {% if 'SSB' in blog.get_category() %}
+                                <button type="button" class="btn btn-outline-success p-2 m-1">Sustainability</button>
+                            {% endif %}
+                            {% if 'BIZ' in blog.get_category() %}
+                                <button type="button" class="btn btn-outline-success p-2 m-1">Business</button>
+                            {% endif %}
+                            {% if 'H20' in blog.get_category() %}
+                                <button type="button" class="btn btn-outline-success p-2 m-1">Water</button>
+                            {% endif %}
+                            {% if 'CUL' in blog.get_category() %}
+                                <button type="button" class="btn btn-outline-success p-2 m-1">Cultural</button>
+                            {% endif %}
+                            {% if 'ETC' in blog.get_category() %}
+                                <button type="button" class="btn btn-outline-success p-2 m-1">Others</button>
+                            {% endif %}
+                                </div>
+                            <div class="p-2">
+                                <img src="{{ blog.get_image() }}" style="max-width: 500px; max-height: 500px;">
+                                <div class="overlay"></div>
+                            </div>
+                        <div class="p-2">
+                            <p class="text-left">{{ blog.get_post_content() }}</p>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </section>
+
+{% endfor %}
+
+{% if page > 1 %}
+    <a href="{{url_for('search_blog', page=page-1) }}">Previous</a>
+{% endif %}
+    <span>Page {{page}} of {{total_pages}}</span>
+{% if page < total_pages %}
+    <a href="{{url_for('search_blog', page=page+1) }}">Next</a>
+{% endif %}
+
+
 
     <style>
         .container-style {

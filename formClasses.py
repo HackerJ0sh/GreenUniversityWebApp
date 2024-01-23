@@ -134,19 +134,19 @@ class User:
 class Report:
     report_id = 0
 
-    def __init__(self, account, reported_account_id, reported_subjects, report_reason):
+    def __init__(self, account, reported_blog_id, reported_subjects, report_reason):
         Report.report_id += 1
         self.__account = account
         self.__report_id = Report.report_id
-        self.__reported_account_id = reported_account_id
+        self.__reported_blog_id = reported_blog_id
         self.__reported_subjects = reported_subjects
         self.__report_reason = report_reason
 
     def set_report_id(self, report_id):
         self.__report_id = report_id
 
-    def set_reported_account_id(self, reported_account_id):
-        self.__reported_account_id = reported_account_id
+    def set_reported_blog_id(self, reported_account_id):
+        self.__reported_blog_id = reported_account_id
 
     def set_reported_subjects(self, reported_subjects):
         self.__reported_subjects = reported_subjects
@@ -157,8 +157,8 @@ class Report:
     def get_report_id(self):
         return self.__report_id
 
-    def get_reported_account_id(self):
-        return self.__reported_account_id
+    def get_reported_blog_id(self):
+        return self.__reported_blog_id
 
     def get_reported_subjects(self):
         return self.__reported_subjects

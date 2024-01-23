@@ -66,40 +66,67 @@ def create_blog():
 
 @app.route('/searchBlog', methods=['GET', 'POST'])
 def search_blog():
+
     search_blog_form = SearchBlogForm(request.form)
+    blogs_dict = {}
+    blogs_temp_dict = {}
+    db = shelve.open('report_and_blog.db', 'c')
+    try:
+        blogs_dict = db['Blogs']
+        blogs_temp_dict = db['Temp_Blogs']
+    except:
+        print("Error in retrieving Blog from report_and_blog.db.")
+
     if request.method == 'POST' and search_blog_form.validate():
 
-        blogs_dict = {}
-        temp_blogs_dict = {}
-        db = shelve.open('report_and_blog.db', 'c')
-        try:
-            blogs_dict = db['Blogs']
-            temp_blogs_dict = db['temp_Blogs']
-        except:
-            print("Error in retrieving Blog from report_and_blog.db.")
+        searched_post_name = search_blog_form.post_name.data
+        searched_post_name_length = len(searched_post_name)
+        print(blogs_temp_dict)
+        blogs_list = []
 
-        account_id = search_blog_form.account_id.data
-        blog_id = search_blog_form.blog_id.data
-        blog_category = search_blog_form.blog_category.data
-        if blog_category is []:
-            blog_category = None
-        parameter_list = [account_id, blog_id, blog_category]
-        # store in parameter_list
-        # WIP
-        '''
-        for parameter in parameter_list:
-            for id in blogs_dict:
-        '''
+        if searched_post_name is None: # checks if user wants to see all blogs
+            for key in blogs_dict:
+                blog = blogs_dict.get(key)
+                blogs_list.append(blog)
+        else:
+            for key in blogs_dict:
+                blog = blogs_dict.get(key)
+                blog_post_name = blog.get_post_name()
+                if blog_post_name[0:searched_post_name_length] == searched_post_name[0:searched_post_name_length]:
+                    blogs_list.append(blog)
 
-
-
-
-
-
-
+        # saves into temporary database
+        blogs_temp_dict['temp_list'] = blogs_list
+        db['Temp_Blogs'] = blogs_temp_dict
+        print(blogs_temp_dict)
         db.close()
+        # pagination
+        page = request.args.get('page', 1, type=int)
+        per_page = 1
+        start = (page - 1) * per_page
+        end = start + per_page
+        total_pages = (len(blogs_temp_dict['temp_list']) + per_page - 1) // per_page
+        print(f"When submitting: {total_pages}")
+        if total_pages == 0:
+            total_pages = 1
+        
+        blogs_per_page = blogs_list[start:end]
+        return render_template('searchBlog.html', form=search_blog_form, blogs_per_page=blogs_per_page, total_pages=total_pages, page=page)
+    else:
 
-    return render_template('searchBlog.html', form=search_blog_form)
+        blogs_temp_dict = db['Temp_Blogs']
+        blogs_list = blogs_temp_dict['temp_list']
+        print(blogs_list)
+
+        page = request.args.get('page', 1, type=int)
+        per_page = 1
+        start = (page - 1) * per_page
+        end = start + per_page
+        total_pages = ((len(blogs_list) + per_page - 1) // per_page)
+        print(f"When opening: {total_pages}")
+        blogs_per_page = blogs_list[start:end]
+        return render_template('searchBlog.html', form=search_blog_form, blogs_per_page=blogs_per_page, total_pages=total_pages, page=page)
+
 
 
 @app.route('/allBlogs')
@@ -210,13 +237,11 @@ def submit_report():
         test_account = User()
         test_account.set_user_id(random_id)
 
-        # check if reported id is real; since i'm not handling the accounts and we haven't integrated yet i will
-        # temporarily check reported id to the account ids who created a blog
         if check_report_id(create_report_form.reported_account.data) is False:
             alert = 'true'
             return redirect(url_for('submit_report', alert=alert))
 
-        report = Report(account=None, reported_account_id=create_report_form.reported_account.data,
+        report = Report(account=None, reported_blog_id=create_report_form.reported_account.data,
                         reported_subjects=create_report_form.report_subjects.data,
                         report_reason=create_report_form.report_reason.data)
 

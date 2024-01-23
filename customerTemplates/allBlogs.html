@@ -34,21 +34,24 @@
                 <td>{{ blog.get_blog_id() }}</td>
                 <td>{{ blog.get_account() }}</td>
                 <td>
-                {% if 'REC' in blog.get_category() %}
-                    Recycling
-                {% endif %}
-                {% if 'SSB' in blog.get_category() %}
-                    Sustainability
-                {% endif %}
-                {% if 'BIZ' in blog.get_category() %}
-                    Business
-                {% endif %}
-                {% if 'H20' in blog.get_category() %}
-                    Water
-                {% endif %}
-                {% if 'CUL' in blog.get_category() %}
-                    Cultural
-                {% endif %}
+                    {% if 'REC' in blog.get_category() %}
+                        Recycling
+                    {% endif %}
+                    {% if 'SSB' in blog.get_category() %}
+                        Sustainability
+                    {% endif %}
+                    {% if 'BIZ' in blog.get_category() %}
+                        Business
+                    {% endif %}
+                    {% if 'H20' in blog.get_category() %}
+                        Water
+                    {% endif %}
+                    {% if 'CUL' in blog.get_category() %}
+                        Cultural
+                    {% endif %}
+                    {% if 'ETC' in blog.get_category() %}
+                        Other
+                    {% endif %}
                 {% if blog.get_category() == [] %}
                     No Category
                 {% endif %}
