@@ -147,10 +147,14 @@ def payment_delete():
 @app.route('/payment/view')
 def view_payment():
     payment_dict = {}
-    db = shelve.open('payment.db', 'r')
-    payment_dict = db['Payments']
+    try:
+        db = shelve.open('payment.db', 'r')
+        payment_dict = db['Payments']
+        db.close()
+    except:
+        flash('Please Create Your Payment Information')
+        return redirect(url_for('payment'))
 
-    db.close()
     try:
         payment_info = payment_dict[1]
     except:
