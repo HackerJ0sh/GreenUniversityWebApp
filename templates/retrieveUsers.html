@@ -18,12 +18,12 @@
       <tr>
         <th>Product ID</th>
         <th>Product Name</th>
+        
         <th>Product Price</th>
         <th>Category</th>
-        <th>Size</th>
         <th>Description</th>
         <th>Quantity</th>
-        <th></th>
+        <th>Image</th>
       </tr>
     </thead>
     <tbody>
@@ -36,6 +36,7 @@
         
         <td>{{ user.get_remarks() }}</td>
         <td>{{ user.get_quantity() }}</td>
+        <td><a class="imglink" href="/static/images/{{user.get_first_name()}}.jpg">File Link</a></td>
         <td><a href="/updateUser/{{user.get_user_id()}}" class="btn btn-warning">Update</a></td>
         <td>
           <form action="{{url_for('delete_user', id=user.get_user_id())}}" method="POST">
@@ -77,4 +78,14 @@
     </tbody>
   </table>
 </div>
+<style>
+  .imglink{
+    color: blue;
+    text-decoration: underline;
+  }
+  .imglink:hover{
+    opacity: 20%;
+    text-decoration: none;
+  }
+</style>
 {% endblock %}
