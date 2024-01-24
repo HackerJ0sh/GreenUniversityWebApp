@@ -16,26 +16,26 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Product ID</th>
-        <th>Product Name</th>
+        <th >Product ID</th>
+        <th >Product Name</th>
         
-        <th>Product Price</th>
-        <th>Category</th>
+        <th >Product Price</th>
+        <th >Category</th>
         <th>Description</th>
-        <th>Quantity</th>
+        <th >Quantity</th>
         <th>Image</th>
       </tr>
     </thead>
     <tbody>
     {% for user in users_list %}
      <tr>
-        <td>{{ user.get_user_id() }}</td>
-        <td>{{ user.get_first_name() }}</td>
-        <td>${{ user.get_last_name() }}</td>
-        <td>{{ user.get_gender() }}</td>
+        <td >{{ user.get_user_id() }}</td>
+        <td >{{ user.get_first_name() }}</td>
+        <td class="table-success">${{ user.get_last_name() }}</td>
+        <td >{{ user.get_gender() }}</td>
         
         <td>{{ user.get_remarks() }}</td>
-        <td>{{ user.get_quantity() }}</td>
+        <td class="table-warning">{{ user.get_quantity() }}</td>
         <td><a class="imglink" href="/static/images/{{user.get_first_name()}}.jpg" target="_blank">File Link</a></td>
         <td><a href="/updateProduct/{{user.get_user_id()}}" class="btn btn-warning">Update</a></td>
         <td>
@@ -86,6 +86,14 @@
   .imglink:hover{
     opacity: 20%;
     text-decoration: none;
+  }
+  td, th {
+    border-width: 3px !important;
+    border: solid 3px !important;
+    border-bottom: 3px solid !important;
+  }
+  table{
+    border-bottom: 3px solid !important;
   }
 </style>
 {% endblock %}
