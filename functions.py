@@ -2,6 +2,7 @@ import shelve
 import random
 
 
+
 def generate_blog_id():
     db = shelve.open('report_and_blog.db', 'c')
     try:
@@ -45,3 +46,16 @@ def check_report_id(id):
             id_found = True
     return id_found
 
+
+def paginate(page, blogs_list, blogs_temp_dict_length):
+    per_page = 1
+    start = (page - 1) * per_page
+    end = start + per_page
+    total_pages = (len(blogs_temp_dict_length) + per_page - 1) // per_page
+    print(f"When submitting: {total_pages}")
+    if total_pages == 0:
+        total_pages = 1
+
+    blogs_per_page = blogs_list[start:end]
+
+    return blogs_per_page, total_pages, page

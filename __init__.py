@@ -66,8 +66,8 @@ def create_blog():
 
 @app.route('/searchBlog', methods=['GET', 'POST'])
 def search_blog():
-
     search_blog_form = SearchBlogForm(request.form)
+    create_comment_form = CreateCommentForm(request.form)
     blogs_dict = {}
     blogs_temp_dict = {}
     db = shelve.open('report_and_blog.db', 'c')
@@ -77,6 +77,7 @@ def search_blog():
     except:
         print("Error in retrieving Blog from report_and_blog.db.")
 
+    count = 0
     if request.method == 'POST' and search_blog_form.validate():
 
         searched_post_name = search_blog_form.post_name.data
@@ -100,34 +101,26 @@ def search_blog():
         db['Temp_Blogs'] = blogs_temp_dict
         print(blogs_temp_dict)
         db.close()
-        # pagination
-        page = request.args.get('page', 1, type=int)
-        per_page = 1
-        start = (page - 1) * per_page
-        end = start + per_page
-        total_pages = (len(blogs_temp_dict['temp_list']) + per_page - 1) // per_page
-        print(f"When submitting: {total_pages}")
-        if total_pages == 0:
-            total_pages = 1
-        
-        blogs_per_page = blogs_list[start:end]
-        return render_template('searchBlog.html', form=search_blog_form, blogs_per_page=blogs_per_page, total_pages=total_pages, page=page)
+
+        paginated_info = paginate(request.args.get('page', 1, type=int), blogs_list, blogs_temp_dict['temp_list'])
+
+        return render_template('searchBlog.html', comment_form=create_comment_form,
+        form=search_blog_form, blogs_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
+
     else:
 
         blogs_temp_dict = db['Temp_Blogs']
         blogs_list = blogs_temp_dict['temp_list']
         print(blogs_list)
 
-        page = request.args.get('page', 1, type=int)
-        per_page = 1
-        start = (page - 1) * per_page
-        end = start + per_page
-        total_pages = ((len(blogs_list) + per_page - 1) // per_page)
-        print(f"When opening: {total_pages}")
-        blogs_per_page = blogs_list[start:end]
-        return render_template('searchBlog.html', form=search_blog_form, blogs_per_page=blogs_per_page, total_pages=total_pages, page=page)
+        paginated_info = paginate(request.args.get('page', 1, type=int), blogs_list, blogs_temp_dict['temp_list'])
 
+        return render_template('searchBlog.html', comment_form=create_comment_form,
+        form=search_blog_form, blogs_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
 
+@app.route('/searchBlog', methods=['GET', 'POST'])
+def retrieve_and_display_comments():
+    create_comment_form = CreateCommentForm(request.form)
 
 @app.route('/allBlogs')
 def retrieve_blogs():

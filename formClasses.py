@@ -8,6 +8,7 @@ class Blog:
         self.__image = image
         self.__post_content = blog_content
         self.__upvote_count = upvote_count
+        self.__comments = []
 
     def set_blog_id(self, blog_id):
         self.__blog_id = blog_id
@@ -30,6 +31,9 @@ class Blog:
     def set_category(self, category):
         self.__category = category
 
+    def set_comments(self, comments):
+        self.__comments = comments
+
     def get_blog_id(self):
         return self.__blog_id
 
@@ -51,24 +55,60 @@ class Blog:
     def get_category(self):
         return self.__category
 
+    def get_comments(self):
+        return self.__comments
+
+
+class Comment(Blog):
+    def __init__(self, comment_id, created_by, comment_content, username):
+        super().__init__(blog_id=None, account=None,
+        blog_subject=None, image=None, blog_content=None, category=None, upvote_count=None)
+        self.__comment_id = comment_id
+        self.__created_by = created_by
+        self.__comment_content = comment_content
+        self.__username = username
+
+    def set_comment_id(self, comment_id):
+        self.__comment_id = comment_id
+
+    def set_created_by(self, created_by):
+        self.__created_by = created_by
+
+    def set_comment_content(self, comment_content):
+        self.__comment_content = comment_content
+
+    def set_username(self, username):
+        self.__username = username
+
+    def get_comment_id(self):
+        return self.__comment_id
+
+    def get_created_by(self):
+        return self.__created_by
+
+    def get_comment_content(self):
+        return self.__comment_content
+
+    def get_username(self):
+        return self.__comment_content
+
 
 class User:
     count_id = 0
 
     # initializer method
-    def _init_(self, name, username, password, email, gender, security_question, security_answer, account_status, account_type):
+    def __init__(self):
         User.count_id += 1
         self.__user_id = User.count_id
-        self.__name = name
-        self.__username = username
-        self.__password = password
-        self.__email = email
-        self.__gender = gender
-        self.__security_question = security_question
-        self.__security_answer = security_answer
-        self.__account_status = account_status
-        self.__account_type = account_type
-
+        self.__name = None
+        self.__username = None
+        self.__password = None
+        self.__email = None
+        self.__gender = None
+        self.__security_question = None
+        self.__security_answer = None
+        self.__account_status = None
+        self.__account_type = None
     # accessor methods
     def get_user_id(self):
         return self.__user_id
@@ -129,6 +169,9 @@ class User:
 
     def set_account_type(self, account_type):
         self.__account_type = account_type
+
+
+
 
 
 class Report:
