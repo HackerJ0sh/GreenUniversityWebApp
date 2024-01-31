@@ -77,15 +77,13 @@ def search_blog():
     except:
         print("Error in retrieving Blog from report_and_blog.db.")
 
-    count = 0
     if request.method == 'POST' and search_blog_form.validate():
 
         searched_post_name = search_blog_form.post_name.data
         searched_post_name_length = len(searched_post_name)
-        print(blogs_temp_dict)
         blogs_list = []
 
-        if searched_post_name is None: # checks if user wants to see all blogs
+        if searched_post_name is None:  # checks if user wants to see all blogs
             for key in blogs_dict:
                 blog = blogs_dict.get(key)
                 blogs_list.append(blog)
@@ -99,28 +97,64 @@ def search_blog():
         # saves into temporary database
         blogs_temp_dict['temp_list'] = blogs_list
         db['Temp_Blogs'] = blogs_temp_dict
-        print(blogs_temp_dict)
         db.close()
 
+        # paginate
         paginated_info = paginate(request.args.get('page', 1, type=int), blogs_list, blogs_temp_dict['temp_list'])
 
         return render_template('searchBlog.html', comment_form=create_comment_form,
         form=search_blog_form, blogs_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
 
-    else:
+    blogs_temp_dict = db['Temp_Blogs']
+    blogs_list = blogs_temp_dict['temp_list']
+    print('blogs_list 1: ', blogs_list)
 
-        blogs_temp_dict = db['Temp_Blogs']
-        blogs_list = blogs_temp_dict['temp_list']
-        print(blogs_list)
+    # paginate
+    paginated_info = paginate(request.args.get('page', 1, type=int), blogs_list, blogs_temp_dict['temp_list'])
 
-        paginated_info = paginate(request.args.get('page', 1, type=int), blogs_list, blogs_temp_dict['temp_list'])
-
-        return render_template('searchBlog.html', comment_form=create_comment_form,
+    return render_template('searchBlog.html', comment_form=create_comment_form,
         form=search_blog_form, blogs_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
 
-@app.route('/searchBlog', methods=['GET', 'POST'])
-def retrieve_and_display_comments():
+
+@app.route('/searchBlog/<id>', methods=['GET', 'POST'])
+def retrieve_comments(id):
+    search_blog_form = SearchBlogForm(request.form)
     create_comment_form = CreateCommentForm(request.form)
+
+    try:
+        blogs_dict = db['Blogs']
+        blogs_temp_dict = db['Temp_Blogs']
+    except:
+        print("Error in retrieving Blog from report_and_blog.db.")
+
+    if request.method == 'POST' and create_comment_form.validate():
+        create_comment_form = CreateCommentForm(request.form)
+        new_comment = create_comment_form.comment_content.data
+        blog_id = create_comment_form.blog_id.data
+
+        # paginate
+        blogs_list = blogs_temp_dict['temp_list']
+        paginated_info = paginate(request.args.get('page', 1, type=int), blogs_list, blogs_temp_dict['temp_list'])
+
+        if new_comment == '':
+            return render_template('searchBlog.html', comment_form=create_comment_form,
+                                   form=search_blog_form, blogs_per_page=paginated_info[0],
+                                   total_pages=paginated_info[1], page=paginated_info[2])
+        for key in blogs_dict:
+            blog = blogs_dict.get(key)
+            if str(blog.get_blog_id()) == str(blog_id):
+                comment_id = generate_comment_id(blog_id)
+                new_comment = Comment(comment_id=comment_id, created_by=None, comment_content=new_comment, username=None)
+                blog.comments.set_comments(new_comment)
+                print('get_comments: ', blog.get_comments())
+                break
+            print('get_comments: ', blog.get_comments())
+        print('new comment: ', new_comment)
+
+        return render_template('searchBlog.html', comment_form=create_comment_form,
+        form=search_blog_form, blogs_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
+
+
 
 @app.route('/allBlogs')
 def retrieve_blogs():

@@ -2,7 +2,6 @@ import shelve
 import random
 
 
-
 def generate_blog_id():
     db = shelve.open('report_and_blog.db', 'c')
     try:
@@ -29,6 +28,12 @@ def generate_image_id(img):
     else:
         filepath = f'./static/files/{random.randint(1, 10 ** 15)}.{img.filename.split(".")[-1].lower()}'
     return filepath
+
+
+def generate_comment_id(blog_section):
+    comment_section = random.randint(10 ** 14, 10 ** 15)
+    comment_id = f'{blog_section}/{comment_section}'
+    return comment_id
 
 
 def check_report_id(id):

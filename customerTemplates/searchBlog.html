@@ -55,7 +55,7 @@
                              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                              width="40" height="40" />
                         <div class="form-outline w-100">
-                            <form>
+                            <form method="POST" action="">
                                  <div class="form-group col d-flex p-2" >{{ render_field(comment_form.comment_content, class="form-control") }}</div>
                                  <input type="text" class="form-group col d-flex p-2 position-absolute invisible" value="{{ blog.get_blog_id() }}">
                                  <input type="submit" value="Comment" class="btn btn-primary form-group col bg-success" style="float: right;"/>
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="card-body p-4">
-            <div class="d-flex flex-start">
+                    <div class="d-flex flex-start">
               <img class="rounded-circle shadow-1-strong me-3"
                 src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="avatar" width="60"
                 height="60" />
@@ -76,11 +76,10 @@
                   </p>
                 </div>
                 <p class="mb-0">
-                    your comment here
                 </p>
               </div>
             </div>
-          </div>
+                </div>
             </div>
         </div>
 

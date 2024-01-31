@@ -32,7 +32,7 @@ class Blog:
         self.__category = category
 
     def set_comments(self, comments):
-        self.__comments = comments
+        self.__comments.append(comments)
 
     def get_blog_id(self):
         return self.__blog_id
