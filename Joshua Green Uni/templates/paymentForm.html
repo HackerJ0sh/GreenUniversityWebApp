@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Payment Checkout Form</h2>
+    </div>
+    <div class="row g-5">
+        <div class="col-md-5 col-lg-4 order-md-last">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-primary">Your cart</span>
+                <span class="badge bg-primary rounded-pill">3</span>
+            </h4>
+            <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                    <div>
+                        <h6 class="my-0">Product Name</h6>
+                        <small class="text-muted">Brief Description</small>
+                    </div>
+                    <span class="text-muted">$12</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between bg-light">
+                    <div class="text-success">
+                        <h6 class="my-0">Promo Code</h6>
+                        <small>GREENUNIVERSITY</small>
+                    </div>
+                    <span class="text-success">-$5</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Total (SGD)</span>
+                    <strong>$7</strong>
+                </li>
+            </ul>
+            <form action="{{ url_for('payment_otp') }}" class="card p-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Promo code">
+                    <button type="submit" class="btn btn-secondary">Redeem</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-7 col-lg-8">
+            <form action="" method="POST" class="needs-validation">
+                <div class="row g-3">
+                    <h4 class="mb-3">Billing Address</h4>
+                    <div class="col-12">
+                        {{ render_field(form.full_name, class="form-control") }}
+                    </div>
+                    <div class="col-12">
+                        {{ render_field(form.phone_number, class="form-control") }}
+                    </div>
+                    <div class="col-12">
+                        {{ render_field(form.email, class="form-control") }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ render_field(form.country, class="form-select") }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ render_field(form.postal_code, class="form-control") }}
+                    </div>
+                    <div class="col-12">
+                        {{ render_field(form.address_line_1, class="form-control") }}
+                    </div>
+                    <div class="col-12">
+                        {{ render_field(form.address_line_2, class="form-control") }}
+                    </div>
+                </div>
+                <hr class="my-4">
+                <h4 class="mb-3">Payment</h4>
+                <div class="row gy-3">
+                    <div class="col-12">
+                        {{ render_field(form.card_holder_name, class="form-control") }}
+                    </div>
+                    <div class="col-md-9">
+                        {{ render_field(form.credit_card_number, class="form-control") }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ render_field(form.cvv, class="form-control") }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ render_field(form.expiry_date_month, class="form-control") }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ render_field(form.expiry_date_year, class="form-select") }}
+                    </div>
+                    <div class="col-12">
+                        {{ render_field(form.donation, class="form-control") }}
+                    </div>
+                </div>
+                <hr class="my-4">
+                <div class="form-check">
+                    {{ render_field(form.remember, class="form-check-input") }}
+                </div>
+                <hr class="my-4">
+                <input type="submit" class="w-100 btn btn-primary btn-lg mb-5" value="Submit" />
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

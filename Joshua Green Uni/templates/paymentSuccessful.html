@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Successful{% endblock %}
+
+{% block style %}
+
+<style>
+    .circle {
+        stroke-dasharray: 1194;
+        stroke-dashoffset: 1194;
+    }
+
+    .tick {
+        stroke-dasharray: 350;
+        stroke-dashoffset: 350;
+    }
+
+    svg .circle {
+        animation: circle 1s ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    svg .tick {
+        animation: tick 0.8s ease-out;
+        animation-fill-mode: forwards;
+        animation-delay: 0.95s;
+    }
+
+    @keyframes circle {
+        from {
+            stroke-dashoffset: 1194;
+        }
+
+        to {
+            stroke-dashoffset: 2388;
+        }
+    }
+
+    @keyframes tick {
+        form {
+            stroke-dashoffset: 350;
+        }
+
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    @keyframes title {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container-lg text-center">
+    <div class="row justify-content-md-center shadow-lg m-5 rounded-3">
+      <div class="col-md-auto">
+        <svg width="100" height="100" class="my-4">
+      <circle fill="none" stroke="#68E534" stroke-width="5" cx="50" cy="50" r="47.5" transform="rotate(-90 50 50)" class="circle" />
+      <polyline fill="none" stroke="#68E534" stroke-width="6" points="22,53 43.5,71 76,34.5" stroke-linecap="round" stroke-linejoin="round" class="tick" />
+  </svg>
+      </div>
+      <h1 class="my-2">Payment Successful</h1>
+      <p class="my-5 mx-auto w-75">Congratulations! Your payment was successful. Thank you for choosing Green University Web App. Your commitment to sustainable shopping is making a positive impact. Your order is now confirmed and will be processed shortly. </p>
+      <div class="d-flex justify-content-center my-4">
+        <a href="/" class="btn btn-lg mx-1 w-60" style="color: white; background-color: #73A942;">Back Home</a>
+        <a href="#" class="btn btn-lg mx-1 w-60" style="color: #73A942; border: 2px solid #73A942;">Continue Shopping</a>
+      </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

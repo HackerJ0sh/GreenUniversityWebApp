@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Payment OTP{% endblock %}
+
+{% block style %}
+
+<style>
+    .height-100 {
+        height: 100vh;
+    }
+
+    .card {
+        width: 400px;
+        border: none;
+        height: 300px;
+        box-shadow: 0px 5px 20px 0px #d2dae3;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card h6 {
+        color: #8fd14f;
+        font-size: 20px;
+    }
+
+    .inputs input {
+        width: 40px;
+        height: 40px;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0;
+    }
+
+    .card-2 {
+        background-color: #fff;
+        padding: 10px;
+        width: 350px;
+        height: 100px;
+        bottom: -50px;
+        left: 20px;
+        position: absolute;
+        border-radius: 5px;
+    }
+
+    .card-2 .content {
+        margin-top: 50px;
+    }
+
+    .card-2 .content a {
+        color: #8fd14f;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border: 2px solid #8fd14f;
+    }
+
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+
+<form class="container height-100 d-flex justify-content-center align-items-center" method="post">
+    <div class="position-relative">
+        <div class="card p-2 text-center">
+            <h6>Please enter the one time password <br> to verify your account</h6>
+            <div> <span>A 6-digit code has been sent to</span> <small>{{ email }}</small> </div>
+            <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+                {{ render_field(form.OTP_code_1, class="m-2 text-center form-control rounded") }}
+                {{ render_field(form.OTP_code_2, class="m-2 text-center form-control rounded") }}
+                {{ render_field(form.OTP_code_3, class="m-2 text-center form-control rounded") }}
+                {{ render_field(form.OTP_code_4, class="m-2 text-center form-control rounded") }}
+                {{ render_field(form.OTP_code_5, class="m-2 text-center form-control rounded") }}
+                {{ render_field(form.OTP_code_6, class="m-2 text-center form-control rounded") }}
+            </div>
+            <div class="mt-4 flex"> <button class="btn btn-success px-4 validate" type="submit">Validate</button> </div>
+        </div>
+    </div>
+</form>
+
+<script src="../static/js/paymentOTP.js"></script>
+
+{% endblock %}
+
+<!--
+<input class="m-2 text-center form-control rounded" type="text" id="first" maxlength="1" /> 
+<input class="m-2 text-center form-control rounded" type="text" id="second" maxlength="1" /> 
+<input class="m-2 text-center form-control rounded" type="text" id="third" maxlength="1" /> 
+<input class="m-2 text-center form-control rounded" type="text" id="fourth" maxlength="1" /> 
+<input class="m-2 text-center form-control rounded" type="text" id="fifth" maxlength="1" /> 
+<input class="m-2 text-center form-control rounded" type="text" id="sixth" maxlength="1" />
+-->
