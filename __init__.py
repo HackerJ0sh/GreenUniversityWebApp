@@ -944,7 +944,7 @@ def create_blog():
         print("Blog with ID", blog.get_blog_id(), "was stored in report_and_blog.db successfully")
         db.close()
 
-        return redirect(url_for('retrieve_blogs'))
+        return redirect(url_for('search_blog'))
     return render_template('createBlog.html', form=create_blog_form)
 
 
@@ -959,6 +959,7 @@ def search_blog():
         blogs_dict = db['Blogs']
         blogs_temp_dict = db['Temp_Blogs']
     except:
+
         print("Error in retrieving Blog from report_and_blog.db.")
 
     if request.method == 'POST' and search_blog_form.validate():
@@ -986,17 +987,20 @@ def search_blog():
         # paginate
         paginated_info = paginate(request.args.get('page', 1, type=int), blogs_list, blogs_temp_dict['temp_list'])
 
-        return render_template('searchBlog.html', comment_form=create_comment_form,
+        return render_template('searchBlog.html',
         form=search_blog_form, blogs_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
 
-    blogs_temp_dict = db['Temp_Blogs']
-    blogs_list = blogs_temp_dict['temp_list']
-    print('blogs_list 1: ', blogs_list)
+    else:
 
-    # paginate
-    paginated_info = paginate(request.args.get('page', 1, type=int), blogs_list, blogs_temp_dict['temp_list'])
+        blogs_temp_dict = db['Temp_Blogs']
+        blogs_list = blogs_temp_dict['temp_list']
+        db.close()
 
-    return render_template('searchBlog.html', comment_form=create_comment_form,
+        # paginate
+        paginated_info = paginate(request.args.get('page', 1, type=int), blogs_list, blogs_temp_dict['temp_list'])
+
+
+        return render_template('searchBlog.html',
         form=search_blog_form, blogs_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
 
 
@@ -1009,7 +1013,7 @@ def retrieve_comments(id):
         blogs_dict = db['Blogs']
         blogs_temp_dict = db['Temp_Blogs']
     except:
-        print("Error in retrieving Blog from report_and_blog.db.")
+        print("Error in retrieving etc. from report_and_blog.db.")
 
     if request.method == 'POST' and create_comment_form.validate():
         create_comment_form = CreateCommentForm(request.form)
@@ -1104,7 +1108,7 @@ def update_blog(id):
         return render_template('updateBlog.html', form=update_blog_form)
 
 
-@app.route('/deleteBlog/<int:id>', methods=['POST'])
+@app.route('/deleteBlog/<id>', methods=['POST'])
 def delete_blog(id):
     blogs_dict = {}
     db = shelve.open('report_and_blog.db', 'w')
@@ -1166,7 +1170,7 @@ def submit_report():
         db.close()
 
         return redirect(url_for('report_confirmed'))
-    return render_template('reportCustomer.html', form=create_report_form)
+    return render_template('reportBlog.html', form=create_report_form)
 
 
 @app.route('/unresolvedReports')

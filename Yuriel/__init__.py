@@ -282,7 +282,7 @@ def submit_report():
         db.close()
 
         return redirect(url_for('report_confirmed'))
-    return render_template('reportCustomer.html', form=create_report_form)
+    return render_template('reportBlog.html', form=create_report_form)
 
 
 @app.route('/unresolvedReports')
