@@ -425,7 +425,7 @@ def register():
         user = Account_Class.User(register_user_form.name.data, register_user_form.username.data,
                                   register_user_form.password.data, register_user_form.email.data,
                                   register_user_form.gender.data, register_user_form.security_question.data,
-                                  register_user_form.security_answer.data)
+                                  register_user_form.security_answer.data, register_user_form.account_status.data, register_user_form.account_type.data)
         users_dict[user.get_user_id()] = user
         db['Users'] = users_dict
 
