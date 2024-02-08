@@ -120,7 +120,7 @@ def create_user():
         else:
             user = User.User(create_user_form.product_name.data, 
                          create_user_form.product_price.data, 
-                         create_user_form.gender.data, 
+                         create_user_form.product_category.data, 
                          
                          create_user_form.remarks.data, 
                          create_user_form.quantity.data)
@@ -163,7 +163,7 @@ def update_user(id):
         user = users_dict.get(id)
         user.set_product_name(update_user_form.product_name.data)
         user.set_product_price(update_user_form.product_price.data)
-        user.set_gender(update_user_form.gender.data)
+        user.set_product_category(update_user_form.product_category.data)
         
         user.set_remarks(update_user_form.remarks.data)
         user.set_quantity(update_user_form.quantity.data)
@@ -182,7 +182,7 @@ def update_user(id):
         user = users_dict.get(id)
         update_user_form.product_name.data = user.get_product_name()
         update_user_form.product_price.data = user.get_product_price()
-        update_user_form.gender.data = user.get_gender()
+        update_user_form.product_category.data = user.get_product_category()
         
         update_user_form.remarks.data = user.get_remarks()
         update_user_form.quantity.data = user.get_quantity()

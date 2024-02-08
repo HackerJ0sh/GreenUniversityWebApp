@@ -3,12 +3,12 @@ class User:
     count_id = 0
 
     # initializer method
-    def __init__(self, product_name, product_price, gender, remarks, quantity):
+    def __init__(self, product_name, product_price, product_category, remarks, quantity):
         User.count_id += 1
         self.__user_id = User.count_id
         self.__product_name = product_name
         self.__product_price = product_price
-        self.__gender = gender
+        self.__product_category = product_category
       
         self.__remarks = remarks
         self.__quantity = quantity
@@ -24,8 +24,8 @@ class User:
     def get_product_price(self):
         return self.__product_price
 
-    def get_gender(self):
-        return self.__gender
+    def get_product_category(self):
+        return self.__product_category
 
     
 
@@ -45,8 +45,8 @@ class User:
     def set_product_price(self, product_price):
         self.__product_price = product_price
 
-    def set_gender(self, gender):
-        self.__gender = gender
+    def set_product_category(self, product_category):
+        self.__product_category = product_category
 
    
 
