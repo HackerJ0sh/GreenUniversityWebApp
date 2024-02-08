@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from Forms import CreateUserForm
 from flask_wtf.file import FileAllowed
-import shelve, User , Cart, random
+import shelve, User , random
 
 app = Flask(__name__)
 
@@ -118,7 +118,7 @@ def create_user():
         if img.filename.split(".")[-1].lower() not in allowed_extensions_list:
             return redirect(url_for('invalid_file'))
         else:
-            user = User.User(create_user_form.first_name.data, 
+            user = User.User(create_user_form.product_name.data, 
                          create_user_form.last_name.data, 
                          create_user_form.gender.data, 
                          
@@ -128,7 +128,7 @@ def create_user():
             db['Users'] = users_dict
 
             db.close()
-            img.save(f'./static/images/{user.get_first_name()}.{img.filename.split(".")[-1]}')
+            img.save(f'./static/images/{user.get_product_name()}.{img.filename.split(".")[-1]}')
             
         # assign a file name to the saved image
         
@@ -161,7 +161,7 @@ def update_user(id):
         users_dict = db['Users']
 
         user = users_dict.get(id)
-        user.set_first_name(update_user_form.first_name.data)
+        user.set_product_name(update_user_form.product_name.data)
         user.set_last_name(update_user_form.last_name.data)
         user.set_gender(update_user_form.gender.data)
         
@@ -180,7 +180,7 @@ def update_user(id):
         db.close()
 
         user = users_dict.get(id)
-        update_user_form.first_name.data = user.get_first_name()
+        update_user_form.product_name.data = user.get_product_name()
         update_user_form.last_name.data = user.get_last_name()
         update_user_form.gender.data = user.get_gender()
         
