@@ -1,0 +1,76 @@
+<head>
+   <style>
+        /* Body changes */
+        #collapsibleNavbar {
+
+        }
+
+       .nav-link {
+       color: black;
+       margin: 20px 20px;
+       font-weight: bold;
+
+       }
+       .nav-link:hover {
+       color: #35C285;
+       }
+       .nav-link:active {
+       color: #35C285;
+       
+       }
+       .navbar-brand {
+       color: green;
+       }
+       .navbar-brand:hover {
+       color: #35C285;
+       }
+
+       .navbar {
+       background: white;
+       }
+
+       .display-4 {
+       color: green;
+       font-weight: bold;
+       text-align: center;
+       }
+
+       .submit{
+       background: green;
+
+       }
+
+    </style>
+</head>
+
+
+<nav class="navbar navbar-expand-sm ">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">GreenUniversity</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Feedback</a>
+          <ul class="dropdown-menu">
+           <li><a class="dropdown-item" href="/createFeedback">Create Feedback</a></li>
+
+           <a class="dropdown-item" href="/viewFeedback">View Feedback</a>
+          </ul>
+         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/retrieveFeedbacks">Retrieve Feedback (For Staff)</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/thankyou">Thank You </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

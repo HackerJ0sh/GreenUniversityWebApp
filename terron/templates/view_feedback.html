@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Library Loan System - View Feedback{% endblock %}
+
+{% block content %}
+<h1 class="display-4">View Feedback</h1>
+<div>
+  {% if count == 0 %}
+  <p>There are no feedbacks.</p>
+  {% elif count == 1 %}
+  <p>There is 1 feedback.</p>
+  {% else %}
+  <p>There are {{ count }} feedback(s).</p>
+  {% endif %}
+</div>
+<div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Feedback No.</th>
+        <th>Satisfaction Level</th>
+        <th>Remarks</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for feedback in feedbacks_list %}
+     <tr>
+        <td>{{ feedback.get_feedback_id() }}</td>
+
+        {% if feedback.get_membership() == "G" %}
+        <td>Good</td>
+        {% elif feedback.get_membership() == "N" %}
+        <td>Neutral</td>
+        {% elif feedback.get_membership() == "B" %}
+        <td>Bad</td>
+        {% endif %}
+        <td>{{ feedback.get_remarks() }}</td>
+        <td>
+          <form action="{{url_for('delete_feedbackCustomer', id=feedback.get_feedback_id())}}" method="POST">
+
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{feedback.get_feedback_id()}}">
+  Delete
+</button>
+
+<!-- The Modal -->
+<div class="modal" id="myModal_{{feedback.get_feedback_id()}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Confirmation</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <input type="submit" value="Delete" class="btn btn-danger">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+          </form>
+        </td>
+     </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

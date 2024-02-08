@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Library Loan System - Create Feedback{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+<style>
+  .custom-radio {
+    display: none;
+  }
+
+  .custom-radio-label {
+    position: relative;
+    padding-left: 30px; /* Adjust as needed based on the image size */
+    cursor: pointer;
+  }
+
+  .custom-radio-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px; /* Adjust as needed based on the image size */
+    height: 20px; /* Adjust as needed based on the image size */
+    background: url('{{ url_for('static', filename='Happy-Icon.jpg') }}') no-repeat;
+    background-size: cover;
+  }
+
+  .custom-radio:checked + .custom-radio-label::before {
+    /* Adjust the appearance when the radio button is checked */
+    background-color: #00f; /* Change the color or add other styles */
+  }
+</style>
+
+
+<h1 class="display-4">Feedback Form</h1>
+
+<form method="POST" action="">
+
+  <div class="form-group">
+    {{ render_field(form.membership, class="form-check", style="list-style-type:none") }}
+  </div>
+  <div id="prof">
+    <div class="form-group">
+      {{ render_field(form.remarks, class="form-control") }}
+    </div>
+  </div>
+  <br>
+
+  <input type="submit" value="Submit" class="btn btn-primary submit" />
+  </form>
+{% endblock %}
