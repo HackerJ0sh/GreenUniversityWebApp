@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from Forms import CreateProductForm
+from ProductForm import CreateProductForm
 from flask_wtf.file import FileAllowed
 import shelve, Product , random
 
