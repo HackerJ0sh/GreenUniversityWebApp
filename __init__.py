@@ -166,6 +166,10 @@ def view_payment():
 
     return render_template('paymentView.html', payment_info=payment_info)
 
+@app.route('/aboutUs')
+def about_us():
+    return render_template('aboutUs.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
