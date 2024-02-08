@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Green University - View Blogs{% endblock %}
+{% block content %}
+<h1 class="display-4">View Blogs</h1>
+<div>
+    {% if count == 0 %}
+    <p>There are no blogs.</p>
+    {% elif count == 1 %}
+    <p>There is 1 blog.</p>
+    {% else %}
+    <p>There are {{ count }} blogs.</p>
+    {% endif %}
+</div>
+
+<div>
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Report ID</th>
+            <th>Reported Blog ID</th>
+            <th>Reason for Report</th>
+            <th>Report Description</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+     <tbody>
+        {% for report in reports_list %}
+            <tr>
+                <td>{{ report.get_report_id() }}</td>
+                <td>{{ report.get_reported_blog_id() }}</td>
+                <td>
+                    {% if '1' in report.get_reported_subjects() %}
+                        Hate speech and discrimination
+                    {% endif %}
+                    {% if '2' in report.get_reported_subjects() %}
+                        Harassment and bullying
+                    {% endif %}
+                    {% if '3' in report.get_reported_subjects() %}
+                        Illegal content
+                    {% endif %}
+                    {% if '4' in report.get_reported_subjects() %}
+                        Plagiarism
+                    {% endif %}
+                    {% if '5' in report.get_reported_subjects() %}
+                        Misinformative or disinformative
+                    {% endif %}
+                </td>
+                <td>{{ report.get_report_reason() }}</td>
+            </tr>
+        {% endfor %}
+     </tbody>
+     </table>
+</div>
+{% endblock %}

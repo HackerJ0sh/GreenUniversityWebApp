@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Green University - View Blogs{% endblock %}
+{% block content %}
+
+<h1 class="display-4">View Blogs</h1>
+<div>
+    {% if count == 0 %}
+    <p>There are no blogs.</p>
+    {% elif count == 1 %}
+    <p>There is 1 blog.</p>
+    {% else %}
+    <p>There are {{ count }} blogs.</p>
+    {% endif %}
+</div>
+
+<div>
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Blog ID</th>
+            <th>Account</th>
+            <th>Category</th>
+            <th>Subject</th>
+            <th>Image</th>
+            <th>Content</th>
+            <th>Upvotes</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+     <tbody>
+        {% for blog in blogs_list %}
+            <tr>
+                <td>{{ blog.get_blog_id() }}</td>
+                <td>{{ blog.get_account() }}</td>
+                <td>
+                    {% if 'REC' in blog.get_category() %}
+                        Recycling
+                    {% endif %}
+                    {% if 'SSB' in blog.get_category() %}
+                        Sustainability
+                    {% endif %}
+                    {% if 'BIZ' in blog.get_category() %}
+                        Business
+                    {% endif %}
+                    {% if 'H20' in blog.get_category() %}
+                        Water
+                    {% endif %}
+                    {% if 'CUL' in blog.get_category() %}
+                        Cultural
+                    {% endif %}
+                    {% if 'ETC' in blog.get_category() %}
+                        Other
+                    {% endif %}
+                {% if blog.get_category() == [] %}
+                    No Category
+                {% endif %}
+                </td>
+                <td>{{ blog.get_post_name() }}</td>
+                <td>
+                    {% if blog.get_image() == None %}
+                        No image
+                    {% else %}
+                    <a href="{{ blog.get_image() }}">
+                    Image link</a>
+                    {% endif %}
+                </td>
+                <td>{{ blog.get_post_content() }}</td>
+                <td>{{ blog.get_upvote_count() }}</td>
+                <td><a href="/updateBlog/{{blog.get_blog_id()}}" class="btn btn-warning">Update</a></td>
+                <td>
+                    <form action="{{url_for('delete_blog', id=blog.get_blog_id())}}" method="POST">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+     </tbody>
+     </table>
+</div>
+
+{% endblock %}

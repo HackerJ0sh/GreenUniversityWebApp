@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Green University - View Blogs{% endblock %}
+
+{% block content %}
+{% from "customerIncludes/_customerFormHelper.html" import render_field %}
+<div class="container g-3 container-style">
+  <h1 class="display-4 text-center">Search Blog</h1>
+  <form method="POST" action="">
+    <div class="row border border-dark" style="padding: 10px;">
+      <div class="form-group col d-flex p-2">{{ render_field(form.post_name, class="form-control", placeholder="Leave empty to view all blogs") }}</div>
+        <input type="submit" value="Search" class="btn btn-primary form-group col h-25 w-25 bg-success" style="margin: auto 15px;"/>
+    </div>
+  </form>
+</div>
+
+{% for blog in blogs_per_page %}
+    <section class="section works p-2" id="works">
+        <div class="container border border-dark" style="max-width: 1000px">
+            <div class="col-md-12 col-xs-12 container border-bottom border-dark">
+                    <div class="row">
+                        <h4 class="p-2 fw-bold">{{ blog.get_post_name() }}</h4>
+                        <div class="d-flex flex-row">
+                            {% if 'REC' in blog.get_category() %}
+                                <button type="button" class="btn btn-outline-success p-2 m-1">Recycling</button>
+                            {% endif %}
+                            {% if 'SSB' in blog.get_category() %}
+                                <button type="button" class="btn btn-outline-success p-2 m-1">Sustainability</button>
+                            {% endif %}
+                            {% if 'BIZ' in blog.get_category() %}
+                                <button type="button" class="btn btn-outline-success p-2 m-1">Business</button>
+                            {% endif %}
+                            {% if 'H20' in blog.get_category() %}
+                                <button type="button" class="btn btn-outline-success p-2 m-1">Water</button>
+                            {% endif %}
+                            {% if 'CUL' in blog.get_category() %}
+                                <button type="button" class="btn btn-outline-success p-2 m-1">Cultural</button>
+                            {% endif %}
+                            {% if 'ETC' in blog.get_category() %}
+                                <button type="button" class="btn btn-outline-success p-2 m-1">Others</button>
+                            {% endif %}
+                                </div>
+                            <div class="p-2">
+                                <img src="{{ blog.get_image() }}" style="max-width: 500px; max-height: 500px;">
+                                <div class="overlay"></div>
+                            </div>
+                        <div class="p-2">
+                            <p class="text-left">{{ blog.get_post_content() }}</p>
+                        </div>
+                    </div>
+            </div>
+            <div class="container p-3">
+                <div class="card-footer py-3 border-0 container" style="background-color: #f8f9fa;">
+                    <div class="d-flex flex-start w-100">
+                        <img class="rounded-circle shadow-1-strong me-3"
+                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                             width="40" height="40" />
+                        <div class="form-outline w-100">
+                            <form method="POST" action="">
+                                 <div class="form-group col d-flex p-2" >{{ render_field(comment_form.comment_content, class="form-control") }}</div>
+                                 <input type="text" class="form-group col d-flex p-2 position-absolute invisible" value="{{ blog.get_blog_id() }}">
+                                 <input type="submit" value="Comment" class="btn btn-primary form-group col bg-success" style="float: right;"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex flex-start">
+              <img class="rounded-circle shadow-1-strong me-3"
+                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="avatar" width="60"
+                height="60" />
+              <div>
+                <h6 class="fw-bold mb-1">Username</h6>
+                <div class="d-flex align-items-center mb-3">
+                  <p class="mb-0">
+                    March 15, 2021
+                  </p>
+                </div>
+                <p class="mb-0">
+                </p>
+              </div>
+            </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+{% endfor %}
+
+<div class="container d-flex justify-content-center">
+    {% if page > 1 %}
+        <a href="{{url_for('search_blog', page=page-1) }}" class="p-2">Previous</a>
+    {% endif %}
+        <span class="p-2">Page {{page}} of {{total_pages}}</span>
+    {% if page < total_pages %}
+        <a href="{{url_for('search_blog', page=page+1) }}" class="p-2">Next</a>
+    {% endif %}
+</div>
+
+    <style>
+        .container-style {
+               margin-top: 50px;
+            }
+    </style>
+
+{% endblock %}

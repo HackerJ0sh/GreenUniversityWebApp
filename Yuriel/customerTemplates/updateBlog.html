@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Green University - Update Blog{% endblock %}
+{% block content %}
+{% from "customerIncludes/_customerFormHelper.html" import render_field %}
+<div class="col-md-7 col-lg-8 container shadow-lg p-3 mb-5 bg-white rounded container-style">
+    <h1 class="display-4">Update Blog</h1>
+    <form method="POST" action="" enctype="multipart/form-data">
+        <div class="row g-3">
+            <div class="form-group col-12 p-2">{{ render_field(form.post_name, class="form-control") }}
+            </div>
+            <div class="form-group col-12 p-2">
+                {{ render_field(form.image, class="form-control", id="imageInput") }}
+                <div class="container m-2">
+                <img id="imageDisplay" width="100%">
+                </div>
+            </div>
+            <div class="form-group col-12 p-2">
+                {{ render_field(form.post_content, class="form-control") }}
+            </div>
+            <div class="form-group col-12 p-2">
+                {{ render_field(form.category, class="form-check", style="list-style-type:none") }}
+            </div>
+            <input type="submit" value="Post" class="btn btn-success p-2"/>
+        </div>
+    </form>
+</div>
+
+    <script>
+        const imageInput = document.getElementById('imageInput')
+        // file goes in through here
+
+        const imageDisplay = document.getElementById('imageDisplay')
+        // file is rendered here
+
+        const clear = document.getElementById('clear')
+        // "clear" button
+
+        const searchParams = new URLSearchParams(window.location.search);
+        console.log(searchParams.get('alert') == 'true')
+        if (searchParams.get('alert') == 'true') {
+            alert("Image files only! [png, jpg, jpeg]")
+            }
+
+        imageInput.onchange = () => { // when user selects a local file, run this code
+            const reader = new FileReader()
+            if (imageInput.files[0]) { // if there's a file present in the input
+                reader.onload = event => {
+                    imageDisplay.src = event.target?.result // give the file to imageDisplay to display it
+                }
+                reader.readAsDataURL(imageInput.files[0])
+            }
+        }
+    </script>
+
+    <style>
+        .container-style {
+               border: 3px green solid;
+               border-radius: 40px;
+               margin-top: 50px;
+
+            }
+    </style>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Green University - Report Blog{% endblock %}
+{% block content %}
+{% from "customerIncludes/_customerFormHelper.html" import render_field %}
+<div class="col-md-7 col-lg-8 container shadow-lg p-3 mb-5 bg-white rounded container-style">
+<h1 class="display-4">Report Blog</h1>
+    <p> If you come across any content that is inappropriate or violates our community guidelines, we encourage you to
+        report the issue promptly. Our dedicated team of administrators is committed to maintaining a safe and respectful
+        environment for all users.</p>
+<form method="POST" action="">
+    <div class="row g-3">
+        <div class="form-group form-group col-12 p-2">
+            {{ render_field(form.reported_account, class="form-control") }}
+        </div>
+        <div class="form-group form-group col-12 p-2">
+            {{ render_field(form.report_subjects, class="form-check", style="list-style-type:none") }}
+        </div>
+        <div class="form-group form-group col-12 p-2">
+            {{ render_field(form.report_reason, class="form-control") }}
+        </div>
+        <input type="submit" value="Report" class="btn btn-danger p-2"/>
+    </div>
+</form>
+</div>
+<script>
+        const searchParams = new URLSearchParams(window.location.search);
+        console.log(searchParams.get('alert') == 'true')
+        if (searchParams.get('alert') == 'true') {
+            alert("Blog ID not found; please check and re-submit again.")
+            }
+</script>
+
+    <style>
+        .container-style {
+               border: 3px red solid;
+               margin-top: 50px;
+            }
+    </style>
+{% endblock %}
