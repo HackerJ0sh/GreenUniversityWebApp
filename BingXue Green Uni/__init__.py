@@ -6,7 +6,7 @@ import shelve, Product , random
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/store')
 def store():
     products_dict = {}
     db = shelve.open('product.db', 'r')
