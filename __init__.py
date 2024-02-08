@@ -1,55 +1,55 @@
 from flask import Flask, render_template, request, redirect, url_for
-from Forms import CreateUserForm
+from Forms import CreateProductForm
 from flask_wtf.file import FileAllowed
-import shelve, User , random
+import shelve, Product , random
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def home():
-    users_dict = {}
-    db = shelve.open('user.db', 'r')
-    users_dict = db['Users']
+    products_dict = {}
+    db = shelve.open('product.db', 'r')
+    products_dict = db['Products']
     db.close()
     
     
-    users_list = []
-    for key in users_dict:
-        user = users_dict.get(key)
-        users_list.append(user)
+    products_list = []
+    for key in products_dict:
+        product = products_dict.get(key)
+        products_list.append(product)
         
         
 
-    return render_template('home.html', count=len(users_list), users_list=users_list)
+    return render_template('home.html', count=len(products_list), products_list=products_list)
 
 @app.route('/<int:id>/info', methods=["POST", "GET"])
 def info(id):
-    users_dict = {}
-    db = shelve.open('user.db', 'r')
-    users_dict = db['Users']
+    products_dict = {}
+    db = shelve.open('product.db', 'r')
+    products_dict = db['Products']
     db.close()
 
-    users_list = []
+    products_list = []
     
-    user = users_dict.get(id)
-    users_list.append(user)
+    product = products_dict.get(id)
+    products_list.append(product)
     
-    return render_template('info.html', users_list=users_list)
+    return render_template('info.html', products_list=products_list)
 
 @app.route('/cart')
 def cart():
     cart_dict = {}
-    db = shelve.open('cart.db','r')
-    cart_dict = db['Users']
+    db = shelve.open('shoppingcart.db','r')
+    cart_dict = db['Products']
     db.close()
 
     cart_list = []
     total_price = 0
     for key in cart_dict:
-        user = cart_dict.get(key)
-        cart_list.append(user)
-        price = user.get_product_price()
+        product = cart_dict.get(key)
+        cart_list.append(product)
+        price = product.get_product_price()
         total_price += float(price)
     
     total_price = f"{total_price:.2f}"
@@ -57,17 +57,18 @@ def cart():
 
 @app.route('/<int:id>/add_to_cart', methods=["POST", "GET"])
 def add_to_cart(id):
-    users_dict = {}
-    db = shelve.open('user.db', 'r')
-    users_dict = db['Users']
-    user = users_dict.get(id)
+    products_dict = {}
+    db = shelve.open('product.db', 'r')
+    products_dict = db['Products']
+    product = products_dict.get(id)
     db.close()
 
     cart_dict = {}
-    db2 = shelve.open('cart.db','w')
-    cart_dict = db2['Users']
-    cart_dict[id] = user
-    db2['Users'] = cart_dict
+    db2 = shelve.open('shoppingcart.db','w')
+
+    cart_dict = db2['Products']
+    cart_dict[id] = product
+    db2['Products'] = cart_dict
     db.close()
     
     return redirect(url_for('cart'))
@@ -75,13 +76,13 @@ def add_to_cart(id):
         
 @app.route('/<int:id>/remove_from_cart', methods=['POST'])
 def remove_from_cart(id):
-    users_dict = {}
-    db = shelve.open('cart.db', 'w')
-    users_dict = db['Users']
+    products_dict = {}
+    db = shelve.open('shoppingcart.db', 'w')
+    products_dict = db['Products']
 
-    users_dict.pop(id)
+    products_dict.pop(id)
 
-    db['Users'] = users_dict
+    db['Products'] = products_dict
     db.close()
 
     return redirect(url_for('cart'))
@@ -101,107 +102,107 @@ def invalid_file():
 
 
 @app.route('/createProduct', methods=['GET', 'POST'])
-def create_user():
-    create_user_form = CreateUserForm(request.form)
+def create_product():
+    create_product_form = CreateProductForm(request.form)
     allowed_extensions_list = ['jpg','png']  
-    if request.method == 'POST' and create_user_form.validate():
-        users_dict = {}
-        db = shelve.open('user.db', 'c')
+    if request.method == 'POST' and create_product_form.validate():
+        products_dict = {}
+        db = shelve.open('product.db', 'c')
 
         try:
-            users_dict = db['Users']
+            products_dict = db['Products']
         except:
-            print("Error in retrieving Users from user.db.")
+            print("Error in retrieving Products from product.db.")
 
         
         img = request.files.getlist('image')[0]
         if img.filename.split(".")[-1].lower() not in allowed_extensions_list:
             return redirect(url_for('invalid_file'))
         else:
-            user = User.User(create_user_form.product_name.data, 
-                         create_user_form.product_price.data, 
-                         create_user_form.product_category.data, 
+            product = Product.Product(create_product_form.product_name.data, 
+                         create_product_form.product_price.data, 
+                         create_product_form.product_category.data, 
                          
-                         create_user_form.remarks.data, 
-                         create_user_form.quantity.data)
-            users_dict[user.get_user_id()] = user
-            db['Users'] = users_dict
+                         create_product_form.remarks.data, 
+                         create_product_form.quantity.data)
+            products_dict[product.get_product_id()] = product
+            db['Products'] = products_dict
 
             db.close()
-            img.save(f'./static/images/{user.get_product_name()}.{img.filename.split(".")[-1]}')
+            img.save(f'./static/images/{product.get_product_name()}.{img.filename.split(".")[-1]}')
             
         # assign a file name to the saved image
         
 
-        return redirect(url_for('retrieve_users'))
-    return render_template('createUser.html', form=create_user_form)
+        return redirect(url_for('retrieve_products'))
+    return render_template('createProduct.html', form=create_product_form)
 
 @app.route('/retrieveInventory')
-def retrieve_users():
-    users_dict = {}
-    db = shelve.open('user.db', 'r')
-    users_dict = db['Users']
+def retrieve_products():
+    products_dict = {}
+    db = shelve.open('product.db', 'r')
+    products_dict = db['Products']
     db.close()
 
     
-    users_list = []
-    for key in users_dict:
-        user = users_dict.get(key)
-        users_list.append(user)
+    products_list = []
+    for key in products_dict:
+        product = products_dict.get(key)
+        products_list.append(product)
         
-    return render_template('retrieveUsers.html', count=len(users_list), users_list=users_list,)
+    return render_template('retrieveProducts.html', count=len(products_list), products_list=products_list,)
 
 
 @app.route('/updateProduct/<int:id>/', methods=['GET', 'POST'])
-def update_user(id):
-    update_user_form = CreateUserForm(request.form)
-    if request.method == 'POST' and update_user_form.validate():
-        users_dict = {}
-        db = shelve.open('user.db', 'w')
-        users_dict = db['Users']
+def update_product(id):
+    update_product_form = CreateProductForm(request.form)
+    if request.method == 'POST' and update_product_form.validate():
+        products_dict = {}
+        db = shelve.open('product.db', 'w')
+        products_dict = db['Products']
 
-        user = users_dict.get(id)
-        user.set_product_name(update_user_form.product_name.data)
-        user.set_product_price(update_user_form.product_price.data)
-        user.set_product_category(update_user_form.product_category.data)
+        product = products_dict.get(id)
+        product.set_product_name(update_product_form.product_name.data)
+        product.set_product_price(update_product_form.product_price.data)
+        product.set_product_category(update_product_form.product_category.data)
         
-        user.set_remarks(update_user_form.remarks.data)
-        user.set_quantity(update_user_form.quantity.data)
+        product.set_remarks(update_product_form.remarks.data)
+        product.set_quantity(update_product_form.quantity.data)
 
-        db['Users'] = users_dict
+        db['Products'] = products_dict
         db.close()
         
 
-        return redirect(url_for('retrieve_users'))
+        return redirect(url_for('retrieve_products'))
     else:
-        users_dict = {}
-        db = shelve.open('user.db', 'r')
-        users_dict = db['Users']
+        products_dict = {}
+        db = shelve.open('product.db', 'r')
+        products_dict = db['Products']
         db.close()
 
-        user = users_dict.get(id)
-        update_user_form.product_name.data = user.get_product_name()
-        update_user_form.product_price.data = user.get_product_price()
-        update_user_form.product_category.data = user.get_product_category()
+        product = products_dict.get(id)
+        update_product_form.product_name.data = product.get_product_name()
+        update_product_form.product_price.data = product.get_product_price()
+        update_product_form.product_category.data = product.get_product_category()
         
-        update_user_form.remarks.data = user.get_remarks()
-        update_user_form.quantity.data = user.get_quantity()
+        update_product_form.remarks.data = product.get_remarks()
+        update_product_form.quantity.data = product.get_quantity()
 
-        return render_template('updateUser.html', form=update_user_form)
+        return render_template('updateProduct.html', form=update_product_form)
 
 
 @app.route('/deleteProduct/<int:id>', methods=['POST'])
-def delete_user(id):
-    users_dict = {}
-    db = shelve.open('user.db', 'w')
-    users_dict = db['Users']
+def delete_product(id):
+    products_dict = {}
+    db = shelve.open('product.db', 'w')
+    products_dict = db['Products']
 
-    users_dict.pop(id)
+    products_dict.pop(id)
 
-    db['Users'] = users_dict
+    db['Products'] = products_dict
     db.close()
 
-    return redirect(url_for('retrieve_users'))
+    return redirect(url_for('retrieve_products'))
 
 
 

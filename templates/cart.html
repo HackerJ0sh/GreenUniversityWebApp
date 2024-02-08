@@ -25,35 +25,35 @@
                       <p>There are {{ cartcount }} items in your cart.</p>
                       {% endif %}</h6>
                   </div>
-                  {% for user in cart_list %}
+                  {% for product in cart_list %}
 
                   <hr class="my-4">
 
                   <div class="row mb-4 d-flex justify-content-between align-items-center">
                     <div class="col-md-2 col-lg-2 col-xl-2">
                       <img
-                        src="/static/images/{{user.get_product_name()}}.jpg"
+                        src="/static/images/{{product.get_product_name()}}.jpg"
                         class="img-fluid rounded-3" alt="Cotton T-shirt">
                     </div>
                     <div class="col-md-3 col-lg-3 col-xl-3">
-                      <h6 class="text-muted">{{user.get_product_category()}}</h6>
-                      <h6 class="text-black mb-0">{{ user.get_product_name() }}</h6>
+                      <h6 class="text-muted">{{product.get_product_category()}}</h6>
+                      <h6 class="text-black mb-0">{{ product.get_product_name() }}</h6>
           
                     </div>
                     
                     <div class="col-md-3 col-lg-3 col-xl-3">
-                      <h6 class="mb-0">${{ user.get_product_price() }}</h6>
+                      <h6 class="mb-0">${{ product.get_product_price() }}</h6>
                     </div>
                     <div class="col-md-3 col-lg-3 col-xl-3">
-                      <form action="{{url_for('remove_from_cart', id=user.get_user_id())}}" method="POST">
-                        <!--            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{user.get_product_name()}} {{user.get_product_price()}}?');">-->
+                      <form action="{{url_for('remove_from_cart', id=product.get_product_id())}}" method="POST">
+                        <!--            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{product.get_product_name()}} {{product.get_product_price()}}?');">-->
                         <!-- Button to Open the Modal -->
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{user.get_user_id()}}">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{product.get_product_id()}}">
                           Remove
                         </button>
                         
                         <!-- The Modal -->
-                        <div class="modal" id="myModal_{{user.get_user_id()}}">
+                        <div class="modal" id="myModal_{{product.get_product_id()}}">
                           <div class="modal-dialog">
                             <div class="modal-content">
                         
@@ -65,7 +65,7 @@
                         
                               <!-- Modal body -->
                               <div class="modal-body align-items-center">
-                                 Remove {{user.get_product_name()}} {{user.get_product_price()}}?
+                                 Remove {{product.get_product_name()}} {{product.get_product_price()}}?
                               </div>
                               
                               <!-- Modal footer -->

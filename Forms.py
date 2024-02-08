@@ -5,7 +5,7 @@ from flask_wtf.file import FileAllowed, FileRequired
 
 
 
-class CreateUserForm(Form):
+class CreateProductForm(Form):
     product_name = StringField('Product Name', [validators.Length(min=1, max=150), validators.DataRequired()])
     product_price = DecimalField('Product Price', [validators.DataRequired()], places=2, rounding=None)
     product_category = StringField('Category', [validators.Length(min=1, max=15), validators.DataRequired()]) 

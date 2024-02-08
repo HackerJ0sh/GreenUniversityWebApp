@@ -5,7 +5,7 @@
 <h1 class="display-4">Product inventory</h1>
 <div>
   {% if count == 0 %}
-  <p>There are no users.</p>
+  <p>There are no products.</p>
   {% elif count == 1 %}
   <p>There is 1 product.</p>
   {% else %}
@@ -27,27 +27,27 @@
       </tr>
     </thead>
     <tbody>
-    {% for user in users_list %}
+    {% for product in products_list %}
      <tr>
-        <td >{{ user.get_user_id() }}</td>
-        <td >{{ user.get_product_name() }}</td>
-        <td class="table-success">${{ user.get_product_price() }}</td>
-        <td >{{ user.get_product_category() }}</td>
+        <td >{{ product.get_product_id() }}</td>
+        <td >{{ product.get_product_name() }}</td>
+        <td class="table-success">${{ product.get_product_price() }}</td>
+        <td >{{ product.get_product_category() }}</td>
         
-        <td>{{ user.get_remarks() }}</td>
-        <td class="table-warning">{{ user.get_quantity() }}</td>
-        <td><a class="imglink" href="/static/images/{{user.get_product_name()}}.jpg" target="_blank">File Link</a></td>
-        <td><a href="/updateProduct/{{user.get_user_id()}}" class="btn btn-warning">Update</a></td>
+        <td>{{ product.get_remarks() }}</td>
+        <td class="table-warning">{{ product.get_quantity() }}</td>
+        <td><a class="imglink" href="/static/images/{{product.get_product_name()}}.jpg" target="_blank">File Link</a></td>
+        <td><a href="/updateProduct/{{product.get_product_id()}}" class="btn btn-warning">Update</a></td>
         <td>
-          <form action="{{url_for('delete_user', id=user.get_user_id())}}" method="POST">
-<!--            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{user.get_product_name()}} {{user.get_product_price()}}?');">-->
+          <form action="{{url_for('delete_product', id=product.get_product_id())}}" method="POST">
+<!--            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{product.get_product_name()}} {{product.get_product_price()}}?');">-->
 <!-- Button to Open the Modal -->
-<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{user.get_user_id()}}">
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{product.get_product_id()}}">
   Delete
 </button>
 
 <!-- The Modal -->
-<div class="modal" id="myModal_{{user.get_user_id()}}">
+<div class="modal" id="myModal_{{product.get_product_id()}}">
   <div class="modal-dialog">
     <div class="modal-content">
 
@@ -59,7 +59,7 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-        Are you sure you want to delete {{user.get_product_name()}} {{user.get_product_price()}}?
+        Are you sure you want to delete {{product.get_product_name()}} {{product.get_product_price()}}?
       </div>
 
       <!-- Modal footer -->

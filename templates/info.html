@@ -6,7 +6,7 @@
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'>
 <link rel="stylesheet" href="../static/style/home.css">
 <script src="https://kit.fontawesome.com/056d0b33c4.js" crossorigin="anonymous"></script>
-{% for user in users_list %}
+{% for product in products_list %}
 
 
   
@@ -16,8 +16,8 @@
       <div class="row gx-5">
         <aside class="col-lg-6">
           <div class="border rounded-4 mb-3 d-flex justify-content-center">
-            <a data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image" href="/static/images/{{user.get_product_name()}}.jpg">
-              <img style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit" src="/static/images/{{user.get_product_name()}}.jpg" />
+            <a data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image" href="/static/images/{{product.get_product_name()}}.jpg">
+              <img style="max-width: 100%; max-height: 100vh; margin: auto;" class="rounded-4 fit" src="/static/images/{{product.get_product_name()}}.jpg" />
             </a>
           </div>
           
@@ -27,7 +27,7 @@
         <main class="col-lg-6">
           <div class="ps-lg-3">
             <h4 class="title text-dark">
-                {{user.get_product_name()}}
+                {{product.get_product_name()}}
             </h4>
             <div class="d-flex flex-row my-3">
               <div class="text-warning mb-1 me-2">
@@ -40,29 +40,29 @@
                   4.5
                 </span>
               </div>
-              <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>{{ user.get_quantity() }}</span>
+              <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>{{ product.get_quantity() }}</span>
               <span class="text-success ms-2">In stock</span>
             </div>
   
             <div class="mb-3">
-              <span class="h5">${{user.get_product_price()}}</span>
+              <span class="h5">${{product.get_product_price()}}</span>
               
             </div>
   
             <p>
-                {{ user.get_remarks() }}
+                {{ product.get_remarks() }}
             </p>
   
             <div class="row">
               <dt class="col-3">Type:</dt>
-              <dd class="col-9">{{ user.get_product_category() }}</dd>
+              <dd class="col-9">{{ product.get_product_category() }}</dd>
             </div>
   
             <hr />
   
 
               <!-- col.// -->
-            <a href="/{{user.get_user_id()}}/add_to_cart" class="btn btn-primary shadow-0"> <i class="fas fa-shopping-cart"></i> Add to cart </a>
+            <a href="/{{product.get_product_id()}}/add_to_cart" class="btn btn-primary shadow-0"> <i class="fas fa-shopping-cart"></i> Add to cart </a>
           </div>
         </main>
       </div>

@@ -17,22 +17,22 @@
                     </div>
             </div>
             <div class="row">
-                {% for user in users_list %}
+                {% for product in products_list %}
                     <!-- Single Product -->
                     <div class="col-md-6 col-lg-4 col-xl-3">
                             <div id="product-1" class="single-product">
                                     <div class="part-1">
-                                        <img src="/static/images/{{user.get_product_name()}}.jpg" alt="" class="img" >
+                                        <img src="/static/images/{{product.get_product_name()}}.jpg" alt="" class="img" >
                                             <ul>
-                                                    <li><a href="/{{user.get_user_id()}}/add_to_cart"><i class="fas fa-shopping-cart"></i></a></li>
-                                                    <li><a href="/{{user.get_user_id()}}/info"><i class="fa-solid fa-arrow-right"></i></a></li>
+                                                    <li><a href="/{{product.get_product_id()}}/add_to_cart"><i class="fas fa-shopping-cart"></i></a></li>
+                                                    <li><a href="/{{product.get_product_id()}}/info"><i class="fa-solid fa-arrow-right"></i></a></li>
                                                     
                                             </ul>
                                     </div>
                                     <div class="part-2">
-                                            <h3 class="product-title">{{user.get_product_name()}}</h3>
+                                            <h3 class="product-title">{{product.get_product_name()}}</h3>
                                             
-                                            <h4 class="product-price">${{user.get_product_price()}}</h4>
+                                            <h4 class="product-price">${{product.get_product_price()}}</h4>
                                     </div>
                             </div>
                     </div>
