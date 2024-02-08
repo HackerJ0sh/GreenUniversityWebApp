@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def home():
+def store():
     products_dict = {}
     db = shelve.open('product.db', 'r')
     products_dict = db['Products']
@@ -21,7 +21,7 @@ def home():
         
         
 
-    return render_template('home.html', count=len(products_list), products_list=products_list)
+    return render_template('store.html', count=len(products_list), products_list=products_list)
 
 @app.route('/<int:id>/info', methods=["POST", "GET"])
 def info(id):
