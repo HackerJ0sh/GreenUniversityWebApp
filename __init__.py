@@ -12,6 +12,10 @@ app.config['SECRET_KEY'] = 'secret_key'
 def home():
     return render_template('home.html')
 
+@app.route('/dashboard')
+def dashboard():
+    return render_template('staffDashboard.html')
+
 # @app.route('/payment/<int:id>', methods=["POST", "GET"])
 @app.route('/payment', methods=["POST", "GET"])
 def payment():
