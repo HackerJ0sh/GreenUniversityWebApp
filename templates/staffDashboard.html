@@ -1,5 +1,5 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 
 <style>
@@ -13310,7 +13310,8 @@
                                         <h5 class="card-title">Earnings</h5>
                                     </div>
                                     <div class="col-auto">
-                                        <div class="rounded-circle alert-success d-flex align-items justify-content-center" style="height: 35px; width: 35px;">
+                                        <div class="rounded-circle alert-success d-flex align-items justify-content-center"
+                                            style="height: 35px; width: 35px;">
                                             <div class="stat text-success p-2">
                                                 <i class="fa-solid fa-dollar-sign"></i>
                                             </div>
@@ -13329,7 +13330,8 @@
                                         <h5 class="card-title">Orders</h5>
                                     </div>
                                     <div class="col-auto">
-                                        <div class="rounded-circle alert-success d-flex align-items justify-content-center" style="height: 35px; width: 35px;">
+                                        <div class="rounded-circle alert-success d-flex align-items justify-content-center"
+                                            style="height: 35px; width: 35px;">
                                             <div class="stat text-success p-2">
                                                 <i class="fa-solid fa-box"></i>
                                             </div>
@@ -13348,7 +13350,8 @@
                                         <h5 class="card-title">Total Customers</h5>
                                     </div>
                                     <div class="col-auto">
-                                        <div class="rounded-circle alert-success d-flex align-items justify-content-center" style="height: 35px; width: 35px;">
+                                        <div class="rounded-circle alert-success d-flex align-items justify-content-center"
+                                            style="height: 35px; width: 35px;">
                                             <div class="stat text-success p-2">
                                                 <i class="fa-solid fa-user"></i>
                                             </div>
@@ -13367,7 +13370,8 @@
                                         <h5 class="card-title">Total Products</h5>
                                     </div>
                                     <div class="col-auto">
-                                        <div class="rounded-circle alert-success d-flex align-items justify-content-center" style="height: 35px; width: 35px;">
+                                        <div class="rounded-circle alert-success d-flex align-items justify-content-center"
+                                            style="height: 35px; width: 35px;">
                                             <div class="stat text-success p-2">
                                                 <i class="fa-solid fa-cart-shopping"></i>
                                             </div>
@@ -13380,10 +13384,77 @@
                     </div>
                 </div>
                 <!-- Add Charts Here -->
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-area me-1"></i>
+                                Area Chart Example
+                            </div>
+                            <div class="card-body"><canvas id="myChart" width="100%" height="40"></canva></div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-bar me-1"></i>
+                                Bar Chart Example
+                            </div>
+                            <div class="card-body"><canvas id="myChart1" width="100%" height="40"></canvas></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Chart Scirpt -->
+<script>
+    const chart1 = document.getElementById('myChart');
+    new Chart(chart1, {
+        type: "bar",
+        data: {
+            labels: ['Red', 'Green', 'Blue', 'Yellow'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    })
+
+    <!-- Chart Scirpt -->
+</script>
+<script>
+    const chart2 = document.getElementById('myChart1');
+    new Chart(chart2, {
+        type: "bar",
+        data: {
+            labels: ['Red', 'Green', 'Blue', 'Yellow'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 2, 3, 5, 2, 3],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    })
+</script>
 
 <script>
     window.addEventListener('DOMContentLoaded', event => {
@@ -13405,5 +13476,5 @@
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
-integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
-crossorigin="anonymous"></script>
+    integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+    crossorigin="anonymous"></script>
