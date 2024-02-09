@@ -4,11 +4,11 @@
 <h1 class="display-4">View Blogs</h1>
 <div>
     {% if count == 0 %}
-    <p>There are no blogs.</p>
+    <p>There are no reports.</p>
     {% elif count == 1 %}
-    <p>There is 1 blog.</p>
+    <p>There is 1 report.</p>
     {% else %}
-    <p>There are {{ count }} blogs.</p>
+    <p>There are {{ count }} reports.</p>
     {% endif %}
 </div>
 
@@ -31,7 +31,7 @@
                 <td>{{ report.get_reported_blog_id() }}</td>
                 <td>
                     {% if '1' in report.get_reported_subjects() %}
-                        Hate speech and discrimination
+                        Unrelated to the environment
                     {% endif %}
                     {% if '2' in report.get_reported_subjects() %}
                         Harassment and bullying

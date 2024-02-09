@@ -964,7 +964,7 @@ def search_blog():
 
     if request.method == 'POST' and search_blog_form.validate():
 
-        searched_post_name = search_blog_form.post_name.data
+        searched_post_name = search_blog_form.post_name.data.strip()
         searched_post_name_length = len(searched_post_name)
         blogs_list = []
 
@@ -976,7 +976,7 @@ def search_blog():
             for key in blogs_dict:
                 blog = blogs_dict.get(key)
                 blog_post_name = blog.get_post_name()
-                if blog_post_name[0:searched_post_name_length] == searched_post_name[0:searched_post_name_length]:
+                if searched_post_name[0:searched_post_name_length].lower() in blog_post_name.lower(): # lower all characters and check
                     blogs_list.append(blog)
 
         # saves into temporary database
@@ -1134,11 +1134,10 @@ def report_confirmed():
     return render_template('reportSubmitted.html')
 
 
-@app.route('/reportCustomer', methods=['GET', 'POST'])
-def submit_report():
-    create_report_form = CreateReportForm(request.form)
+@app.route('/reportBlog/<blog_id>', methods=['GET', 'POST'])
+def submit_report(blog_id):
+    create_report_form = CreateReportForm(request.form, reported_account=blog_id)
     if request.method == 'POST' and create_report_form.validate():
-
         reports_dict = {}
         db = shelve.open('report_and_blog.db', 'c')
         try:
@@ -1154,7 +1153,7 @@ def submit_report():
 
         if check_report_id(create_report_form.reported_account.data) is False:
             alert = 'true'
-            return redirect(url_for('submit_report', alert=alert))
+            return redirect(url_for('submit_report', alert=alert, blog_id = blog_id))
 
         report = Report(account=None, reported_blog_id=create_report_form.reported_account.data,
                         reported_subjects=create_report_form.report_subjects.data,

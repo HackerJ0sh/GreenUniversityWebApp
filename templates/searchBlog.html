@@ -46,6 +46,9 @@
                         <div class="p-2">
                             <p class="text-left">{{ blog.get_post_content() }}</p>
                         </div>
+                        <div class="w-100 p-2 d-flex justify-content-end">
+                        <a href="/reportBlog/{{blog.get_blog_id()}}"><button type="button" class="btn btn-danger w-12 p-3" >Report</button></a>
+                        </div>
                     </div>
             </div>
             <div class="container p-3">
