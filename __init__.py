@@ -3,6 +3,7 @@ from PaymentForm import CreatePaymentForm, UpdatePaymentForm
 from PaymentOtpForm import CreatePaymentOtpForm, SendEmail, GenerateOTP
 import shelve
 from dataClasses.Payment import PaymentInfo
+import json
 
 
 app = Flask(__name__)
@@ -173,6 +174,15 @@ def view_payment():
 @app.route('/aboutUs')
 def about_us():
     return render_template('aboutUs.html')
+
+@app.route('/getData', methods=["POST", "GET"])
+def get_data():
+    count = [90, 12, 23, 23, 99, 23]
+    data = {
+        "count": count
+    }
+    return data
+    
 
 
 if __name__ == "__main__":

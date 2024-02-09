@@ -13193,6 +13193,7 @@
     }
 </style>
 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 
 <body>
@@ -13474,9 +13475,12 @@
     }
 
     var XData = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'];
-    var YData = [12, 19, 3, 5, 2, 3];
-    var chart = new MyChart(XData, YData);
-    chart.createGraph()
+    var data = $.get('/getData');
+    var ct = data.done(function (resp) {
+        console.log("JSON DATA", resp.count)
+        var chart = new MyChart(XData, resp.count);
+        chart.createGraph();
+    })
 
 </script>
 
