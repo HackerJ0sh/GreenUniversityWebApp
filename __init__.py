@@ -206,6 +206,11 @@ def about_us():
     return render_template('aboutUs.html')
 
 
+@app.route('/faq')
+def faq():
+    return render_template('faq.html')
+
+
 
 #
 # bing routing 
