@@ -13,11 +13,25 @@ from formClasses import *
 from reportForm import CreateReportForm
 from random import randint
 import os
+from flask_login import LoginManager, current_user, logout_user, login_user, login_required
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret_key'
 app.config['UPLOAD_FOLDER'] = 'static/files'
 allowed_extensions_list = ['jpg', 'png', 'jpeg', '']
+
+# Login Manager
+
+login_manager = LoginManager(app)
+login_manager.login_view = "login"
+
+@login_manager.user_loader
+def load_user(__user_id):
+    users_dict ={}
+    db = shelve.open('user.db', 'r')
+    users_dict = db['Users']
+    db.close()
+    return users_dict.get(__user_id)
 
 #
 #Joshua routing
@@ -29,6 +43,7 @@ def home():
 
 # @app.route('/payment/<int:id>', methods=["POST", "GET"])
 @app.route('/payment', methods=["POST", "GET"])
+@login_required
 def payment():
     create_payment_form = CreatePaymentForm(request.form)
     if request.method == "POST" and create_payment_form.validate():
@@ -75,11 +90,13 @@ def payment():
 
 # @app.route('/payment/<int:id>/successful')
 @app.route('/payment/successful')
+@login_required
 def payment_successful():
     return render_template('paymentSuccessful.html')
 
 
 @app.route('/payment/update', methods=["POST", "GET"])
+@login_required
 def payment_update():
     update_payment_form = UpdatePaymentForm(request.form)
     if request.method == "POST" and update_payment_form.validate():
@@ -119,6 +136,7 @@ def payment_update():
 
 
 @app.route('/payment/OTP', methods=["POST", "GET"])
+@login_required
 def payment_otp():
     create_paymentOTP_form = CreatePaymentOtpForm(request.form)
     email_receiver = session['email']
@@ -144,6 +162,7 @@ def payment_otp():
 
 
 @app.route('/payment/delete')
+@login_required
 def payment_delete():
     # retrieve the payment_info object from user class and delete it.
     payment_dict = {}
@@ -164,6 +183,7 @@ def payment_delete():
     
 
 @app.route('/payment/view')
+@login_required
 def view_payment():
     payment_dict = {}
     try:
