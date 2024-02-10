@@ -32,7 +32,7 @@ class Blog:
         self.__category = category
 
     def set_comments(self, comments):
-        self.__comments.append(comments)
+        self.__comments = comments
 
     def get_blog_id(self):
         return self.__blog_id
@@ -57,40 +57,6 @@ class Blog:
 
     def get_comments(self):
         return self.__comments
-
-
-class Comment(Blog):
-    def __init__(self, comment_id, created_by, comment_content, username):
-        super().__init__(blog_id=None, account=None,
-        blog_subject=None, image=None, blog_content=None, category=None, upvote_count=None)
-        self.__comment_id = comment_id
-        self.__created_by = created_by
-        self.__comment_content = comment_content
-        self.__username = username
-
-    def set_comment_id(self, comment_id):
-        self.__comment_id = comment_id
-
-    def set_created_by(self, created_by):
-        self.__created_by = created_by
-
-    def set_comment_content(self, comment_content):
-        self.__comment_content = comment_content
-
-    def set_username(self, username):
-        self.__username = username
-
-    def get_comment_id(self):
-        return self.__comment_id
-
-    def get_created_by(self):
-        return self.__created_by
-
-    def get_comment_content(self):
-        return self.__comment_content
-
-    def get_username(self):
-        return self.__comment_content
 
 
 class User:

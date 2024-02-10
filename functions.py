@@ -52,15 +52,40 @@ def check_report_id(id):
     return id_found
 
 
-def paginate(page, blogs_list, blogs_temp_dict_length):
-    per_page = 1
-    start = (page - 1) * per_page
-    end = start + per_page
-    total_pages = (len(blogs_temp_dict_length) + per_page - 1) // per_page
-    print(f"When submitting: {total_pages}")
-    if total_pages == 0:
-        total_pages = 1
+def paginate(page, blogs_list, blogs_temp_dict_length, is_for):
+    if is_for == 'search_Blogs':
+        per_page = 1
 
-    blogs_per_page = blogs_list[start:end]
+        start = (page - 1) * per_page
+        end = start + per_page
+        total_pages = (len(blogs_temp_dict_length) + per_page - 1) // per_page
+        if total_pages == 0:
+            total_pages = 1
 
-    return blogs_per_page, total_pages, page
+        blogs_per_page = blogs_list[start:end]
+        return blogs_per_page, total_pages, page
+
+    elif is_for == 'all_Blogs':
+        per_page = 10
+
+        start = (page - 1) * per_page
+        end = start + per_page
+        total_pages = (blogs_temp_dict_length + per_page - 1) // per_page
+        if total_pages == 0:
+            total_pages = 1
+
+        blogs_per_page = blogs_list[start:end]
+        return blogs_per_page, total_pages, page
+
+    elif is_for == 'all_Comments':
+        per_page = 30
+
+        start = (page - 1) * per_page
+        end = start + per_page
+        total_pages = (blogs_temp_dict_length + per_page - 1) // per_page
+        if total_pages == 0:
+            total_pages = 1
+
+        blogs_per_page = blogs_list[start:end]
+        return blogs_per_page, total_pages, page
+

@@ -18,4 +18,3 @@ class SearchBlogForm(Form):
 
 class CreateCommentForm(Form):
     comment_content = StringField('Your Comment: ', [validators.Length(min=0, max=100)])
-    blog_id = StringField()

@@ -40,7 +40,7 @@
                             {% endif %}
                                 </div>
                             <div class="p-2">
-                                <img src="{{ blog.get_image() }}" style="max-width: 500px; max-height: 500px;">
+                                <img src="../{{ blog.get_image() }}" style="max-width: 500px; max-height: 500px;">
                                 <div class="overlay"></div>
                             </div>
                         <div class="p-2">
@@ -54,51 +54,53 @@
             <div class="container p-3">
                 <div class="card-footer py-3 border-0 container" style="background-color: #f8f9fa;">
                     <div class="d-flex flex-start w-100">
-                        <img class="rounded-circle shadow-1-strong me-3"
+                        <img class="rounded-circle shadow-1-strong me-3 p-1"
                              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                             width="40" height="40" />
+                             width="50" height="50" />
                         <div class="form-outline w-100">
-                            <form method="POST" action="">
-                                 <div class="form-group col d-flex p-2" >Test Comment!</div>
-                                 <input type="text" class="form-group col d-flex p-2 position-absolute invisible" value="{{ blog.get_blog_id() }}">
+                            <form method="POST" action="/retrieve_comments/{{ search_query }}">
+                                 <div class="form-group col d-flex p-2" >{{ render_field(comment_form.comment_content, class='form_control') }}</div>
+                                 <input type="text" class="form-group col d-flex p-2 position-absolute invisible" name="blog_id" value="{{ blog.get_blog_id() }}"/>
                                  <input type="submit" value="Comment" class="btn btn-primary form-group col bg-success" style="float: right;"/>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="card-body p-4">
-                    <div class="d-flex flex-start">
-              <img class="rounded-circle shadow-1-strong me-3"
-                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="avatar" width="60"
-                height="60" />
-              <div>
-                <h6 class="fw-bold mb-1">Username</h6>
-                <div class="d-flex align-items-center mb-3">
-                  <p class="mb-0">
-                    March 15, 2021
-                  </p>
+                    {% for comment in blog.get_comments() %}
+                        <div class="card-body p-4">
+                            <div class="d-flex flex-start">
+                                <img class="rounded-circle shadow-1-strong me-3"
+                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="avatar" width="60"
+                                height="60" />
+                                <div>
+                                    <h6 class="fw-bold mb-1">Username</h6>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <p class="mb-0">
+                                                March 15, 2021
+                                            </p>
+                                        </div>
+                                    <p class="mb-0">{{ comment }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-                <p class="mb-0">
-                </p>
-              </div>
             </div>
-                </div>
-            </div>
-        </div>
-
     </section>
+
+    <div class="container d-flex justify-content-center">
+        {% if page > 1 %}
+            <a href="{{url_for('search_blog', search_query=search_query, page=page-1) }}" class="p-2">Previous</a>
+        {% endif %}
+            <span class="p-2">Page {{page}} of {{total_pages}}</span>
+        {% if page < total_pages %}
+            <a href="{{url_for('search_blog', search_query=search_query, page=page+1) }}" class="p-2">Next</a>
+        {% endif %}
+    </div>
 
 {% endfor %}
 
-<div class="container d-flex justify-content-center">
-    {% if page > 1 %}
-        <a href="{{url_for('search_blog', page=page-1) }}" class="p-2">Previous</a>
-    {% endif %}
-        <span class="p-2">Page {{page}} of {{total_pages}}</span>
-    {% if page < total_pages %}
-        <a href="{{url_for('search_blog', page=page+1) }}" class="p-2">Next</a>
-    {% endif %}
-</div>
+
 
     <style>
         .container-style {
