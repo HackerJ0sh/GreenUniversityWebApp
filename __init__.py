@@ -15,6 +15,7 @@ from random import randint
 import os
 from flask_login import LoginManager, current_user, logout_user, login_user, login_required
 from datetime import date
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret_key'
@@ -24,6 +25,20 @@ allowed_extensions_list = ['jpg', 'png', 'jpeg', '']
 #
 #Joshua routing
 #
+
+# Get Data Route 
+@app.route('/getChartData', methods=["POST", "GET"])
+def get_chart_data():
+    count = [90, 12, 23, 23, 99, 23]
+    data = {
+        "count": count
+    }
+    return data
+
+# dashboard route 
+@app.route('/staff/home')
+def staff_home():
+    return render_template('staffDashboard.html')
 
 @app.route('/')
 def home():
