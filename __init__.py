@@ -932,11 +932,6 @@ def create_blog():
         except:
             print("Error in retrieving Blog from report_and_blog.db.")
 
-        # create test account & generate random id with randint
-        random_id = str(randint(1, 1000000))
-        test_account = User()
-        test_account.set_user_id(random_id)
-
         img = request.files.getlist('image')[0]
         filepath = generate_image_id(img)
         if filepath:
@@ -950,9 +945,10 @@ def create_blog():
 
         blog_id = str(generate_blog_id())
         account = session['customer_id']
+        username = session['customer_username']
         blog = Blog(blog_id=blog_id, account=account, blog_subject=create_blog_form.post_name.data,
                     image=filepath, blog_content=create_blog_form.post_content.data,
-                    category=create_blog_form.category.data, upvote_count=0)
+                    category=create_blog_form.category.data, upvote_count=0, account_username=username)
         blogs_dict[blog.get_blog_id()] = blog
         db['Blogs'] = blogs_dict
 
@@ -1210,15 +1206,11 @@ def submit_report(blog_id):
         except:
             print("Error in retrieving Blog from report_and_blog.db.")
 
-        # create test account & generate random id with randint
-        random_id = str(randint(1, 1000000))
-        test_account = User()
-        test_account.set_user_id(random_id)
-
         if check_report_id(create_report_form.reported_account.data) is False:
             alert = 'true'
             return redirect(url_for('submit_report', alert=alert, blog_id = blog_id))
 
+        account = accoun
         report = Report(account=None, reported_blog_id=create_report_form.reported_account.data,
                         reported_subjects=create_report_form.report_subjects.data,
                         report_reason=create_report_form.report_reason.data)
