@@ -59,6 +59,38 @@ class Blog:
         return self.__comments
 
 
+class Comment:
+    def __init__(self, blog_id, comment_content, created_by, date_created):
+        self.__blog_id = blog_id
+        self.__comment_content = comment_content
+        self.__created_by = created_by
+        self.__date_created = date_created
+
+    def set_blog_id(self, blog_id):
+        self.__blog_id = blog_id
+
+    def set_comment_content(self, comment_content):
+        self.__comment_content = comment_content
+
+    def set_created_by(self, created_by):
+        self.__created_by = created_by
+
+    def set_date_created(self, date_created):
+        self.__date_created = date_created
+
+    def get_blog_id(self):
+        return self.__blog_id
+
+    def get_comment_content(self):
+        return self.__comment_content
+
+    def get_created_by(self):
+        return self.__created_by
+
+    def get_date_created(self):
+        return self.__date_created
+
+
 class User:
     count_id = 0
 

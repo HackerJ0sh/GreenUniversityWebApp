@@ -14,6 +14,7 @@ from reportForm import CreateReportForm
 from random import randint
 import os
 from flask_login import LoginManager, current_user, logout_user, login_user, login_required
+from datetime import date
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret_key'
@@ -962,7 +963,6 @@ def create_blog():
         blog = Blog(blog_id=blog_id, account=test_account.get_user_id(), blog_subject=create_blog_form.post_name.data,
                     image=filepath, blog_content=create_blog_form.post_content.data,
                     category=create_blog_form.category.data, upvote_count=0)
-
         blogs_dict[blog.get_blog_id()] = blog
         db['Blogs'] = blogs_dict
 
@@ -1040,9 +1040,9 @@ def search_blog(search_query):
         page=paginated_info[2], comment_form=create_comment_form, search_query=search_query)
 
 
-@app.route("/retrieve_comments/<search_query>", methods=["POST"])
+@app.route("/add_comment/<search_query>", methods=["POST"])
 @login_required
-def retrieve_comments(search_query):
+def add_comment(search_query):
     create_comment_form = CreateCommentForm(request.form)
     blogs_dict = {}
     comments_dict = {}
@@ -1050,7 +1050,6 @@ def retrieve_comments(search_query):
     db = shelve.open('report_and_blog.db', 'c')
     try:
         blogs_dict = db['Blogs']
-        comments_dict = db['Comments']
         temp_blogs_dict = db['Temp_Blogs']
     except:
         print("Error in retrieving Comments from report_and_blog.db.")
@@ -1067,11 +1066,18 @@ def retrieve_comments(search_query):
             blog = blogs_dict.get(key)
             if blog.get_blog_id() == comment_blog_id:
 
-                # logic for retrieving and adding comments to comment dictionary and blog list for comments
+                # create comment object
+                date_created = date.today()
+                comment = Comment(blog_id=comment_blog_id, comment_content=comment_content, created_by=None,
+                                  date_created=date_created)
+
+                # add comment object to database
                 comments = blog.get_comments()
-                comments.append(comment_content)
+                comments.append(comment)
                 blog.set_comments(comments)
-                comments_dict[blog.get_blog_id()] = comments
+                comments_dict[comment.get_blog_id()] = comments
+                print(comment.get_blog_id())
+                print(comment.get_date_created())
 
         # update all comment lists in temp_blogs_dict
         for key in temp_blogs_dict:
@@ -1087,14 +1093,12 @@ def retrieve_comments(search_query):
         # finalises database
         db['Blogs'] = blogs_dict
         db['Temp_Blogs'] = temp_blogs_dict
-        db['Comments'] = comments_dict
         db.close()
 
         return redirect(url_for('search_blog', search_query=search_query))
 
 
 @app.route('/allBlogs')
-@login_required
 def retrieve_blogs():
     blogs_dict = {}
     db = shelve.open('report_and_blog.db', 'r')
@@ -1110,6 +1114,25 @@ def retrieve_blogs():
     return render_template('allBlogs.html', count=len(blogs_list), blogs_list=blogs_list,
     blogs_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
 
+
+# @app.route('/allComments')
+# @login_required
+'''
+def retrieve_comments():
+    comments_dict = {}
+    db = shelve.open('report_and_blog.db', 'r')
+    comments_dict = db['Comments']
+    db.close()
+
+    blogs_list = []
+    for key in comments_dict:
+        blog = comments_dict.get(key)
+        blogs_list.append(blog)
+
+    paginated_info = paginate(request.args.get('page', 1, type=int), blogs_list, len(blogs_list), 'all_Blogs')
+    return render_template('allBlogs.html', count=len(blogs_list), blogs_list=blogs_list,
+    blogs_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
+'''
 
 @app.route('/updateBlog/<int:id>/', methods=['GET', 'POST'])
 @login_required
@@ -1162,7 +1185,6 @@ def update_blog(id):
 
 
 @app.route('/deleteBlog/<id>', methods=['POST'])
-@login_required
 def delete_blog(id):
     blogs_dict = {}
     db = shelve.open('report_and_blog.db', 'w')

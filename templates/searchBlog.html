@@ -46,19 +46,16 @@
                         <div class="p-2">
                             <p class="text-left">{{ blog.get_post_content() }}</p>
                         </div>
-                        <div class="w-100 p-2 d-flex justify-content-end">
-                        <a href="/reportBlog/{{blog.get_blog_id()}}"><button type="button" class="btn btn-danger w-12 p-3" >Report</button></a>
+                            <div class="w-100 p-2 d-flex justify-content-end">
+                                <a href="/reportBlog/{{blog.get_blog_id()}}"><button type="button" class="btn btn-danger w-12 p-3" >Report</button></a>
+                            </div>
                         </div>
                     </div>
-            </div>
             <div class="container p-3">
                 <div class="card-footer py-3 border-0 container" style="background-color: #f8f9fa;">
                     <div class="d-flex flex-start w-100">
-                        <img class="rounded-circle shadow-1-strong me-3 p-1"
-                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                             width="50" height="50" />
                         <div class="form-outline w-100">
-                            <form method="POST" action="/retrieve_comments/{{ search_query }}">
+                            <form method="POST" action="/add_comment/{{ search_query }}">
                                  <div class="form-group col d-flex p-2" >{{ render_field(comment_form.comment_content, class='form_control') }}</div>
                                  <input type="text" class="form-group col d-flex p-2 position-absolute invisible" name="blog_id" value="{{ blog.get_blog_id() }}"/>
                                  <input type="submit" value="Comment" class="btn btn-primary form-group col bg-success" style="float: right;"/>
@@ -66,26 +63,26 @@
                         </div>
                     </div>
                 </div>
-                    {% for comment in blog.get_comments() %}
-                        <div class="card-body p-4">
-                            <div class="d-flex flex-start">
-                                <img class="rounded-circle shadow-1-strong me-3"
-                                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="avatar" width="60"
-                                height="60" />
-                                <div>
-                                    <h6 class="fw-bold mb-1">Username</h6>
-                                        <div class="d-flex align-items-center mb-3">
-                                            <p class="mb-0">
-                                                March 15, 2021
-                                            </p>
-                                        </div>
-                                    <p class="mb-0">{{ comment }}</p>
+            {% for comment in blog.get_comments() %}
+                <div class="card-body p-4">
+                    <div class="d-flex flex-start">
+                        <img class="rounded-circle shadow-1-strong me-3"
+                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="avatar" width="60"
+                        height="60" />
+                        <div>
+                            <h6 class="fw-bold mb-1">Username</h6>
+                                <div class="d-flex align-items-center mb-3">
+                                    <p class="mb-0">
+                                        {{ comment.get_date_created() }}
+                                    </p>
                                 </div>
-                            </div>
+                            <p class="mb-0">{{ comment.get_comment_content() }}</p>
                         </div>
-                    {% endfor %}
+                    </div>
                 </div>
-            </div>
+            {% endfor %}
+                </div>
+        </div>
     </section>
 
     <div class="container d-flex justify-content-center">
@@ -106,6 +103,21 @@
         .container-style {
                margin-top: 50px;
             }
+
+        .upvote-img:hover {
+               width:60px;
+               height:60px;
+            }
+
+        #upvote-cnt {
+               font-weight: bold;
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               margin: 0px;
+               padding: 5px;
+            }
+
     </style>
 
 {% endblock %}
