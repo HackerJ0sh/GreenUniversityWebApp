@@ -5,7 +5,7 @@
 
 {% block content %}
 <link rel="stylesheet" href="../static/style/cart.css">
-<section class="h-100 h-custom" style="background-color: #24d8b4;">
+<section class="h-100 h-custom">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12">
@@ -118,8 +118,8 @@
                     <h5>${{total}}</h5>
                   </div>
 
-                  <button type="button" class="btn btn-dark btn-block btn-lg"
-                    data-mdb-ripple-color="dark">Checkout</button>
+                  <a type="button" class="btn btn-dark btn-block btn-lg"
+                    data-mdb-ripple-color="dark" href="/payment">Checkout</a>
 
                 </div>
               </div>
