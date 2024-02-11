@@ -1,5 +1,5 @@
 # User class
-class User:
+class User():
     count_id = 0
 
     # initializer method

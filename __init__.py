@@ -21,19 +21,6 @@ app.config['SECRET_KEY'] = 'secret_key'
 app.config['UPLOAD_FOLDER'] = 'static/files'
 allowed_extensions_list = ['jpg', 'png', 'jpeg', '']
 
-# Login Manager
-
-login_manager = LoginManager(app)
-login_manager.login_view = "login"
-
-@login_manager.user_loader
-def load_user(__user_id):
-    users_dict ={}
-    db = shelve.open('user.db', 'r')
-    users_dict = db['Users']
-    db.close()
-    return users_dict.get(__user_id)
-
 #
 #Joshua routing
 #
