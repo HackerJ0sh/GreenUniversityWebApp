@@ -30,12 +30,6 @@ def generate_image_id(img):
     return filepath
 
 
-def generate_comment_id(blog_section):
-    comment_section = random.randint(10 ** 14, 10 ** 15)
-    comment_id = f'{blog_section}/{comment_section}'
-    return comment_id
-
-
 def check_report_id(id):
     reports_dict = {}
     db = shelve.open('report_and_blog.db', 'c')

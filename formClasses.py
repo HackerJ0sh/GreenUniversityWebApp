@@ -1,6 +1,6 @@
 # base class code
 class Blog:
-    def __init__(self, blog_id, account, blog_subject, image, blog_content, category, upvote_count):
+    def __init__(self, blog_id, account, blog_subject, image, blog_content, category, upvote_count, account_username):
         self.__blog_id = blog_id
         self.__account = account
         self.__category = category
@@ -9,6 +9,7 @@ class Blog:
         self.__post_content = blog_content
         self.__upvote_count = upvote_count
         self.__comments = []
+        self.__account_username = account_username
 
     def set_blog_id(self, blog_id):
         self.__blog_id = blog_id
@@ -25,14 +26,14 @@ class Blog:
     def set_post_content(self, post_content):
         self.__post_content = post_content
 
-    def set_upvote_count(self, upvote_count):
-        self.__upvote_count = upvote_count
-
     def set_category(self, category):
         self.__category = category
 
     def set_comments(self, comments):
         self.__comments = comments
+
+    def set_account_username(self, account_username):
+        self.__account_username = account_username
 
     def get_blog_id(self):
         return self.__blog_id
@@ -49,14 +50,15 @@ class Blog:
     def get_post_content(self):
         return self.__post_content
 
-    def get_upvote_count(self):
-        return self.__upvote_count
-
     def get_category(self):
         return self.__category
 
     def get_comments(self):
         return self.__comments
+
+    def get_account_username(self):
+        return self.__account_username
+
 
 
 class Comment:
