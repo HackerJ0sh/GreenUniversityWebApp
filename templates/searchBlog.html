@@ -70,7 +70,7 @@
                         src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="avatar" width="60"
                         height="60" />
                         <div>
-                            <h6 class="fw-bold mb-1">Username</h6>
+                            <h6 class="fw-bold mb-1">{{ comment.get_created_by() }}</h6>
                                 <div class="d-flex align-items-center mb-3">
                                     <p class="mb-0">
                                         {{ comment.get_date_created() }}
@@ -85,17 +85,17 @@
         </div>
     </section>
 
-    <div class="container d-flex justify-content-center">
-        {% if page > 1 %}
-            <a href="{{url_for('search_blog', search_query=search_query, page=page-1) }}" class="p-2">Previous</a>
-        {% endif %}
-            <span class="p-2">Page {{page}} of {{total_pages}}</span>
-        {% if page < total_pages %}
-            <a href="{{url_for('search_blog', search_query=search_query, page=page+1) }}" class="p-2">Next</a>
-        {% endif %}
-    </div>
-
 {% endfor %}
+
+<div class="container d-flex justify-content-center">
+    {% if page > 1 %}
+        <a href="{{url_for('search_blog', search_query=search_query, page=page-1) }}" class="p-2">Previous</a>
+    {% endif %}
+        <span class="p-2">Page {{page}} of {{total_pages}}</span>
+    {% if page < total_pages %}
+        <a href="{{url_for('search_blog', search_query=search_query, page=page+1) }}" class="p-2">Next</a>
+    {% endif %}
+</div>
 
 
 

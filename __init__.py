@@ -44,7 +44,7 @@ def home():
 
 # @app.route('/payment/<int:id>', methods=["POST", "GET"])
 @app.route('/payment', methods=["POST", "GET"])
-@login_required
+# @login_required
 def payment():
     create_payment_form = CreatePaymentForm(request.form)
     if request.method == "POST" and create_payment_form.validate():
@@ -91,13 +91,13 @@ def payment():
 
 # @app.route('/payment/<int:id>/successful')
 @app.route('/payment/successful')
-@login_required
+# @login_required
 def payment_successful():
     return render_template('paymentSuccessful.html')
 
 
 @app.route('/payment/update', methods=["POST", "GET"])
-@login_required
+# @login_required
 def payment_update():
     update_payment_form = UpdatePaymentForm(request.form)
     if request.method == "POST" and update_payment_form.validate():
@@ -137,7 +137,7 @@ def payment_update():
 
 
 @app.route('/payment/OTP', methods=["POST", "GET"])
-@login_required
+# @login_required
 def payment_otp():
     create_paymentOTP_form = CreatePaymentOtpForm(request.form)
     email_receiver = session['email']
@@ -163,7 +163,7 @@ def payment_otp():
 
 
 @app.route('/payment/delete')
-@login_required
+# @login_required
 def payment_delete():
     # retrieve the payment_info object from user class and delete it.
     payment_dict = {}
@@ -184,7 +184,7 @@ def payment_delete():
     
 
 @app.route('/payment/view')
-@login_required
+# @login_required
 def view_payment():
     payment_dict = {}
     try:
@@ -262,7 +262,7 @@ def cart():
         cart_list.append(product)
         price = product.get_product_price()
         total_price += float(price)
-    
+
     total_price = f"{total_price:.2f}"
     return render_template('cart.html', cartcount=len(cart_list), cart_list=cart_list,total=total_price)
 
@@ -482,6 +482,8 @@ def login():
                     elif users_dict[key].get_account_type() == "S":
                         return redirect(url_for('staff_homepage', id=users_dict[key].get_user_id()))
                     else:
+                        session['customer_id'] = users_dict[key].get_user_id()
+                        session['customer_username'] = users_dict[key].get_username()
                         return redirect(url_for('cust_homepage', id=users_dict[key].get_user_id()))
                 else:
                     error_login = error_login + 1
@@ -931,7 +933,6 @@ def delete_feedbackCustomer(id):
 #yuriel routing
 #
 @app.route('/createBlog', methods=['GET', 'POST'])
-@login_required
 def create_blog():
     create_blog_form = CreateBlogForm(request.form)
     if request.method == 'POST' and create_blog_form.validate():
@@ -960,7 +961,8 @@ def create_blog():
                 return redirect(url_for('create_blog', alert=alert))
 
         blog_id = str(generate_blog_id())
-        blog = Blog(blog_id=blog_id, account=test_account.get_user_id(), blog_subject=create_blog_form.post_name.data,
+        account = session['customer_id']
+        blog = Blog(blog_id=blog_id, account=account, blog_subject=create_blog_form.post_name.data,
                     image=filepath, blog_content=create_blog_form.post_content.data,
                     category=create_blog_form.category.data, upvote_count=0)
         blogs_dict[blog.get_blog_id()] = blog
@@ -985,7 +987,7 @@ def before_search_blog():
         if search_query == '':
             search_query = 'all' # makes search_query 'all' if user enters nothing
         return redirect(url_for('search_blog', search_query=search_query))
-    return render_template('searchBlog.html', form=search_blog_form)
+    return render_template('searchBlog.html', form=search_blog_form, page=1, total_pages=1, blogs_per_page=[])
 
 
 @app.route('/searchBlog/<search_query>', methods=['GET', 'POST'])
@@ -1030,6 +1032,15 @@ def search_blog(search_query):
     else:
         blogs_temp_dict = db['Temp_Blogs']
         blogs_list = blogs_temp_dict['temp_list']  # if KeyError, appears, add blogs_temp_dict['temp_list'] = [] above this line to give the key the value
+
+        # updates comments in temp_db
+        for key in blogs_dict:
+            perm_blog = blogs_dict.get(key)
+            for temp_blog in blogs_list:
+                if temp_blog.get_blog_id() == perm_blog.get_blog_id():
+                    temp_blog.set_comments(perm_blog.get_comments())
+                    break
+
         db.close()
 
         # paginate
@@ -1041,7 +1052,6 @@ def search_blog(search_query):
 
 
 @app.route("/add_comment/<search_query>", methods=["POST"])
-@login_required
 def add_comment(search_query):
     create_comment_form = CreateCommentForm(request.form)
     blogs_dict = {}
@@ -1056,6 +1066,7 @@ def add_comment(search_query):
 
     if request.method == 'POST' and create_comment_form.validate():
         comment_content = create_comment_form.comment_content.data
+        print(comment_content)
         if comment_content.strip() == '':  # checks if user enters comment or not; WIP can edit to do front-end validation
             # with JS instead
             return redirect(url_for('search_blog', search_query=search_query))
@@ -1065,10 +1076,10 @@ def add_comment(search_query):
         for key in blogs_dict:
             blog = blogs_dict.get(key)
             if blog.get_blog_id() == comment_blog_id:
-
                 # create comment object
                 date_created = date.today()
-                comment = Comment(blog_id=comment_blog_id, comment_content=comment_content, created_by=None,
+                account = session['customer_username']
+                comment = Comment(blog_id=comment_blog_id, comment_content=comment_content, created_by=account,
                                   date_created=date_created)
 
                 # add comment object to database
@@ -1076,19 +1087,6 @@ def add_comment(search_query):
                 comments.append(comment)
                 blog.set_comments(comments)
                 comments_dict[comment.get_blog_id()] = comments
-                print(comment.get_blog_id())
-                print(comment.get_date_created())
-
-        # update all comment lists in temp_blogs_dict
-        for key in temp_blogs_dict:
-            blogs = temp_blogs_dict.get(key)
-            for blog in blogs:
-                if blog.get_blog_id() == comment_blog_id:
-
-                    # logic for retrieving and adding comments to comment dictionary and blog list for comments
-                    comments = blog.get_comments()
-                    comments.append(str(comment_content))
-                    blog.set_comments(comments)  # dont need to add to comment_dict as fixed alr
 
         # finalises database
         db['Blogs'] = blogs_dict
@@ -1115,24 +1113,24 @@ def retrieve_blogs():
     blogs_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
 
 
-# @app.route('/allComments')
+@app.route('/allComments/<blog_id>')
 # @login_required
-'''
-def retrieve_comments():
-    comments_dict = {}
+def retrieve_comments(blog_id):
+    blogs_dict = {}
     db = shelve.open('report_and_blog.db', 'r')
-    comments_dict = db['Comments']
+    blogs_dict = db['Blogs']
     db.close()
 
-    blogs_list = []
-    for key in comments_dict:
-        blog = comments_dict.get(key)
-        blogs_list.append(blog)
+    comments_list = []
+    for key in blogs_dict:
+        blog = blogs_dict.get(key)
+        for comment in blog.get_comments():
+            comments_list.append(comment)
 
-    paginated_info = paginate(request.args.get('page', 1, type=int), blogs_list, len(blogs_list), 'all_Blogs')
-    return render_template('allBlogs.html', count=len(blogs_list), blogs_list=blogs_list,
-    blogs_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
-'''
+    paginated_info = paginate(request.args.get('page', 1, type=int), comments_list, len(comments_list), 'all_Comments')
+    return render_template('allComments.html', count=len(comments_list), comments_list=comments_list,
+    comments_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
+
 
 @app.route('/updateBlog/<int:id>/', methods=['GET', 'POST'])
 @login_required

@@ -54,7 +54,7 @@ def check_report_id(id):
 
 def paginate(page, blogs_list, blogs_temp_dict_length, is_for):
     if is_for == 'search_Blogs':
-        per_page = 1
+        per_page = 3
 
         start = (page - 1) * per_page
         end = start + per_page

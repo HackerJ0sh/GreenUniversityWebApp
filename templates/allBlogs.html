@@ -30,7 +30,7 @@
             <th>Subject</th>
             <th>Image</th>
             <th>Content</th>
-            <th>Upvotes</th>
+            <th>Comments</th>
             <th></th>
             <th></th>
         </tr>
@@ -73,7 +73,7 @@
                     {% endif %}
                 </td>
                 <td>{{ blog.get_post_content() }}</td>
-                <td>{{ blog.get_upvote_count() }}</td>
+                <td><a href="/allComments/{{blog.get_blog_id()}}">Comments</a></td>
                 <td><a href="/updateBlog/{{blog.get_blog_id()}}" class="btn btn-warning">Update</a></td>
                 <td>
                     <form action="{{ url_for('delete_blog', id=blog.get_blog_id()) }}" method="POST">
