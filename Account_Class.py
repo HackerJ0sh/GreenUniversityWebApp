@@ -1,9 +1,10 @@
 # User class
 class User():
     count_id = 0
+    cart = {}
 
     # initializer method
-    def __init__(self, name, username, password, email, gender, security_question, security_answer, account_status, account_type):
+    def __init__(self, name, username, password, email, gender, security_question, security_answer, account_status, account_type, cart):
         User.count_id += 1
         self.__user_id = User.count_id
         self.__name = name
@@ -15,6 +16,7 @@ class User():
         self.__security_answer = security_answer
         self.__account_status = account_status
         self.__account_type = account_type
+        self.__cart = cart
 
     # accessor methods
     def get_user_id(self):
@@ -46,6 +48,9 @@ class User():
 
     def get_account_type(self):
         return self.__account_type
+    
+    def get_cart(self):
+        return self.__cart
 
     def set_user_id(self, user_id):
         self.__user_id = user_id
@@ -76,3 +81,6 @@ class User():
 
     def set_account_type(self, account_type):
         self.__account_type = account_type
+
+    def set_cart(self, cart):
+        self.__cart = cart

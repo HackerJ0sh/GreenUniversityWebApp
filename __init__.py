@@ -255,6 +255,7 @@ def cart():
 
 @app.route('/<int:id>/add_to_cart', methods=["POST", "GET"])
 def add_to_cart(id):
+
     products_dict = {}
     db = shelve.open('product.db', 'r')
     products_dict = db['Products']
