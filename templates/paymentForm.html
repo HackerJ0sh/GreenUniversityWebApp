@@ -13,16 +13,18 @@
         <div class="col-md-5 col-lg-4 order-md-last">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
                 <span class="text-primary">Your cart</span>
-                <span class="badge bg-primary rounded-pill">3</span>
+                <span class="badge bg-primary rounded-pill">{{ len(cart_list) }}</span>
             </h4>
             <ul class="list-group mb-3">
+                {% for product in cart_list %}
                 <li class="list-group-item d-flex justify-content-between lh-sm">
                     <div>
-                        <h6 class="my-0">Product Name</h6>
-                        <small class="text-muted">Brief Description</small>
+                        <h6 class="my-0">{{ product.get_product_name() }}</h6>
+                        <small class="text-muted">{{ product.get_product_category() }}</small>
                     </div>
-                    <span class="text-muted">$12</span>
+                    <span class="text-muted">{{ product.get_product_price() }}</span>
                 </li>
+                {% endfor %}
                 <li class="list-group-item d-flex justify-content-between bg-light">
                     <div class="text-success">
                         <h6 class="my-0">Promo Code</h6>
@@ -32,7 +34,7 @@
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total (SGD)</span>
-                    <strong>$7</strong>
+                    <strong>{{ total_price }}</strong>
                 </li>
             </ul>
             <form action="{{ url_for('payment_otp') }}" class="card p-2">

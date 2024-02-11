@@ -89,7 +89,11 @@ def payment():
         flash('Please Verify Your Email To Proceed')
 
         return redirect(url_for('payment_otp'))
-    return render_template('paymentForm.html', form=create_payment_form)
+    
+    cart_list = session['cart_list']
+    cart_list_total_price = session['cart_list_total_price']
+
+    return render_template('paymentForm.html', form=create_payment_form, cart_list=cart_list, total=cart_list_total_price)
 
 # @app.route('/payment/<int:id>/successful')
 @app.route('/payment/successful')
@@ -266,6 +270,10 @@ def cart():
         total_price += float(price)
 
     total_price = f"{total_price:.2f}"
+
+    session['cart_list'] = cart_list
+    session['cart_list_total_price'] = total_price
+
     return render_template('cart.html', cartcount=len(cart_list), cart_list=cart_list,total=total_price)
 
 @app.route('/<int:id>/add_to_cart', methods=["POST", "GET"])
