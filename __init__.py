@@ -928,6 +928,7 @@ def delete_feedbackCustomer(id):
 #yuriel routing
 #
 @app.route('/createBlog', methods=['GET', 'POST'])
+@login_required
 def create_blog():
     create_blog_form = CreateBlogForm(request.form)
     if request.method == 'POST' and create_blog_form.validate():
@@ -1038,6 +1039,7 @@ def search_blog(search_query):
 
 
 @app.route("/retrieve_comments/<search_query>", methods=["POST"])
+@login_required
 def retrieve_comments(search_query):
     create_comment_form = CreateCommentForm(request.form)
     blogs_dict = {}
@@ -1090,6 +1092,7 @@ def retrieve_comments(search_query):
 
 
 @app.route('/allBlogs')
+@login_required
 def retrieve_blogs():
     blogs_dict = {}
     db = shelve.open('report_and_blog.db', 'r')
@@ -1107,6 +1110,7 @@ def retrieve_blogs():
 
 
 @app.route('/updateBlog/<int:id>/', methods=['GET', 'POST'])
+@login_required
 def update_blog(id):
     update_blog_form = CreateBlogForm(request.form)
     if request.method == 'POST' and update_blog_form.validate():
@@ -1156,6 +1160,7 @@ def update_blog(id):
 
 
 @app.route('/deleteBlog/<id>', methods=['POST'])
+@login_required
 def delete_blog(id):
     blogs_dict = {}
     db = shelve.open('report_and_blog.db', 'w')
@@ -1222,6 +1227,7 @@ def submit_report(blog_id):
 
 
 @app.route('/unresolvedReports')
+@login_required
 def retrieve_reports():
     reports_dict = {}
     db = shelve.open('report_and_blog.db', 'r')
