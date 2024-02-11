@@ -93,7 +93,7 @@ def payment():
     cart_list = session['cart_list']
     cart_list_total_price = session['cart_list_total_price']
 
-    return render_template('paymentForm.html', form=create_payment_form, cart_list=cart_list, total=cart_list_total_price)
+    return render_template('paymentForm.html', form=create_payment_form, cart_list=cart_list, total=cart_list_total_price, cart_count=len(cart_list))
 
 # @app.route('/payment/<int:id>/successful')
 @app.route('/payment/successful')
