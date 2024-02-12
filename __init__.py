@@ -64,6 +64,7 @@ def payment():
             print('Error in opening the file')
 
         session['email'] = create_payment_form.email.data
+        id = session['customer_id']
 
         payment_info = PaymentInfo(
             full_name=create_payment_form.full_name.data,
@@ -83,10 +84,11 @@ def payment():
         )
 
         # add code: add all the payment_info objects to the user class attribute called transaction=[], this allows the users to see all their transactions
+        payment_info.set_user_id(id)
 
         # saves the payment details if remember is true
         if create_payment_form.remember.data:
-            payment_dict[payment_info.get_id()] = payment_info
+            payment_dict[payment_info.get_user_id()] = payment_info
             db['Payments'] = payment_dict
         
             db.close()
@@ -95,8 +97,6 @@ def payment():
 
         return redirect(url_for('payment_otp'))
     
-    #cart_list = session['cart_list']
-    #cart_list_total_price = session['cart_list_total_price']
     userid = session["customer_id"]
     cart_dict = {}
     db = shelve.open('shoppingcart.db','r')
@@ -136,7 +136,8 @@ def payment_update():
             return redirect(url_for('payment'))
 
         # TODO: get id from user payment info object
-        payment_info = payment_dict[1]
+        id = session['customer_id']
+        payment_info = payment_dict[id]
 
         payment_info.set_full_name(update_payment_form.full_name.data)
         payment_info.set_phone_number(update_payment_form.phone_number.data)
@@ -193,11 +194,12 @@ def payment_otp():
 def payment_delete():
     # retrieve the payment_info object from user class and delete it.
     payment_dict = {}
+    id = session['customer_id']
     try:
         db = shelve.open('payment.db')
 
         payment_dict = db['Payments']
-        payment_dict.pop(1)
+        payment_dict.pop(id)
 
         db['Payments'] = payment_dict
         db.close()
@@ -222,7 +224,8 @@ def view_payment():
         return redirect(url_for('payment'))
 
     try:
-        payment_info = payment_dict[1]
+        id = session['customer_id']
+        payment_info = payment_dict[id]
     except:
         payment_info = None
 

@@ -114,3 +114,9 @@ class PaymentInfo:
 
     def set_remember(self, remember):
         self.__remember = remember
+
+    def set_user_id(self, id):
+        self.__user_id = id 
+
+    def get_user_id(self):
+        return self.__user_id
