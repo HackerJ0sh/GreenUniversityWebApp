@@ -193,7 +193,6 @@ def payment_successful():
     try: 
         db_chart_data = shelve.open('ChartData.db', 'r')
         db_chart_data['ChartData'] = chart_data_dict
-
     except: 
         db_chart_data = shelve.open('ChartData.db', 'c')
         chart_data_dict = db_chart_data['ChartData']
