@@ -62,11 +62,15 @@ class Blog:
 
 
 class Comment:
-    def __init__(self, blog_id, comment_content, created_by, date_created):
+    def __init__(self, comment_id, blog_id, comment_content, created_by, date_created):
+        self.__comment_id = comment_id
         self.__blog_id = blog_id
         self.__comment_content = comment_content
         self.__created_by = created_by
         self.__date_created = date_created
+
+    def set_comment_id(self, comment_id):
+        self.__comment_id = comment_id
 
     def set_blog_id(self, blog_id):
         self.__blog_id = blog_id
@@ -80,6 +84,9 @@ class Comment:
     def set_date_created(self, date_created):
         self.__date_created = date_created
 
+    def get_comment_id(self):
+        return self.__comment_id
+
     def get_blog_id(self):
         return self.__blog_id
 
@@ -91,6 +98,7 @@ class Comment:
 
     def get_date_created(self):
         return self.__date_created
+
 
 
 class User:

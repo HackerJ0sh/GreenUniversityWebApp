@@ -24,16 +24,23 @@
     <table class="table table-striped">
     <thead>
         <tr>
-            <th>Created by</th>
             <th>Blog ID</th>
+            <th>Comment ID</th>
+            <th>Created By</th>
+            <th>Comment Content</th>
+            <th>Date of Creation</th>
         </tr>
     </thead>
      <tbody>
-        {% for blog in blogs_per_page %}
+        {% for comment in comments_per_page %}
             <tr>
-                <td>{{ blog.get_blog_id() }}</td>
-                <td>{{ blog.get_account() }}</td>
-                    <form action="{{ url_for('delete_blog', id=blog.get_blog_id()) }}" method="POST">
+                <td>{{ comment.get_blog_id() }}</td>
+                <td>{{ comment.get_comment_id() }}</td>
+                <td>{{ comment.get_created_by() }}</td>
+                <td>{{ comment.get_comment_content() }}</td>
+                <td>{{ comment.get_date_created() }}</td>
+                <td>
+                    <form action="{{ url_for('delete_comment', blog_id=comment.get_blog_id(), comment_id=comment.get_comment_id()) }}" method="POST">
                         <input type="submit" value="Delete" class="btn btn-danger">
                     </form>
                 </td>
@@ -43,11 +50,11 @@
      </table>
         <div class="container d-flex justify-content-center">
             {% if page > 1 %}
-                <a href="{{url_for('retrieve_blogs', page=page-1) }}" class="p-2">Previous</a>
+                <a href="{{url_for('retrieve_comments', page=page-1) }}" class="p-2">Previous</a>
             {% endif %}
                 <span class="p-2">Page {{page}} of {{total_pages}}</span>
             {% if page < total_pages %}
-                <a href="{{url_for('retrieve_blogs', page=page+1) }}" class="p-2">Next</a>
+                <a href="{{url_for('retrieve_comments', page=page+1) }}" class="p-2">Next</a>
             {% endif %}
         </div>
 </div>

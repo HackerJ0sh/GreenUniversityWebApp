@@ -11,10 +11,10 @@ def generate_blog_id():
 
     else:
         blog_id = random.randint(1, 10 ** 15)
-        for id in blogs_dict:
-            if id == blog_id:
-                while blog_id == id:
-                    blog_id = random.randint(1, 10 ** 15)
+        for key in blogs_dict:
+            blog = blogs_dict.get(key)
+            while blog_id == blog.get_blog_id():
+                blog_id = random.randint(1, 10 ** 15)
         return blog_id
 
 
@@ -28,6 +28,26 @@ def generate_image_id(img):
     else:
         filepath = f'./static/files/{random.randint(1, 10 ** 15)}.{img.filename.split(".")[-1].lower()}'
     return filepath
+
+
+def generate_comment_id():
+    db = shelve.open('report_and_blog.db', 'c')
+    try:
+        blogs_dict = db['Blogs']
+    except:
+        print("Error in retrieving Blog from report_and_blog.db.")
+
+    else:
+        comment_id = random.randint(1, 10 ** 15)
+        for key in blogs_dict:
+            blog = blogs_dict.get(key)
+            comments_list = blog.get_comments()
+            while True:
+                if comment_id in comments_list:
+                    comment_id = random.randint(1, 10 ** 15)
+                else:
+                    break
+        return comment_id
 
 
 def check_report_id(id):

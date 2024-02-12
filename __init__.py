@@ -1093,8 +1093,9 @@ def add_comment(search_query):
             if blog.get_blog_id() == comment_blog_id:
                 # create comment object
                 date_created = date.today()
+                comment_id = str(generate_comment_id())
                 account = session['customer_username']
-                comment = Comment(blog_id=comment_blog_id, comment_content=comment_content, created_by=account,
+                comment = Comment(comment_id=comment_id, blog_id=comment_blog_id, comment_content=comment_content, created_by=account,
                                   date_created=date_created)
 
                 # add comment object to database
@@ -1139,12 +1140,34 @@ def retrieve_comments(blog_id):
     comments_list = []
     for key in blogs_dict:
         blog = blogs_dict.get(key)
-        for comment in blog.get_comments():
-            comments_list.append(comment)
+        if blog.get_blog_id() == blog_id:
+            for comment in blog.get_comments():
+                comments_list.append(comment)
 
     paginated_info = paginate(request.args.get('page', 1, type=int), comments_list, len(comments_list), 'all_Comments')
+
     return render_template('allComments.html', count=len(comments_list), comments_list=comments_list,
     comments_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
+
+
+@app.route('/deleteComment/<blog_id>/<comment_id>', methods=['POST'])
+def delete_comment(blog_id, comment_id):
+    comments_dict = {}
+    db = shelve.open('report_and_blog.db', 'w')
+    blogs_dict = db['Blogs']
+
+    for key in blogs_dict:
+        blog = blogs_dict.get(key)
+        if blog.get_blog_id() == blog_id:
+            for comment in blog.get_comments():
+                if comment_id == comment.get_comment_id():
+                    blog.get_comments().remove(comment)
+                    blog.set_comments(blog.get_comments())
+
+    db['Blogs'] = blogs_dict
+    db.close()
+
+    return redirect(url_for('retrieve_comments', blog_id=blog_id))
 
 
 @app.route('/updateBlog/<int:id>/', methods=['GET', 'POST'])
@@ -1241,8 +1264,8 @@ def submit_report(blog_id):
             alert = 'true'
             return redirect(url_for('submit_report', alert=alert, blog_id = blog_id))
 
-        account = accoun
-        report = Report(account=None, reported_blog_id=create_report_form.reported_account.data,
+        account = session['customer_id']
+        report = Report(account=account, reported_blog_id=create_report_form.reported_account.data,
                         reported_subjects=create_report_form.report_subjects.data,
                         report_reason=create_report_form.report_reason.data)
 
