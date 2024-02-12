@@ -1283,15 +1283,16 @@ def submit_report(blog_id):
             print("Error in retrieving Blog from report_and_blog.db.")
 
         if check_report_id(create_report_form.reported_account.data) is False:
+            blog_id = 'blog'
             alert = 'true'
-            return redirect(url_for('submit_report', alert=alert, blog_id = blog_id))
+            return redirect(url_for('submit_report', alert=alert, blog_id=blog_id))
 
         account = session['customer_id']
         email = session['customer_email']
         report = Report(account=account, reporter_email=email, reported_blog_id=create_report_form.reported_account.data,
                         reported_subjects=create_report_form.report_subjects.data,
                         report_reason=create_report_form.report_reason.data)
-
+        report.set_report_id(generate_report_id())
         reports_dict[report.get_report_id()] = report
         db['Reports'] = reports_dict
 
@@ -1318,6 +1319,24 @@ def retrieve_reports():
         reports_list.append(report)
 
     return render_template('unresolvedReports.html', count=len(reports_list), reports_list=reports_list)
+
+
+@app.route('/sendReportEmail/<report_id>/<verdict>', methods=['GET', 'POST'])
+def send_report_email(report_id, verdict):
+    reports_dict = {}
+    db = shelve.open('report_and_blog.db', 'c')
+    reports_dict = db['Reports']
+
+    for key in reports_dict:
+        report = reports_dict.get(key)
+        if str(report.get_report_id()) == str(report_id):
+            send_report_confirmation_email(report.get_reporter_email(), report.get_account(), verdict)
+            reports_dict.pop(report.get_report_id())
+            break
+
+    db['Reports'] = reports_dict
+    db.close()
+    return redirect(url_for('retrieve_reports'))
 
 
 @app.route('/generate-pdf')

@@ -60,7 +60,6 @@ class Blog:
         return self.__account_username
 
 
-
 class Comment:
     def __init__(self, comment_id, blog_id, comment_content, created_by, date_created):
         self.__comment_id = comment_id
@@ -101,16 +100,17 @@ class Comment:
 
 
 class Report:
-    report_id = 0
 
     def __init__(self, account, reporter_email, reported_blog_id, reported_subjects, report_reason):
-        Report.report_id += 1
         self.__account = account
-        self.__report_id = Report.report_id
+        self.__report_id = None
         self.__reported_blog_id = reported_blog_id
         self.__reported_subjects = reported_subjects
         self.__report_reason = report_reason
         self.__reporter_email = reporter_email
+
+    def set_account(self, account):
+        self.__account = account
 
     def set_report_id(self, report_id):
         self.__report_id = report_id
@@ -126,6 +126,9 @@ class Report:
 
     def set_report_reason(self, report_reason):
         self.__report_reason = report_reason
+
+    def get_account(self):
+        return self.__account
 
     def get_report_id(self):
         return self.__report_id

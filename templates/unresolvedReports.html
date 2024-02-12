@@ -49,8 +49,12 @@
                 </td>
                 <td>{{ report.get_report_reason() }}</td>
                 <td>
-                    <button class="btn btn-success" formaction="">Approve</button>
-                    <button class="btn btn-danger" formaction="">Reject </button>
+                    <form action="{{ url_for('send_report_email', report_id=report.get_report_id(), verdict='APPROVED') }}" method="POST">
+                        <button class="btn btn-success">Approve</button>
+                    </form>
+                    <form action= "{{ url_for('send_report_email', report_id=report.get_report_id(), verdict='REJECTED') }}" method="POST">
+                        <button class="btn btn-danger">Reject</button>
+                    </form>
                 </td>
             </tr>
         {% endfor %}
