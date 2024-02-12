@@ -19,6 +19,7 @@ import os
 from flask_login import LoginManager, current_user, logout_user, login_user, login_required
 import datetime
 import json
+from pdfCreator import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret_key'
@@ -1142,7 +1143,7 @@ def create_blog():
         blog = blogs_dict[blog.get_blog_id()]
         print("Blog with ID", blog.get_blog_id(), "was stored in report_and_blog.db successfully")
         db.close()
-
+        flash(f"Blog {blog.get_blog_id()} is successfully created.")
         return redirect(url_for('search_blog', search_query='all'))
     return render_template('createBlog.html', form=create_blog_form)
 
@@ -1251,7 +1252,7 @@ def add_comment(search_query):
         db['Blogs'] = blogs_dict
         db['Temp_Blogs'] = temp_blogs_dict
         db.close()
-
+        flash("Comment successfully created.")
         return redirect(url_for('search_blog', search_query=search_query))
 
 
@@ -1266,7 +1267,6 @@ def retrieve_blogs():
     for key in blogs_dict:
         blog = blogs_dict.get(key)
         blogs_list.append(blog)
-
     paginated_info = paginate(request.args.get('page', 1, type=int), blogs_list, len(blogs_list), 'all_Blogs')
     return render_template('allBlogs.html', count=len(blogs_list), blogs_list=blogs_list,
     blogs_per_page=paginated_info[0], total_pages=paginated_info[1], page=paginated_info[2])
@@ -1375,12 +1375,9 @@ def delete_blog(id):
         os.remove(image_path)
 
     blogs_dict.pop(str(id))
-
     db['Blogs'] = blogs_dict
     db.close()
-
-    flash(f'Blog with ID {blog_to_be_deleted.get_blog_id()} successfully deleted TEST TEST.')
-
+    flash(f"Blog {blog_to_be_deleted.get_blog_id()} is successfully deleted.")
     return redirect(url_for('retrieve_blogs'))
 
 
@@ -1460,17 +1457,28 @@ def send_report_email(report_id, verdict):
     return redirect(url_for('retrieve_reports'))
 
 
-@app.route('/generate-pdf')
+@app.route('/generate_pdf')
 def generate_pdf():
-    data = request.args.get('data')  # Get data from query string or form
-    # Create FPDF instance and add content using its API
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font('Arial', size=12)
-    pdf.cell(200, 10, txt=data, ln=1, align='C')
-    pdf.output('report.pdf')
-    # Return PDF as a response
-    # ...
+    try:
+        blog_db = shelve.open('report_and_blog.db', 'r')
+        product_db = shelve.open('product.db', 'r')
+        account_db = shelve.open('user.db', 'r')
+        payment_db = shelve.open('payment.db', 'r')
+        feedback_db = shelve.open('feedback.db', 'r')
+    except:
+        print('Error in opening DBs')
+    else:
+        date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        generated_by = session['customer_id']
+        pdf_creator = PDFExporter(date, generated_by)
+        pdf_creator.add_blog_data_page(blog_db)
+        pdf_creator.add_product_data_page(product_db)
+        pdf_creator.add_account_data_page(account_db)
+        pdf_creator.add_payment_data_page(payment_db)
+        pdf_creator.add_feedback_data_page(feedback_db)
+        pdf_creator.export_pdf()
+
+        return redirect(url_for('staff_home'))
 
 
 if __name__ == "__main__":
