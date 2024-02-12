@@ -97,9 +97,10 @@ def payment():
     
     #cart_list = session['cart_list']
     #cart_list_total_price = session['cart_list_total_price']
+    userid = session["customer_id"]
     cart_dict = {}
     db = shelve.open('shoppingcart.db','r')
-    cart_dict = db['Products']
+    cart_dict = db[f'{userid}']
     db.close()
 
     cart_list = []
@@ -231,6 +232,10 @@ def view_payment():
 def about_us():
     return render_template('aboutUs.html')
 
+@app.route('/AboutUs')
+def about_usReal():
+    return render_template('aboutUsReal.html')
+
 
 @app.route('/faq')
 def faq():
@@ -275,9 +280,10 @@ def info(id):
 
 @app.route('/cart')
 def cart():
+    userid = session["customer_id"]
     cart_dict = {}
     db = shelve.open('shoppingcart.db','r')
-    cart_dict = db['Products']
+    cart_dict = db[f'{userid}']
     db.close()
 
     cart_list = []
@@ -289,15 +295,17 @@ def cart():
         total_price += float(price)
 
     total_price = f"{total_price:.2f}"
+        
     
 
 
 
-    return render_template('cart.html', cartcount=len(cart_list), cart_list=cart_list,total=total_price)
+    return render_template('cart.html', cartcount=len(cart_list), cart_list=cart_list,total=total_price,userid=userid)
 
 @app.route('/<int:id>/add_to_cart', methods=["POST", "GET"])
 def add_to_cart(id):
 
+    userid = session["customer_id"]
     products_dict = {}
     db = shelve.open('product.db', 'r')
     products_dict = db['Products']
@@ -307,9 +315,9 @@ def add_to_cart(id):
     cart_dict = {}
     db2 = shelve.open('shoppingcart.db','c')
     
-    cart_dict = db2['Products']
+    cart_dict = db2[f'{userid}']
     cart_dict[id] = product
-    db2['Products'] = cart_dict
+    db2[f'{userid}'] = cart_dict
     db.close()
     
     return redirect(url_for('cart'))
@@ -317,13 +325,14 @@ def add_to_cart(id):
         
 @app.route('/<int:id>/remove_from_cart', methods=['POST'])
 def remove_from_cart(id):
+    userid = session["customer_id"]
     products_dict = {}
     db = shelve.open('shoppingcart.db', 'w')
-    products_dict = db['Products']
+    products_dict = db[f'{userid}']
 
     products_dict.pop(id)
 
-    db['Products'] = products_dict
+    db[f'{userid}'] = products_dict
     db.close()
 
     return redirect(url_for('cart'))
