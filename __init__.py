@@ -95,10 +95,24 @@ def payment():
 
         return redirect(url_for('payment_otp'))
     
-    cart_list = session['cart_list']
-    cart_list_total_price = session['cart_list_total_price']
+    #cart_list = session['cart_list']
+    #cart_list_total_price = session['cart_list_total_price']
+    cart_dict = {}
+    db = shelve.open('shoppingcart.db','r')
+    cart_dict = db['Products']
+    db.close()
 
-    return render_template('paymentForm.html', form=create_payment_form, cart_list=cart_list, total=cart_list_total_price, cart_count=len(cart_list))
+    cart_list = []
+    total_price = 0
+    for key in cart_dict:
+        product = cart_dict.get(key)
+        cart_list.append(product)
+        price = product.get_product_price()
+        total_price += float(price)
+
+    total_price = f"{total_price:.2f}"
+
+    return render_template('paymentForm.html', form=create_payment_form, cart_list=cart_list, total=total_price, cart_count=len(cart_list))
 
 # @app.route('/payment/<int:id>/successful')
 @app.route('/payment/successful')
