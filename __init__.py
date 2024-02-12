@@ -153,6 +153,15 @@ def payment():
 @app.route('/payment/successful')
 # @login_required
 def payment_successful():
+    id = session['customer_id']
+
+    db = shelve.open('shoppingcart.db', 'w')
+    products_dict = db[f'{id}']
+    products_dict.clear()
+
+    db[f'{id}'] = products_dict
+    db.close()
+
     return render_template('paymentSuccessful.html')
 
 
@@ -333,10 +342,6 @@ def cart():
 
     total_price = f"{total_price:.2f}"
         
-    
-
-
-
     return render_template('cart.html', cartcount=len(cart_list), cart_list=cart_list,total=total_price,userid=userid)
 
 @app.route('/<int:id>/add_to_cart', methods=["POST", "GET"])
