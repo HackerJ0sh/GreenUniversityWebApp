@@ -820,7 +820,7 @@ def settings(id):
         settings_form.account_status.data = user.get_account_status()
         settings_form.account_type.data = user.get_account_type()
 
-        return render_template('settings.html', form=settings_form)
+        return render_template('settings.html', id=id, form=settings_form)
 
 #
 #Terron routing
