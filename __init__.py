@@ -434,9 +434,10 @@ def delete_product(id):
 #
 #kendrick routing
 #
-@app.route("/cust_home/<int:id>/", methods=['GET', 'POST'])
+@app.route("/cust_home", methods=['GET', 'POST'])
 #@login_required
-def cust_homepage(id):
+def cust_homepage():
+    id = session["customer_id"]
     users_dict = {}
     db = shelve.open('user.db', 'r')
     users_dict = db['Users']
@@ -444,17 +445,16 @@ def cust_homepage(id):
     name = users_dict[id].get_name()
     return render_template("customerHomepage.html", name=name, id=id)
 
-@app.route("/staff_home/<int:id>/", methods=['GET', 'POST'])
+@app.route("/staff_home", methods=['GET', 'POST'])
 #@login_required
-def staff_homepage(id):
+def staff_homepage():
+    id = session["customer_id"]
     users_dict = {}
     db = shelve.open('user.db', 'r')
     users_dict = db['Users']
     db.close()
     name = users_dict[id].get_name()
-
-    session['staff_name'] = name
-
+    session["staff_name"] = name
     return redirect(url_for('staff_home'))
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -499,6 +499,8 @@ def login():
                         error_lock = error_lock + 1
                         break
                     elif users_dict[key].get_account_type() == "S":
+                        session['customer_id'] = users_dict[key].get_user_id()
+                        session['customer_username'] = users_dict[key].get_username()
                         return redirect(url_for('staff_homepage', id=users_dict[key].get_user_id()))
                     else:
                         session['customer_id'] = users_dict[key].get_user_id()
@@ -765,14 +767,15 @@ def signup():
         return redirect(url_for('login'))
     return render_template('signup.html', form=signup_form)
 
-@app.route('/settings/<int:id>/', methods=['GET', 'POST'])
-def settings(id):
+@app.route('/settings', methods=['GET', 'POST'])
+def settings():
     settings_form = UpdateUserForm(request.form)
     users_dict = {}
     db = shelve.open('user.db', 'r')
     users_dict = db['Users']
     db.close()
     repeat = 0
+    id = session["customer_id"]
     username = users_dict[id].get_username()
     email = users_dict[id].get_email()
     for key in users_dict:
@@ -830,6 +833,10 @@ def settings(id):
 
         return render_template('settings.html', id=id, form=settings_form)
 
+@app.route('/logout')
+def logout():
+    session.pop("customer_id")
+    return redirect(url_for('home'))
 #
 #Terron routing
 #
