@@ -275,9 +275,9 @@ def cart():
         total_price += float(price)
 
     total_price = f"{total_price:.2f}"
+    
 
-    session['cart_list'] = cart_list
-    session['cart_list_total_price'] = total_price
+
 
     return render_template('cart.html', cartcount=len(cart_list), cart_list=cart_list,total=total_price)
 

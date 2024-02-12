@@ -1,4 +1,4 @@
-{% extends "basenofooter.html" %}
+{% extends "staffBase.html" %}
 {% block title %}Green University - Product Inventory{% endblock %}
 
 {% block content %}
@@ -12,6 +12,10 @@
   <p>There are {{ count }} products.</p>
   {% endif %}
 </div>
+<div>
+  <a href="/createProduct" class="btn btn-success">Create Product</a></td>
+</div>
+
 <div>
   <table class="table table-striped">
     <thead>
