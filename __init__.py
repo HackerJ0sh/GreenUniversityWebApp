@@ -14,7 +14,7 @@ from reportForm import CreateReportForm
 from random import randint
 import os
 from flask_login import LoginManager, current_user, logout_user, login_user, login_required
-from datetime import date
+import datetime
 import json
 
 app = Flask(__name__)
@@ -1114,11 +1114,12 @@ def add_comment(search_query):
             blog = blogs_dict.get(key)
             if blog.get_blog_id() == comment_blog_id:
                 # create comment object
-                date_created = date.today()
+                original_datetime = datetime.datetime.now()
+                formatted_datetime = original_datetime.strftime("%Y-%m-%d %H:%M:%S")
                 comment_id = str(generate_comment_id())
                 account = session['customer_username']
                 comment = Comment(comment_id=comment_id, blog_id=comment_blog_id, comment_content=comment_content, created_by=account,
-                                  date_created=date_created)
+                                  date_created=formatted_datetime)
 
                 # add comment object to database
                 comments = blog.get_comments()
@@ -1350,32 +1351,6 @@ def generate_pdf():
     pdf.output('report.pdf')
     # Return PDF as a response
     # ...
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
