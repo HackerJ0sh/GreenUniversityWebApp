@@ -38,12 +38,32 @@ def get_chart_data():
 # dashboard route 
 @app.route('/staff/home')
 def staff_home():
-    total_customers = Account_Class.User.count_id
-    total_products = Product.Product.count_id
+    # get total products
+    products_dict = {}
+    db_product = shelve.open('product.db', 'r')
+    products_dict = db_product['Products']
+    db_product.close()
+    
+    
+    products_list = []
+    for key in products_dict:
+        product = products_dict.get(key)
+        products_list.append(product)
+
+    # get total customers
+    users_dict = {}
+    db_user = shelve.open('user.db', 'r')
+    users_dict = db_user['Users']
+    db_user.close()
+
+    users_list = []
+    for key2 in users_dict:
+        user = users_dict.get(key2)
+        users_list.append(user)
     
     staff_name = session['staff_name']
 
-    return render_template('staffDashboard.html', total_cust=total_customers, staff_name=staff_name, total_products=total_products)
+    return render_template('staffDashboard.html', total_cust=len(users_list), staff_name=staff_name, total_products=len(products_list))
 
 @app.route('/')
 def home():
