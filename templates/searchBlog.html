@@ -46,9 +46,9 @@
                         <div class="p-2">
                             <p class="text-left">{{ blog.get_post_content() }}</p>
                         </div>
-                            <div class="w-100 p-2 d-flex">
-                                <p class="p-2 justify-content-start">Created by: <strong>{{ blog.get_account_username() }}</strong></p>
-                                <a href="/reportBlog/{{blog.get_blog_id()}}" class="w-100 p-2 d-flex justify-content-end"><button type="button" class="btn btn-danger w-12 p-3" >Report</button></a>
+                            <div class="w-100 p-2 d-flex justify-content-end">
+                                <p class="p-2">Created by: <strong>{{ blog.get_account_username() }}</strong></p>
+                                <button type="button" class="btn btn-danger w-12 p-3 p-2 d-flex justify-content-end" ><a href="/reportBlog/{{blog.get_blog_id()}}"></a>Report</button>
                             </div>
                         </div>
                     </div>

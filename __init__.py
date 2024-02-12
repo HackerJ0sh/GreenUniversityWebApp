@@ -1,4 +1,6 @@
-from flask import * 
+from flask import *
+from fpdf import FPDF
+
 from PaymentForm import CreatePaymentForm, UpdatePaymentForm
 from PaymentOtpForm import CreatePaymentOtpForm, SendEmail, GenerateOTP
 import shelve, Product , random , Account_Class, Feedback
@@ -1062,20 +1064,8 @@ def create_blog():
         print("Blog with ID", blog.get_blog_id(), "was stored in report_and_blog.db successfully")
         db.close()
 
-        return redirect(url_for('before_search_blog'))
+        return redirect(url_for('search_blog', search_query='all'))
     return render_template('createBlog.html', form=create_blog_form)
-
-
-@app.route('/searchBlog', methods=['GET', 'POST'])
-def before_search_blog():
-    search_blog_form = SearchBlogForm(request.form)
-    search_query = search_blog_form.post_name.data
-    if request.method == 'POST' and search_blog_form.validate():
-        print(search_query)
-        if search_query == '':
-            search_query = 'all' # makes search_query 'all' if user enters nothing
-        return redirect(url_for('search_blog', search_query=search_query))
-    return render_template('searchBlog.html', form=search_blog_form, page=1, total_pages=1, blogs_per_page=[])
 
 
 @app.route('/searchBlog/<search_query>', methods=['GET', 'POST'])
@@ -1310,7 +1300,7 @@ def delete_blog(id):
     db['Blogs'] = blogs_dict
     db.close()
 
-    session['blog_deleted'] = f'Blog ID: {blog_to_be_deleted.get_blog_id()} deleted.'
+    flash(f'Blog with ID {blog_to_be_deleted.get_blog_id()} successfully deleted TEST TEST.')
 
     return redirect(url_for('retrieve_blogs'))
 

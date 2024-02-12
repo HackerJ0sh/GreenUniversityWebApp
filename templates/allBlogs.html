@@ -72,7 +72,37 @@
                 <td><a href="/updateBlog/{{blog.get_blog_id()}}" class="btn btn-warning">Update</a></td>
                 <td>
                     <form action="{{ url_for('delete_blog', id=blog.get_blog_id()) }}" method="POST">
-                        <input type="submit" value="Delete" class="btn btn-danger">
+                                                    <!--            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete blog {{ blog.get_blog_id() }}?');">-->
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{blog.get_blog_id()}}">
+                              Delete
+                            </button>
+
+                            <!-- The Modal -->
+                            <div class="modal" id="myModal_{{blog.get_blog_id()}}">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                  <!-- Modal Header -->
+                                  <div class="modal-header">
+                                    <h4 class="modal-title">Delete Confirmation</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                  </div>
+
+                                  <!-- Modal body -->
+                                  <div class="modal-body">
+                                    Are you sure you want to delete Blog {{ blog.get_blog_id() }}?
+                                  </div>
+
+                                  <!-- Modal footer -->
+                                  <div class="modal-footer">
+                                    <input type="submit" value="Delete" class="btn btn-danger">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
                     </form>
                 </td>
             </tr>
@@ -89,5 +119,6 @@
             {% endif %}
         </div>
 </div>
+
 
 {% endblock %}
