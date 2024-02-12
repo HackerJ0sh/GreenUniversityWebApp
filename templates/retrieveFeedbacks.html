@@ -1,5 +1,5 @@
 <!-- RETRIEVE FEEDBACK -->                                          <!-- RETRIEVE FEEDBACK -->
-{% extends "base_staff.html" %}
+{% extends "staffBase.html" %}
 {% block title %}Library Loan System - Retrieve Feedbacks{% endblock %}
 
 {% block content %}
@@ -37,7 +37,6 @@
         <td>Bad</td>
         {% endif %}
         <td>{{ feedback.get_remarks() }}</td>
-        <td><a href="/updateFeedback/{{feedback.get_feedback_id()}}" class="btn btn-warning">Comment</a></td>
         <td>
           <form action="{{url_for('delete_feedback', id=feedback.get_feedback_id())}}" method="POST">
 

@@ -13206,6 +13206,10 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
+                        <a class="nav-link" href="/generate_pdf">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Generate Progress Report
+                        </a>
                         <div class="sb-sidenav-menu-heading">Businesses</div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                             data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -13231,13 +13235,6 @@
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="/allBlogs">View Blogs</a>
                                 <a class="nav-link" href="/unresolvedReports">View Reports</a>
-                                <form action="/generate_pdf">
-                                    <button type="submit" class="btn btn-success">>
-                                            Generate Blog Report
-                                    </button>
-
-                                </form>
-
                             </nav>
                         </div>
 
@@ -13269,6 +13266,16 @@
             </nav>
         </div>
         <div id="layoutSidenav_content">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-warning alert-dismissible fade show mx-4 mt-4" role="alert">
+                                    <strong>{{ message }}</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
             {% block content %}{% endblock %}
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">

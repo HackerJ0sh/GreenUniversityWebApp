@@ -1004,9 +1004,7 @@ def create_feedback():
 
         db.close()
 
-
-        flash('Thank you for submitting the feedback')
-        return redirect(url_for('cust_homepage'))
+        return redirect(url_for('thank_you'))
     return render_template('createFeedback.html', form=create_feedback_form)
 
 @app.route('/viewFeedback')
@@ -1020,7 +1018,7 @@ def view_feedback():
     for key in feedbacks_dict:
         feedback = feedbacks_dict.get(key)
         feedbacks_list.append(feedback)
-    return render_template('view_feedback.html',count=len(feedbacks_list), feedbacks_list=feedbacks_list)
+    return render_template('view_feedback.html', count=len(feedbacks_list), feedbacks_list=feedbacks_list)
 
 @app.route('/thankyou')
 def thank_you():
@@ -1042,11 +1040,10 @@ def retrieve_feedbacks():
     return render_template('retrieveFeedbacks.html', count=len(feedbacks_list), feedbacks_list=feedbacks_list)
 
 
-@app.route('/updateFeedback', methods=['GET', 'POST'])
-def update_feedback():
+@app.route('/updateFeedback/<int:id>', methods=['GET', 'POST'])
+def update_feedback(id):
     update_feedback_form = CreateFeedbackForm(request.form)
     if request.method == 'POST' and update_feedback_form.validate():
-        id = session['customer_id'] 
         feedbacks_dict = {}
         db = shelve.open('feedback.db', 'w')
         feedbacks_dict = db['Feedbacks']
@@ -1313,7 +1310,6 @@ def delete_comment(blog_id, comment_id):
 
 
 @app.route('/updateBlog/<int:id>/', methods=['GET', 'POST'])
-@login_required
 def update_blog(id):
     update_blog_form = CreateBlogForm(request.form)
     if request.method == 'POST' and update_blog_form.validate():
@@ -1419,7 +1415,7 @@ def submit_report(blog_id):
         print(report.get_report_id(), "was stored in report_and_blog.db successfully")
         db.close()
 
-        return redirect(url_for('report_confirmed'))
+        return redirect(url_for('cust_homepage'))
     return render_template('reportBlog.html', form=create_report_form)
 
 
@@ -1475,9 +1471,9 @@ def generate_pdf():
         pdf_creator.add_account_data_page(account_db)
         pdf_creator.add_payment_data_page(payment_db)
         pdf_creator.add_feedback_data_page(feedback_db)
-        pdf_creator.export_pdf()
+        generate_pdf_id = pdf_creator.export_pdf()
 
-        return redirect(url_for('staff_home'))
+        return redirect(f'static/reports/{generate_pdf_id}GU_progress_report.pdf')
 
 
 if __name__ == "__main__":

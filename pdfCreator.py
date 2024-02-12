@@ -256,5 +256,6 @@ class PDFExporter(FPDF):
     def export_pdf(self):
         generate_pdf_id = randint(10 ** 14, 10 ** 15)
         self.output(f'static/reports/{generate_pdf_id}GU_progress_report.pdf')
+        return generate_pdf_id
 
 

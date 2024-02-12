@@ -36,11 +36,14 @@
         {% endif %}
         <td>{{ feedback.get_remarks() }}</td>
         <td>
-          <form action="{{url_for('delete_feedbackCustomer', id=feedback.get_feedback_id())}}" method="POST">
+         <td>
+            <a href="/updateFeedback/{{feedback.get_feedback_id()}}" class="btn btn-warning">Comment</a>
+            <form action="{{url_for('delete_feedbackCustomer', id=feedback.get_feedback_id())}}" method="POST">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{feedback.get_feedback_id()}}">
+              Delete
+            </button>
+        </td>
 
-<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{feedback.get_feedback_id()}}">
-  Delete
-</button>
 
 <!-- The Modal -->
 <div class="modal" id="myModal_{{feedback.get_feedback_id()}}">
@@ -61,8 +64,8 @@
 
     </div>
   </div>
-</div>
-          </form>
+</div
+         </form>
         </td>
      </tr>
     {% endfor %}
