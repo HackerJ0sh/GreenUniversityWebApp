@@ -1,26 +1,19 @@
-<!-- Thankyou.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You</title>
+{% extends "base.html" %}
 
-    <style>
-        .TK, h1 {
-            color: green;
-            font-weight: bold;
-            text-align: center;
-            padding: 5% 20% 5%;
-        }
-    </style>
+{% block content %}
 
-</head>
-<body>
-    <div class="TK">
-        <h1>Thank You for Submitting!</h1>
-        <h3>We hope to hear from you again!</h3>
-        <a href="{{ url_for('view_feedback') }}" class="btn btn-primary">View Feedback</a>
-    </div>
-</body>
-</html>
+<style>
+    .TK, h1 {
+        color: green;
+        font-weight: bold;
+        text-align: center;
+        padding: 5% 20% 5%;
+    }
+</style>
+<div class="TK">
+    <h1>Thank You for Submitting!</h1>
+    <h3>We hope to hear from you again!</h3>
+    <a href="{{ url_for('view_feedback') }}" class="btn btn-primary">View Feedback</a>
+</div>
+
+{% endblock %}

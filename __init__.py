@@ -1005,8 +1005,8 @@ def create_feedback():
         db.close()
 
 
-
-        return redirect(url_for('thank_you'))
+        flash('Thank you for submitting the feedback')
+        return redirect(url_for('cust_homepage'))
     return render_template('createFeedback.html', form=create_feedback_form)
 
 @app.route('/viewFeedback')
@@ -1042,10 +1042,11 @@ def retrieve_feedbacks():
     return render_template('retrieveFeedbacks.html', count=len(feedbacks_list), feedbacks_list=feedbacks_list)
 
 
-@app.route('/updateFeedback/<int:id>/', methods=['GET', 'POST'])
-def update_feedback(id):
+@app.route('/updateFeedback', methods=['GET', 'POST'])
+def update_feedback():
     update_feedback_form = CreateFeedbackForm(request.form)
     if request.method == 'POST' and update_feedback_form.validate():
+        id = session['customer_id'] 
         feedbacks_dict = {}
         db = shelve.open('feedback.db', 'w')
         feedbacks_dict = db['Feedbacks']
