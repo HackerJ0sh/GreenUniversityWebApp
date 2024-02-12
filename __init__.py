@@ -38,7 +38,12 @@ def get_chart_data():
 # dashboard route 
 @app.route('/staff/home')
 def staff_home():
-    return render_template('staffDashboard.html')
+    total_customers = User.count_id
+    total_products = Product.Product.count_id
+    
+    staff_name = session['staff_name']
+
+    return render_template('staffDashboard.html', total_cust=total_customers, staff_name=staff_name, total_products=total_products)
 
 @app.route('/')
 def home():
@@ -447,7 +452,10 @@ def staff_homepage(id):
     users_dict = db['Users']
     db.close()
     name = users_dict[id].get_name()
-    return render_template("staff_homepage.html", name=name, id = id)
+
+    session['staff_name'] = name
+
+    return redirect(url_for('staff_home'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -1252,7 +1260,6 @@ def submit_report(blog_id):
 
 
 @app.route('/unresolvedReports')
-@login_required
 def retrieve_reports():
     reports_dict = {}
     db = shelve.open('report_and_blog.db', 'r')
