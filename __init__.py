@@ -31,7 +31,16 @@ allowed_extensions_list = ['jpg', 'png', 'jpeg', '']
 # Get Data Route 
 @app.route('/getChartData', methods=["POST", "GET"])
 def get_chart_data():
-    count = [90, 12, 23, 23, 99, 23]
+    count = []
+    chart_data_dict = {}
+
+    db = shelve.open('ChartData.db', 'r')
+    chart_data_dict = db['ChartData']
+
+    chart_1_data = chart_data_dict['chart_1_data']
+    for key in chart_1_data:
+        count.append(chart_1_data[key])
+
     data = {
         "count": count
     }
@@ -62,10 +71,18 @@ def staff_home():
     for key2 in users_dict:
         user = users_dict.get(key2)
         users_list.append(user)
+
+    # get total orders and total earnings
+    chart_data_dict = {}
+    db_chart_data = shelve.open('ChartData.db', 'r')
+    chart_data_dict = db_chart_data['ChartData']
+
+    total_orders = chart_data_dict['total_orders']
+    total_earnings = chart_data_dict['total_earnings']
     
     staff_name = session['staff_name']
 
-    return render_template('staffDashboard.html', total_cust=len(users_list), staff_name=staff_name, total_products=len(products_list))
+    return render_template('staffDashboard.html', total_cust=len(users_list), staff_name=staff_name, total_products=len(products_list), total_earnings=total_earnings, total_orders=total_orders)
 
 @app.route('/')
 def home():
@@ -156,6 +173,48 @@ def payment():
 # @login_required
 def payment_successful():
     id = session['customer_id']
+
+    # get chart data 
+    db = shelve.open('shoppingcart.db','r')
+    cart_dict = db[f'{id}']
+    db.close()
+
+    total_price = 0
+    chart_data_1 = {}
+    for key in cart_dict:
+        product = cart_dict.get(key)
+        category = product.get_product_category()
+
+        price = product.get_product_price()
+        total_price += float(price)
+
+        chart_data_1[f'{category}'] = 0  
+        chart_data_1[f'{category}'] += 1
+
+    total_price = f"{total_price:.2f}"
+
+    # create a new DB to grab important data analysis datas for the KPIs 
+    chart_data_dict = {}
+    try: 
+        db_chart_data = shelve.open('ChartData.db', 'r')
+        db_chart_data['ChartData'] = chart_data_dict
+    except: 
+        db_chart_data = shelve.open('ChartData.db', 'c')
+        chart_data_dict = db_chart_data['ChartData']
+
+    if 'total_earnings' not in chart_data_dict:
+        chart_data_dict['total_earnings'] = 0.0  
+    if 'total_orders' not in chart_data_dict:
+        chart_data_dict['total_orders'] = 0
+
+    chart_data_dict['total_earnings'] += float(total_price)
+    chart_data_dict['total_orders'] += 1
+    chart_data_dict['chart_1_data'] = chart_data_1
+
+    db_chart_data['ChartData'] = chart_data_dict
+    db_chart_data.close()
+
+
 
     db = shelve.open('shoppingcart.db', 'w')
     products_dict = db[f'{id}']
