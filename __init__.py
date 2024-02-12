@@ -38,7 +38,7 @@ def get_chart_data():
 # dashboard route 
 @app.route('/staff/home')
 def staff_home():
-    total_customers = User.count_id
+    total_customers = Account_Class.User.count_id
     total_products = Product.Product.count_id
     
     staff_name = session['staff_name']
@@ -503,6 +503,7 @@ def login():
                         session['customer_username'] = users_dict[key].get_username()
                         return redirect(url_for('staff_homepage', id=users_dict[key].get_user_id()))
                     else:
+                        session['customer_email'] = users_dict[key].get_email()
                         session['customer_id'] = users_dict[key].get_user_id()
                         session['customer_username'] = users_dict[key].get_username()
                         return redirect(url_for('cust_homepage', id=users_dict[key].get_user_id()))
@@ -1272,7 +1273,8 @@ def submit_report(blog_id):
             return redirect(url_for('submit_report', alert=alert, blog_id = blog_id))
 
         account = session['customer_id']
-        report = Report(account=account, reported_blog_id=create_report_form.reported_account.data,
+        email = session['customer_email']
+        report = Report(account=account, reporter_email=email, reported_blog_id=create_report_form.reported_account.data,
                         reported_subjects=create_report_form.report_subjects.data,
                         report_reason=create_report_form.report_reason.data)
 
@@ -1304,6 +1306,17 @@ def retrieve_reports():
     return render_template('unresolvedReports.html', count=len(reports_list), reports_list=reports_list)
 
 
+@app.route('/generate-pdf')
+def generate_pdf():
+    data = request.args.get('data')  # Get data from query string or form
+    # Create FPDF instance and add content using its API
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font('Arial', size=12)
+    pdf.cell(200, 10, txt=data, ln=1, align='C')
+    pdf.output('report.pdf')
+    # Return PDF as a response
+    # ...
 
 
 

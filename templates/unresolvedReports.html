@@ -18,10 +18,10 @@
         <tr>
             <th>Report ID</th>
             <th>Reported Blog ID</th>
+            <th>Reporter's Email</th>
             <th>Reason for Report</th>
             <th>Report Description</th>
-            <th></th>
-            <th></th>
+            <th>Verdict</th>
         </tr>
     </thead>
      <tbody>
@@ -29,6 +29,7 @@
             <tr>
                 <td>{{ report.get_report_id() }}</td>
                 <td>{{ report.get_reported_blog_id() }}</td>
+                <td>{{ report.get_reporter_email() }}</td>
                 <td>
                     {% if '1' in report.get_reported_subjects() %}
                         Unrelated to the environment
@@ -47,6 +48,10 @@
                     {% endif %}
                 </td>
                 <td>{{ report.get_report_reason() }}</td>
+                <td>
+                    <button class="btn btn-success" formaction="">Approve</button>
+                    <button class="btn btn-danger" formaction="">Reject </button>
+                </td>
             </tr>
         {% endfor %}
      </tbody>
