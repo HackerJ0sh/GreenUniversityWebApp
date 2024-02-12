@@ -1,6 +1,7 @@
 from flask import *
 from fpdf import FPDF
 
+from Charts import Charts
 from PaymentForm import CreatePaymentForm, UpdatePaymentForm
 from PaymentOtpForm import CreatePaymentOtpForm, SendEmail, GenerateOTP
 import shelve, Product , random , Account_Class, Feedback
@@ -36,10 +37,9 @@ def get_chart_data():
 
     db = shelve.open('ChartData.db', 'r')
     chart_data_dict = db['ChartData']
+    db.close()
 
-    chart_1_data = chart_data_dict['chart_1_data']
-    for key in chart_1_data:
-        count.append(chart_1_data[key])
+    count = [chart_data_dict['total_kitchen'], chart_data_dict['total_lifestyle'], chart_data_dict['total_bathroom']]
 
     data = {
         "count": count
@@ -174,22 +174,16 @@ def payment():
 def payment_successful():
     id = session['customer_id']
 
-    # get chart data 
+    # get total price 
     db = shelve.open('shoppingcart.db','r')
     cart_dict = db[f'{id}']
     db.close()
 
     total_price = 0
-    chart_data_1 = {}
     for key in cart_dict:
         product = cart_dict.get(key)
-        category = product.get_product_category()
-
         price = product.get_product_price()
         total_price += float(price)
-
-        chart_data_1[f'{category}'] = 0  
-        chart_data_1[f'{category}'] += 1
 
     total_price = f"{total_price:.2f}"
 
@@ -198,6 +192,7 @@ def payment_successful():
     try: 
         db_chart_data = shelve.open('ChartData.db', 'r')
         db_chart_data['ChartData'] = chart_data_dict
+
     except: 
         db_chart_data = shelve.open('ChartData.db', 'c')
         chart_data_dict = db_chart_data['ChartData']
@@ -206,10 +201,34 @@ def payment_successful():
         chart_data_dict['total_earnings'] = 0.0  
     if 'total_orders' not in chart_data_dict:
         chart_data_dict['total_orders'] = 0
+    if 'total_kitchen' not in chart_data_dict:
+        chart_data_dict['total_kitchen'] = 0
+    if 'total_lifestyle' not in chart_data_dict:
+        chart_data_dict['total_lifestyle'] = 0
+    if 'total_bathroom' not in chart_data_dict:
+        chart_data_dict['total_bathroom'] = 0
+
+    # get chart data
+    db = shelve.open('shoppingcart.db','r')
+    cart_dict = db[f'{id}']
+    db.close()
+
+    for key in cart_dict:
+        product = cart_dict.get(key)
+        category = product.get_product_category()
+
+        if category == 'Kitchen':
+            chart_data_dict['total_kitchen'] += 1
+        elif category == 'Lifestyle':
+            chart_data_dict['total_lifestyle'] += 1
+        elif category == 'Bathroom':
+            chart_data_dict['total_bathroom'] += 1
+
+
+
 
     chart_data_dict['total_earnings'] += float(total_price)
     chart_data_dict['total_orders'] += 1
-    chart_data_dict['chart_1_data'] = chart_data_1
 
     db_chart_data['ChartData'] = chart_data_dict
     db_chart_data.close()
