@@ -74,6 +74,20 @@ def home():
 # @login_required
 def payment():
     create_payment_form = CreatePaymentForm(request.form)
+
+    try: 
+        id = session['customer_id']
+        payment_dict = {}
+        db = shelve.open('payment.db', 'r')
+        payment_dict = db['Payments']
+        cust_payment_info = payment_dict[id]
+
+        if cust_payment_info.get_remember():
+            session['email'] = cust_payment_info.get_email()
+            return redirect(url_for('payment_otp'))
+    except:
+        print('Customer did not create payment information')
+        
     if request.method == "POST" and create_payment_form.validate():
 
         payment_dict = {}
