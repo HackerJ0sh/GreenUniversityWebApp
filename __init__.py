@@ -437,7 +437,7 @@ def cust_homepage(id):
     users_dict = db['Users']
     db.close()
     name = users_dict[id].get_name()
-    return render_template("customerHomepage.html", name=name, id = id)
+    return render_template("customerHomepage.html", name=name, id=id)
 
 @app.route("/staff_home/<int:id>/", methods=['GET', 'POST'])
 #@login_required
