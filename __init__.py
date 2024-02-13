@@ -644,6 +644,7 @@ def login():
                         error_lock = error_lock + 1
                         break
                     elif users_dict[key].get_account_type() == "S":
+                        session['customer_email'] = users_dict[key].get_email()
                         session['customer_id'] = users_dict[key].get_user_id()
                         session['customer_username'] = users_dict[key].get_username()
                         return redirect(url_for('staff_homepage', id=users_dict[key].get_user_id()))
