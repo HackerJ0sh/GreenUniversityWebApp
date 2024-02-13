@@ -436,7 +436,7 @@ def add_to_cart(id):
 
     cart_dict = {}
     db2 = shelve.open('shoppingcart.db','c')
-    
+
     cart_dict = db2[f'{userid}']
     cart_dict[id] = product
     db2[f'{userid}'] = cart_dict
