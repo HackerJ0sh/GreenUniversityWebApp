@@ -623,7 +623,7 @@ def register():
 
         db.close()
 
-        return redirect(url_for('retrieve_users'))
+        return redirect(url_for('login'))
     return render_template('signup.html', form=register_user_form, title="registration page")
 
 @app.route('/login', methods=['GET', 'POST'])
