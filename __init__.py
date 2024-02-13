@@ -983,7 +983,6 @@ def settings():
 @app.route('/logout')
 def logout():
     session.pop("customer_id")
-    session.pop("staff_name")
     session.pop("customer_email")
     session.pop("customer_username")
     return redirect(url_for('home'))

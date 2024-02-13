@@ -37,6 +37,7 @@
         <td>Bad</td>
         {% endif %}
         <td>{{ feedback.get_remarks() }}</td>
+        <td><a href="/updateFeedback/{{feedback.get_feedback_id()}}" class="btn btn-warning">Update</a></td>
         <td>
           <form action="{{url_for('delete_feedback', id=feedback.get_feedback_id())}}" method="POST">
 
