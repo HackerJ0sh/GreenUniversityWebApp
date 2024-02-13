@@ -1,6 +1,5 @@
 from flask import *
 from fpdf import FPDF
-
 from Charts import Charts
 from PaymentForm import CreatePaymentForm, UpdatePaymentForm
 from PaymentOtpForm import CreatePaymentOtpForm, SendEmail, GenerateOTP
