@@ -69,7 +69,6 @@ def generate_report_id():
         return report_id
 
 
-
 def check_report_id(id):
     reports_dict = {}
     db = shelve.open('report_and_blog.db', 'c')
@@ -133,9 +132,11 @@ def send_report_confirmation_email(destination, cust_username, verdict):
     email = EmailMessage()
     email['From'] = email_sender
     email['To'] = email_receiver
-    email['subject'] = (f'Hello {cust_username}, your report filed is {verdict} ! If you have any issues or'
-                     f'enquiries please send a feedback message on our website, thank you for making Green University'
-                     f'a better place for everyone!')
+    email['subject'] = 'Green University Report Result'
+    email.set_content((f'Hello, your report filed is {verdict} ! and has been settled'
+                        f' accordingly. If you have any issues or'
+                     f' enquiries please send a feedback message on our website, thank you for making Green University'
+                     f' a better place for everyone!'))
 
     context = ssl.create_default_context()
 

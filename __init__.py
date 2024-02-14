@@ -1124,8 +1124,8 @@ def create_blog():
             if filepath is None:
                 pass
             else:
-                alert = 'true'
-                return redirect(url_for('create_blog', alert=alert))
+                flash(f"Invalid file type is not supported. [Supported types: png, jpg, jpeg]")
+                return redirect(url_for('create_blog'))
 
         blog_id = str(generate_blog_id())
         account = session['customer_id']
@@ -1136,12 +1136,9 @@ def create_blog():
         blogs_dict[blog.get_blog_id()] = blog
         db['Blogs'] = blogs_dict
 
-        # Test codes
-        blogs_dict = db['Blogs']
-        blog = blogs_dict[blog.get_blog_id()]
-        print("Blog with ID", blog.get_blog_id(), "was stored in report_and_blog.db successfully")
         db.close()
-        flash(f"Blog {blog.get_blog_id()} is successfully created.")
+
+        flash(f"Blog {blog.get_blog_id()} is successfully created, use the search function to find your newly posted blog.")
         return redirect(url_for('search_blog', search_query='all'))
     return render_template('createBlog.html', form=create_blog_form)
 
@@ -1222,9 +1219,7 @@ def add_comment(search_query):
 
     if request.method == 'POST' and create_comment_form.validate():
         comment_content = create_comment_form.comment_content.data
-        print(comment_content)
-        if comment_content.strip() == '':  # checks if user enters comment or not; WIP can edit to do front-end validation
-            # with JS instead
+        if comment_content.strip() == '':  # checks if user enters comment or not
             return redirect(url_for('search_blog', search_query=search_query))
         comment_blog_id = request.form.get("blog_id")
 
@@ -1307,7 +1302,7 @@ def delete_comment(blog_id, comment_id):
 
     db['Blogs'] = blogs_dict
     db.close()
-
+    flash(f"Comment ID: {comment_id} has been successfully deleted.")
     return redirect(url_for('retrieve_comments', blog_id=blog_id))
 
 
@@ -1331,8 +1326,8 @@ def update_blog(id):
             if new_filepath:
                 img.save(new_filepath)  # save new filepath from static/files if not None
             else:
-                alert = 'true'
-                return redirect(url_for('update_blog', id=id, alert=alert))
+                flash(f"Invalid file type is not supported. [Supported types: png, jpg, jpeg]")
+                return redirect(url_for('update_blog', id=id))
         if old_filepath is not None:
             os.remove(old_filepath)  # remove old filepath from static/files if not None
 
@@ -1343,7 +1338,7 @@ def update_blog(id):
 
         db['Blogs'] = blogs_dict
         db.close()
-
+        flash(f"Blog ID: {blog.get_blog_id()} has been successfully updated.")
         return redirect(url_for('retrieve_blogs'))
     else:
         blogs_dict = {}
@@ -1399,8 +1394,8 @@ def submit_report(blog_id):
 
         if check_report_id(create_report_form.reported_account.data) is False:
             blog_id = 'blog'
-            alert = 'true'
-            return redirect(url_for('submit_report', alert=alert, blog_id=blog_id))
+            flash(f"Blog ID: {create_report_form.reported_account.data} is not found, please re-enter and submit again.")
+            return redirect(url_for('submit_report', blog_id=blog_id))
 
         account = session['customer_id']
         email = session['customer_email']
@@ -1410,13 +1405,8 @@ def submit_report(blog_id):
         report.set_report_id(generate_report_id())
         reports_dict[report.get_report_id()] = report
         db['Reports'] = reports_dict
-
-        # Test codes
-        reports_dict = db['Reports']
-        report = reports_dict[report.get_report_id()]
-        print(report.get_report_id(), "was stored in report_and_blog.db successfully")
         db.close()
-
+        flash(f"Report ID: {report.get_report_id()} has been successfully created.")
         return redirect(url_for('cust_homepage'))
     return render_template('reportBlog.html', form=create_report_form)
 
@@ -1439,12 +1429,27 @@ def retrieve_reports():
 @app.route('/sendReportEmail/<report_id>/<verdict>', methods=['GET', 'POST'])
 def send_report_email(report_id, verdict):
     reports_dict = {}
+    blogs_dict = {}
     db = shelve.open('report_and_blog.db', 'c')
     reports_dict = db['Reports']
+    blogs_dict = db['Blogs']
 
-    for key in reports_dict:
-        report = reports_dict.get(key)
+    for report_key in reports_dict:
+        report = reports_dict.get(report_key)
         if str(report.get_report_id()) == str(report_id):
+            if verdict == "APPROVED":
+                for blog_key in blogs_dict:
+                    blog = blogs_dict.get(blog_key)
+                    if blog.get_blog_id() == report.get_reported_blog_id():
+                        blogs_dict.pop(str(blog.get_blog_id()))
+                        db['Blogs'] = blogs_dict # deletes approved blog
+                        break
+                flash(f"Verdict is APPROVED, Blog ID: {report.get_reported_blog_id()} has been deleted and a confirmation has been "
+                      f"sent to {report.get_reporter_email()}")
+            else:
+                flash(f"Verdict is REJECTED, Blog ID: {report.get_reported_blog_id()} has NOT been deleted and a confirmation has been "
+                    f"sent to {report.get_reporter_email()}")
+
             send_report_confirmation_email(report.get_reporter_email(), report.get_account(), verdict)
             reports_dict.pop(report.get_report_id())
             break
